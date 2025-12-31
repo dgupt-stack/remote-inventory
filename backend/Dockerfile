@@ -8,12 +8,12 @@ RUN apk add --no-cache git make protobuf-dev
 WORKDIR /app
 
 # Copy go mod files
-COPY backend/go.mod backend/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source code
-COPY backend/ ./
-COPY proto/ ../proto/
+# Copy source code  
+COPY . ./
+COPY ../proto/ ../proto/
 
 # Build binary
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server ./server
