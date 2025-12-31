@@ -2,14 +2,32 @@ syntax = "proto3";
 
 package inventory;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/djgupt/remote-inventory/proto";
 
 // Session management and video streaming service
 service InventoryService {
   // Session management
-  rpc CreateSession(CreateSessionRequest) returns (SessionResponse);
-  rpc JoinSession(JoinSessionRequest) returns (SessionResponse);
-  rpc EndSession(EndSessionRequest) returns (EndSessionResponse);
+  rpc CreateSession(CreateSessionRequest) returns (SessionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions"
+      body: "*"
+    };
+  }
+  
+  rpc JoinSession(JoinSessionRequest) returns (SessionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/join"
+      body: "*"
+    };
+  }
+  
+  rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/sessions/{session_id}"
+    };
+  }
   
   // Bidirectional streaming for Provider video upload and command reception
   rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
@@ -18,7 +36,12 @@ service InventoryService {
   rpc ConsumerStream(stream ConsumerCommand) returns (stream VideoFrame);
   
   // Heartbeat to keep sessions alive
-  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/heartbeat"
+      body: "*"
+    };
+  }
 }
 
 // Session messages

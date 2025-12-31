@@ -7,6 +7,8 @@ require (
 	google.golang.org/protobuf v1.32.0
 	github.com/google/uuid v1.5.0
 	gocv.io/x/gocv v0.35.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20240116215550-a9fa1716bcac
 )
 
 require (
