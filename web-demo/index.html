@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Inventory - Web Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            color: #E0E0E0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 217, 255, 0.05);
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
+        }
+
+        h1 {
+            color: #00D9FF;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 217, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 217, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 217, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            color: #00D9FF;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #AAA;
+            font-size: 0.9em;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 8px;
+            color: #E0E0E0;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00D9FF;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #00D9FF 0%, #0088CC 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border-left: 4px solid #00D9FF;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .success {
+            border-left-color: #4CAF50;
+        }
+
+        .error {
+            border-left-color: #F44336;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status.connected {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+        }
+
+        .status.disconnected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+            border: 1px solid #F44336;
+        }
+
+        .info-box {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            color: #00D9FF;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .info-box p {
+            color: #AAA;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .endpoint-url {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #00D9FF;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00D9FF;
+            font-family: 'Courier New', monospace;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 217, 255, 0.3);
+            border-top-color: #00D9FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Remote Inventory - Web Demo</h1>
+            <p class="subtitle">Testing gRPC-Gateway HTTP/REST API</p>
+            <div class="endpoint-url">Backend: http://localhost:8081</div>
+        </header>
+
+        <div class="info-box">
+            <h3>ℹ️ About This Demo</h3>
+            <p>
+                This web interface demonstrates the HTTP/REST API powered by gRPC-Gateway. 
+                The backend exposes both <code>gRPC</code> (port 8080) and <code>HTTP</code> (port 8081) endpoints.
+                Web browsers use the HTTP endpoints while mobile apps use native gRPC for streaming.
+            </p>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Create Session Card -->
+            <div class="card">
+                <h2>📱 Create Session (Provider)</h2>
+                <div class="form-group">
+                    <label for="providerName">Provider Name</label>
+                    <input type="text" id="providerName" placeholder="Enter your name" value="Web Provider">
+                </div>
+                <button onclick="createSession()">Create Session</button>
+                <div id="createResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Join Session Card -->
+            <div class="card">
+                <h2>🎮 Join Session (Consumer)</h2>
+                <div class="form-group">
+                    <label for="sessionId">Session ID</label>
+                    <input type="text" id="sessionId" placeholder="Enter session ID">
+                </div>
+                <div class="form-group">
+                    <label for="consumerName">Consumer Name</label>
+                    <input type="text" id="consumerName" placeholder="Enter your name" value="Web Consumer">
+                </div>
+                <button onclick="joinSession()">Join Session</button>
+                <div id="joinResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- Heartbeat Card -->
+            <div class="card">
+                <h2>💓 Send Heartbeat</h2>
+                <div class="form-group">
+                    <label for="heartbeatSessionId">Session ID</label>
+                    <input type="text" id="heartbeatSessionId" placeholder="Enter session ID">
+                </div>
+                <div class="form-group">
+                    <label for="heartbeatToken">Token</label>
+                    <input type="text" id="heartbeatToken" placeholder="Enter token">
+                </div>
+                <div class="form-group">
+                    <label for="heartbeatRole">Role</label>
+                    <input type="text" id="heartbeatRole" placeholder="provider or consumer" value="provider">
+                </div>
+                <button onclick="sendHeartbeat()">Send Heartbeat</button>
+                <div id="heartbeatResponse" class="response" style="display: none;"></div>
+            </div>
+
+            <!-- End Session Card -->
+            <div class="card">
+                <h2>🛑 End Session</h2>
+                <div class="form-group">
+                    <label for="endSessionId">Session ID</label>
+                    <input type="text" id="endSessionId" placeholder="Enter session ID">
+                </div>
+                <div class="form-group">
+                    <label for="endToken">Token</label>
+                    <input type="text" id="endToken" placeholder="Enter token">
+                </div>
+                <button onclick="endSession()">End Session</button>
+                <div id="endResponse" class="response" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Server Status -->
+        <div class="card">
+            <h2>🌐 Server Status</h2>
+            <p>Backend must be running on <code>localhost:8081</code></p>
+            <button onclick="checkServerStatus()">Check Status</button>
+            <div id="statusResponse" class="response" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8081';
+
+        // Store session data for convenience
+        let currentSession = {
+            sessionId: '',
+            token: '',
+            role: ''
+        };
+
+        async function createSession() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = 'Creating... <span class="loading"></span>';
+
+            const providerName = document.getElementById('providerName').value;
+            const providerId = 'web-' + Math.random().toString(36).substr(2, 9);
+
+            try {
+                const response = await fetch(`${API_BASE}/v1/sessions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider_id: providerId,
+                        provider_name: providerName
+                    })
+                });
+
+                const data = await response.json();
+                const responseEl = document.getElementById('createResponse');
+                responseEl.style.display = 'block';
+                
+                if (data.success) {
+                    currentSession = {
+                        sessionId: data.session_id,
+                        token: data.token,
+                        role: 'provider'
+                    };
+                    responseEl.className = 'response success';
+                    responseEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    // Auto-fill heartbeat fields
+                    document.getElementById('heartbeatSessionId').value = data.session_id;
+                    document.getElementById('heartbeatToken').value = data.token;
+                    document.getElementById('endSessionId').value = data.session_id;
+                    document.getElementById('endToken').value = data.token;
+                } else {
+                    responseEl.className = 'response error';
+                    responseEl.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                const responseEl = document.getElementById('createResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = 'response error';
+                responseEl.textContent = `Error: ${error.message}\n\nMake sure the backend is running:\ncd backend && make run`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Create Session';
+            }
+        }
+
+        async function joinSession() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = 'Joining... <span class="loading"></span>';
+
+            const sessionId = document.getElementById('sessionId').value;
+            const consumerName = document.getElementById('consumerName').value;
+            const consumerId = 'web-' + Math.random().toString(36).substr(2, 9);
+
+            try {
+                const response = await fetch(`${API_BASE}/v1/sessions/${sessionId}/join`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        consumer_id: consumerId,
+                        consumer_name: consumerName
+                    })
+                });
+
+                const data = await response.json();
+                const responseEl = document.getElementById('joinResponse');
+                responseEl.style.display = 'block';
+
+                if (data.success) {
+                    currentSession = {
+                        sessionId: data.session_id,
+                        token: data.token,
+                        role: 'consumer'
+                    };
+                    responseEl.className = 'response success';
+                    responseEl.textContent = JSON.stringify(data, null, 2);
+                    
+                    // Auto-fill heartbeat fields
+                    document.getElementById('heartbeatSessionId').value = data.session_id;
+                    document.getElementById('heartbeatToken').value = data.token;
+                    document.getElementById('heartbeatRole').value = 'consumer';
+                } else {
+                    responseEl.className = 'response error';
+                    responseEl.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                const responseEl = document.getElementById('joinResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = 'response error';
+                responseEl.textContent = `Error: ${error.message}\n\nMake sure the backend is running:\ncd backend && make run`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Join Session';
+            }
+        }
+
+        async function sendHeartbeat() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = 'Sending... <span class="loading"></span>';
+
+            const sessionId = document.getElementById('heartbeatSessionId').value;
+            const token = document.getElementById('heartbeatToken').value;
+            const role = document.getElementById('heartbeatRole').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/v1/sessions/${sessionId}/heartbeat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                        role: role
+                    })
+                });
+
+                const data = await response.json();
+                const responseEl = document.getElementById('heartbeatResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = data.active ? 'response success' : 'response error';
+                responseEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                const responseEl = document.getElementById('heartbeatResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = 'response error';
+                responseEl.textContent = `Error: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Heartbeat';
+            }
+        }
+
+        async function endSession() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = 'Ending... <span class="loading"></span>';
+
+            const sessionId = document.getElementById('endSessionId').value;
+            const token = document.getElementById('endToken').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/v1/sessions/${sessionId}?token=${encodeURIComponent(token)}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                const responseEl = document.getElementById('endResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = data.success ? 'response success' : 'response error';
+                responseEl.textContent = JSON.stringify(data, null, 2);
+                
+                if (data.success) {
+                    currentSession = { sessionId: '', token: '', role: '' };
+                }
+            } catch (error) {
+                const responseEl = document.getElementById('endResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = 'response error';
+                responseEl.textContent = `Error: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'End Session';
+            }
+        }
+
+        async function checkServerStatus() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = 'Checking... <span class="loading"></span>';
+
+            try {
+                const response = await fetch(`${API_BASE}/v1/sessions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider_id: 'test',
+                        provider_name: 'Status Check'
+                    })
+                });
+
+                const responseEl = document.getElementById('statusResponse');
+                responseEl.style.display = 'block';
+                
+                if (response.ok) {
+                    responseEl.className = 'response success';
+                    responseEl.textContent = '✅ Server is running and responding!\n\nStatus: Connected\nEndpoint: ' + API_BASE;
+                } else {
+                    responseEl.className = 'response error';
+                    responseEl.textContent = '⚠️ Server responded but with an error.\n\nStatus Code: ' + response.status;
+                }
+            } catch (error) {
+                const responseEl = document.getElementById('statusResponse');
+                responseEl.style.display = 'block';
+                responseEl.className = 'response error';
+                responseEl.textContent = `❌ Cannot connect to server!\n\nError: ${error.message}\n\nTo start the backend:\ncd backend\nmake run\n\nExpected at: ${API_BASE}`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Check Status';
+            }
+        }
+    </script>
+</body>
+</html>

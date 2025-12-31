@@ -39,12 +39,28 @@ A privacy-first remote inventory viewing application with JARVIS-themed aestheti
 ## 🏗️ Architecture
 
 ```
-Consumer App (Flutter) → Backend (Go + gRPC) → Provider App (Flutter)
-                              ↓
-                       Privacy Layer (OpenCV)
-                       - Face Detection
-                       - Body Detection
-                       - Aggressive Blurring
+┌──────────────────┐         ┌──────────────────┐
+│  Provider App    │         │  Consumer App    │
+│   (Flutter)      │         │   (Flutter)      │
+│                  │         │                  │
+│  • Camera Stream │         │  • Touch Control │
+│  • AR Guidance   │         │  • Voice Input   │
+│  • Privacy Ind.  │         │  • Video View    │
+└────────┬─────────┘         └─────────┬────────┘
+         │                             │
+         │ gRPC (8080)                │ gRPC (8080)
+         │                             │
+         └──────────┬──────────────────┘
+                    │
+         ┌──────────▼──────────┐
+         │   Backend Server    │
+         │   (Go + gRPC)       │◄─── HTTP/REST (8081)
+         │                     │         │
+         │  • Session Mgmt     │     ┌───▼────────┐
+         │  • Privacy Layer    │     │ Web Demo   │
+         │  • Command Relay    │     │ (Browser)  │
+         │  • gRPC-Gateway     │     └────────────┘
+         └─────────────────────┘
 ```
 
 ## 📁 Project Structure
@@ -82,46 +98,6 @@ remote-inventory/
 - **Flutter**: 3.1.0 or higher
 - **Go**: 1.21 or higher
 - **Docker**: For backend deployment
-- **Google Cloud SDK**: For Cloud Run deployment
-
-### Backend Setup
-
-```bash
-cd backend
-
-# Install dependencies
-go mod download
-
-# Generate protobuf code
-make proto
-
-# Run locally
-make run
-
-# Or build Docker image
-make docker
-```
-
-### Provider App Setup
-
-```bash
-cd provider_app
-
-# Install dependencies
-flutter pub get
-
-# Copy shared theme
-cp -r ../shared lib/
-
-# Run on device
-flutter run
-```
-
-### Consumer App Setup
-
-```bash
-cd consumer_app
-
 # Install dependencies
 flutter pub get
 
