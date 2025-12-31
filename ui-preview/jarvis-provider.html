@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS Provider UI - Interactive Preview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #0A0E27;
+            color: #E0E0E0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #0A0E27;
+            border-radius: 40px;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(0, 217, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 16px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+        }
+
+        .message-badge {
+            position: relative;
+        }
+
+        .message-icon {
+            width: 28px;
+            height: 28px;
+            color: #00D9FF;
+        }
+
+        .badge-number {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #00D9FF;
+            color: #0A0E27;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .jarvis-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .star-icon {
+            width: 18px;
+            height: 18px;
+            color: #00D9FF;
+        }
+
+        .jarvis-text {
+            font-size: 20px;
+            font-weight: 900;
+            color: #00D9FF;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #00D9FF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.6));
+        }
+
+        /* Camera View Container */
+        .camera-container {
+            padding: 0 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .camera-view {
+            flex: 1;
+            background: linear-gradient(135deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-radius: 20px;
+            border: 2px solid #00D9FF;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.3),
+                inset 0 0 80px rgba(0, 100, 120, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism Badge */
+        .glass-badge {
+            background: rgba(26, 31, 58, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid #00D9FF;
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00FF88;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 8px #00FF88;
+            }
+
+            50% {
+                opacity: 0.6;
+                box-shadow: 0 0 15px #00FF88;
+            }
+        }
+
+        /* Status Overlay */
+        .status-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .status-overlay>* {
+            pointer-events: all;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00FF88;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .live-badge {
+            color: #00FF88;
+        }
+
+        /* Zoom Control */
+        .zoom-control {
+            background: rgba(26, 31, 58, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid #00D9FF;
+            border-radius: 20px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .zoom-icon {
+            width: 16px;
+            height: 16px;
+            color: #00D9FF;
+        }
+
+        .zoom-text {
+            font-size: 12px;
+            color: #00D9FF;
+            font-weight: 600;
+            min-width: 35px;
+        }
+
+        .zoom-slider {
+            width: 80px;
+            height: 2px;
+            background: rgba(0, 217, 255, 0.3);
+            border-radius: 1px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .zoom-slider-track {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: #00D9FF;
+            border-radius: 1px;
+            transition: width 0.1s ease;
+        }
+
+        .zoom-slider-thumb {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #00D9FF;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
+            transition: left 0.1s ease;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            padding: 12px 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .connection-badge {
+            background: rgba(0, 217, 255, 0.2);
+            border-radius: 12px;
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wifi-icon {
+            width: 16px;
+            height: 16px;
+            color: #00D9FF;
+        }
+
+        .nav-icons {
+            display: flex;
+            justify-content: space-evenly;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #00D9FF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.8));
+        }
+
+        .nav-icon.center {
+            transform: scale(1.3);
+        }
+
+        .nav-icon.center:hover {
+            transform: scale(1.5);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            bottom: 120px;
+            left: 20px;
+            right: 20px;
+            background: rgba(10, 14, 39, 0.95);
+            border: 2px solid #00D9FF;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+            display: none;
+        }
+
+        .info-panel.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-title {
+            color: #00D9FF;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+            font-size: 11px;
+        }
+
+        .info-label {
+            color: #888;
+        }
+
+        .info-value {
+            color: #00D9FF;
+            font-weight: 600;
+        }
+
+        /* SVG Icons */
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone-frame">
+        <!-- Header -->
+        <div class="header">
+            <div class="message-badge">
+                <svg class="message-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <div class="badge-number">4</div>
+            </div>
+
+            <div class="jarvis-title">
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <span class="jarvis-text">J.A.R.V.I.S</span>
+                <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                    </svg>
+                </button>
+                <button class="icon-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Camera Container -->
+        <div class="camera-container">
+            <div class="camera-view">
+                <!-- Status Overlay -->
+                <div class="status-overlay">
+                    <div class="status-row">
+                        <div class="glass-badge">
+                            <div class="status-dot"></div>
+                            <span>SYS:ONLINE</span>
+                        </div>
+                        <div class="glass-badge">
+                            <span id="current-time">2:49:31 PM</span>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="glass-badge live-badge">
+                            <div class="live-dot"></div>
+                            <span>LIVE</span>
+                        </div>
+                        <div class="zoom-control">
+                            <svg class="zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <span class="zoom-text" id="zoom-value">1.0x</span>
+                            <div class="zoom-slider" id="zoom-slider">
+                                <div class="zoom-slider-track" id="zoom-track"></div>
+                                <div class="zoom-slider-thumb" id="zoom-thumb"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Panel -->
+                <div class="info-panel" id="info-panel">
+                    <div class="info-title">SYSTEM STATUS</div>
+                    <div class="info-item">
+                        <span class="info-label">Connection</span>
+                        <span class="info-value">STABLE</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Latency</span>
+                        <span class="info-value">45ms</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Frame Rate</span>
+                        <span class="info-value">30 FPS</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Resolution</span>
+                        <span class="info-value">1920x1080</span>
+                    </div>
+                    <div class="info-item" style="border: none;">
+                        <span class="info-label">Privacy</span>
+                        <span class="info-value">ACTIVE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="connection-badge">
+                <svg class="wifi-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z" />
+                </svg>
+                <span style="color: #00D9FF; font-weight: bold;">4</span>
+            </div>
+
+            <div class="nav-icons">
+                <button class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                </button>
+                <button class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                    </svg>
+                </button>
+                <button class="nav-icon center">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                        <circle cx="12" cy="13" r="4" />
+                    </svg>
+                </button>
+                <button class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <line x1="11" y1="8" x2="11" y2="14" />
+                        <line x1="8" y1="11" x2="14" y2="11" />
+                    </svg>
+                </button>
+                <button class="nav-icon" onclick="toggleInfo()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+
+            document.getElementById('current-time').textContent =
+                `${displayHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Zoom slider
+        const zoomSlider = document.getElementById('zoom-slider');
+        const zoomTrack = document.getElementById('zoom-track');
+        const zoomThumb = document.getElementById('zoom-thumb');
+        const zoomValue = document.getElementById('zoom-value');
+
+        let isDragging = false;
+        let zoomLevel = 1.0; // 1.0 = 50% position (range 0.5 to 3.0)
+
+        function updateZoomUI(level) {
+            // Map 0.5-3.0 to 0-100%
+            const percent = ((level - 0.5) / 2.5) * 100;
+            zoomTrack.style.width = percent + '%';
+            zoomThumb.style.left = percent + '%';
+            zoomValue.textContent = level.toFixed(1) + 'x';
+        }
+
+        updateZoomUI(zoomLevel);
+
+        function handleZoomMove(e) {
+            if (!isDragging) return;
+
+            const rect = zoomSlider.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+            zoomLevel = 0.5 + (percent / 100) * 2.5;
+            updateZoomUI(zoomLevel);
+        }
+
+        zoomSlider.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            handleZoomMove(e);
+        });
+
+        zoomSlider.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            handleZoomMove(e);
+        });
+
+        document.addEventListener('mousemove', handleZoomMove);
+        document.addEventListener('touchmove', handleZoomMove);
+
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('touchend', () => isDragging = false);
+
+        // Info panel toggle
+        function toggleInfo() {
+            const panel = document.getElementById('info-panel');
+            panel.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
