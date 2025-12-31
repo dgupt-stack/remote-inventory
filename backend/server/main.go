@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/djgupt/remote-inventory/backend/server"
 	pb "github.com/djgupt/remote-inventory/proto"
+	"github.com/envoyproxy/go-control-plane/pkg/server/v3"
 )
 
 func main() {
