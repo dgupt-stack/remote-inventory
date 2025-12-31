@@ -3,34 +3,23 @@
 # Stage 1: Build Go binary
 FROM golang:1.21-alpine AS builder
 
-RUN apk add --no-cache git make protobuf-dev
+RUN apk add --no-cache git make
 
 WORKDIR /app
 
-# Copy all source files first
+# Copy all source files
 COPY backend/ ./backend/
 COPY proto/ ./proto/
 
-# Now run go mod tidy with all source available
+# Build from backend directory
 WORKDIR /app/backend
-COPY backend/go.mod backend/go.sum ./
-RUN go mod download && go mod tidy
-
-# Build binary
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server ./server
 
-# Stage 2: Runtime with OpenCV and dependencies
+# Stage 2: Minimal runtime
 FROM alpine:latest
 
-# Install OpenCV and runtime dependencies
-RUN apk add --no-cache \
-    opencv opencv-dev \
-    ca-certificates \
-    && rm -rf /var/cache/apk/*
-
-# Download Haar Cascade for face detection
-RUN wget -O /haarcascade_frontalface_default.xml \
-    https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml
+RUN apk add --no-cache ca-certificates
 
 WORKDIR /root/
 
