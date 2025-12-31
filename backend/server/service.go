@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/djgupt/remote-inventory/backend/privacy"
-	"github.com/djgupt/remote-inventory/backend/session"
+	"github.com/djgupt/remote-inventory/privacy"
 	pb "github.com/djgupt/remote-inventory/proto"
+	"github.com/djgupt/remote-inventory/session"
 )
 
 // Server implements the gRPC InventoryService
