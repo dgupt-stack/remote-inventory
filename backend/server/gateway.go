@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	pb "github.com/djgupt/remote-inventory/proto"
+	pb "github.com/djgupt/remote-inventory"
 )
 
 // StartGateway starts the gRPC-Gateway HTTP server

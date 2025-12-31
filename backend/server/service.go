@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
+	pb "github.com/djgupt/remote-inventory"
 	"github.com/djgupt/remote-inventory/privacy"
-	pb "github.com/djgupt/remote-inventory/proto"
 	"github.com/djgupt/remote-inventory/session"
 )
 

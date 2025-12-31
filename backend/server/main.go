@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/djgupt/remote-inventory/proto"
+	pb "github.com/djgupt/remote-inventory"
 	"github.com/envoyproxy/go-control-plane/pkg/server/v3"
 )
 

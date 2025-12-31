@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/djgupt/remote-inventory/proto"
+	pb "github.com/djgupt/remote-inventory"
 	"github.com/google/uuid"
 )
 
