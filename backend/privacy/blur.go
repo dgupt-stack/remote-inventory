@@ -5,6 +5,8 @@ import (
 	"errors"
 	"image"
 	"image/jpeg"
+	"os"
+	"strconv"
 
 	"gocv.io/x/gocv"
 )
@@ -24,15 +26,51 @@ type Config struct {
 
 	// ExpandRegion expands the detected region by this percentage to ensure coverage
 	ExpandRegion float32
+
+	// Distance-based blur settings
+	EnableDistanceBlur bool
+	NearThreshold      float32 // Fraction of frame height (0.7 = bottom 70%)
+	MediumThreshold    float32 // Fraction (0.5 = middle 50%)
+	FarThreshold       float32 // Fraction (0.3 = top 30%)
+
+	// Graduated blur kernel sizes
+	LightBlurKernel  int
+	MediumBlurKernel int
+	HeavyBlurKernel  int
 }
 
 // DefaultConfig returns recommended privacy settings
 func DefaultConfig() Config {
-	return Config{
+	config := Config{
 		MinConfidence:  0.7,
 		BlurKernelSize: 51,   // Strong blur
 		ExpandRegion:   0.25, // Expand by 25%
+
+		// Distance blur defaults (heuristic mode)
+		EnableDistanceBlur: getEnvBool("ENABLE_DISTANCE_BLUR", true),
+		NearThreshold:      0.7, // Bottom 70% is "near"
+		MediumThreshold:    0.5, // Middle 50% is "medium distance"
+		FarThreshold:       0.3, // Top 30% is "far"
+
+		// Graduated blur kernels
+		LightBlurKernel:  15,
+		MediumBlurKernel: 31,
+		HeavyBlurKernel:  51,
 	}
+
+	return config
+}
+
+func getEnvBool(key string, defaultVal bool) bool {
+	val := os.Getenv(key)
+	if val == "" {
+		return defaultVal
+	}
+	b, err := strconv.ParseBool(val)
+	if err != nil {
+		return defaultVal
+	}
+	return b
 }
 
 // Processor handles privacy-preserving video frame processing
@@ -62,6 +100,11 @@ func NewProcessor(config Config) (*Processor, error) {
 	}, nil
 }
 
+// Config returns the processor configuration
+func (p *Processor) Config() Config {
+	return p.config
+}
+
 // ProcessFrame applies privacy filtering to a frame
 // Returns the blurred frame and a boolean indicating if full-frame blur was applied
 func (p *Processor) ProcessFrame(frameData []byte) ([]byte, bool, error) {
@@ -77,6 +120,11 @@ func (p *Processor) ProcessFrame(frameData []byte) ([]byte, bool, error) {
 		return nil, false, err
 	}
 	defer mat.Close()
+
+	// Apply distance-based blur as base layer if enabled
+	if p.config.EnableDistanceBlur {
+		mat = p.applyHeuristicDistanceBlur(mat)
+	}
 
 	// Detect faces
 	faces := p.detectFaces(mat)
@@ -96,7 +144,7 @@ func (p *Processor) ProcessFrame(frameData []byte) ([]byte, bool, error) {
 		return matToJPEG(blurred)
 	}
 
-	// Blur detected regions
+	// Blur detected regions (on top of distance blur)
 	blurred := mat.Clone()
 	defer blurred.Close()
 
@@ -113,6 +161,61 @@ func (p *Processor) ProcessFrame(frameData []byte) ([]byte, bool, error) {
 	}
 
 	return matToJPEG(blurred)
+}
+
+// applyHeuristicDistanceBlur applies graduated blur based on vertical position
+// Objects higher in frame = farther away = more blur
+func (p *Processor) applyHeuristicDistanceBlur(img gocv.Mat) gocv.Mat {
+	height := img.Rows()
+	width := img.Cols()
+
+	// Calculate threshold Y coordinates
+	nearY := int(float32(height) * p.config.NearThreshold)     // e.g., 70% from top
+	mediumY := int(float32(height) * p.config.MediumThreshold) // e.g., 50% from top
+	farY := int(float32(height) * p.config.FarThreshold)       // e.g., 30% from top
+
+	result := img.Clone()
+
+	// Apply blur to different zones
+	// Very far zone (top 10-30%)
+	if farY > 0 {
+		veryFarRegion := result.Region(image.Rect(0, 0, width, farY))
+		veryFarBlurred := gocv.NewMat()
+		gocv.GaussianBlur(veryFarRegion, &veryFarBlurred,
+			image.Point{X: p.config.HeavyBlurKernel, Y: p.config.HeavyBlurKernel},
+			0, 0, gocv.BorderDefault)
+		veryFarBlurred.CopyTo(&veryFarRegion)
+		veryFarBlurred.Close()
+		veryFarRegion.Close()
+	}
+
+	// Far zone (30-50%)
+	if mediumY > farY {
+		farRegion := result.Region(image.Rect(0, farY, width, mediumY))
+		farBlurred := gocv.NewMat()
+		gocv.GaussianBlur(farRegion, &farBlurred,
+			image.Point{X: p.config.MediumBlurKernel, Y: p.config.MediumBlurKernel},
+			0, 0, gocv.BorderDefault)
+		farBlurred.CopyTo(&farRegion)
+		farBlurred.Close()
+		farRegion.Close()
+	}
+
+	// Medium zone (50-70%)
+	if nearY > mediumY {
+		mediumRegion := result.Region(image.Rect(0, mediumY, width, nearY))
+		mediumBlurred := gocv.NewMat()
+		gocv.GaussianBlur(mediumRegion, &mediumBlurred,
+			image.Point{X: p.config.LightBlurKernel, Y: p.config.LightBlurKernel},
+			0, 0, gocv.BorderDefault)
+		mediumBlurred.CopyTo(&mediumRegion)
+		mediumBlurred.Close()
+		mediumRegion.Close()
+	}
+
+	// Near zone (bottom 70%) - no distance blur, only face/body detection
+
+	return result
 }
 
 // detectFaces detects faces in the frame
