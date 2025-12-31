@@ -47,7 +47,9 @@ fi
 
 # Step 1: Build Docker image
 echo -e "${BLUE}Step 1: Building Docker image...${NC}"
-docker build -t ${IMAGE_NAME} .
+cd ..
+docker build -f backend/Dockerfile -t ${IMAGE_NAME} .
+cd backend
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Docker image built successfully${NC}"

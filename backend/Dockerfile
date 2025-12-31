@@ -8,14 +8,17 @@ RUN apk add --no-cache git make protobuf-dev
 WORKDIR /app
 
 # Copy go mod files
-COPY go.mod go.sum ./
+COPY backend/go.mod backend/go.sum ./backend/
+WORKDIR /app/backend
 RUN go mod download
 
-# Copy source code  
-COPY . ./
-COPY ../proto/ ../proto/
+# Copy source code
+WORKDIR /app
+COPY backend/ ./backend/
+COPY proto/ ./proto/
 
 # Build binary
+WORKDIR /app/backend
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server ./server
 
 # Stage 2: Runtime with OpenCV and dependencies
