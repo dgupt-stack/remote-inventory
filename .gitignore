@@ -1,0 +1,41 @@
+# Backend
+backend/bin/
+backend/proto/*.pb.go
+*.log
+
+# Flutter
+provider_app/.dart_tool/
+provider_app/.flutter-plugins
+provider_app/.flutter-plugins-dependencies
+provider_app/.packages
+provider_app/build/
+provider_app/ios/Flutter/Generated.xcconfig
+provider_app/ios/Flutter/flutter_export_environment.sh
+provider_app/ios/Pods/
+provider_app/pubspec.lock
+
+consumer_app/.dart_tool/
+consumer_app/.flutter-plugins
+consumer_app/.flutter-plugins-dependencies
+consumer_app/.packages
+consumer_app/build/
+consumer_app/ios/Flutter/Generated.xcconfig
+consumer_app/ios/Flutter/flutter_export_environment.sh
+consumer_app/ios/Pods/
+consumer_app/pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.iml
+*.pyc
+__pycache__/

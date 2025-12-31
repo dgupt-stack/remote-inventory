@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package inventory;
+
+option go_package = "github.com/djgupt/remote-inventory/proto";
+
+// Session management and video streaming service
+service InventoryService {
+  // Session management
+  rpc CreateSession(CreateSessionRequest) returns (SessionResponse);
+  rpc JoinSession(JoinSessionRequest) returns (SessionResponse);
+  rpc EndSession(EndSessionRequest) returns (EndSessionResponse);
+  
+  // Bidirectional streaming for Provider video upload and command reception
+  rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
+  
+  // Consumer receives privacy-blurred video and sends commands
+  rpc ConsumerStream(stream ConsumerCommand) returns (stream VideoFrame);
+  
+  // Heartbeat to keep sessions alive
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+}
+
+// Session messages
+message CreateSessionRequest {
+  string provider_id = 1;
+  string provider_name = 2;
+}
+
+message JoinSessionRequest {
+  string session_id = 1;
+  string consumer_id = 2;
+  string consumer_name = 3;
+}
+
+message SessionResponse {
+  string session_id = 1;
+  string token = 2;
+  bool success = 3;
+  string message = 4;
+}
+
+message EndSessionRequest {
+  string session_id = 1;
+  string token = 2;
+}
+
+message EndSessionResponse {
+  bool success = 1;
+}
+
+// Provider messages
+message ProviderMessage {
+  string session_id = 1;
+  string token = 2;
+  oneof payload {
+    VideoFrame video_frame = 3;
+    SensorData sensor_data = 4;
+    ProviderStatus status = 5;
+  }
+}
+
+message VideoFrame {
+  bytes frame_data = 1;  // JPEG encoded frame
+  int64 timestamp_ms = 2;
+  int32 width = 3;
+  int32 height = 4;
+  bool is_blurred = 5;  // Indicates if privacy processing is complete
+}
+
+message SensorData {
+  float accelerometer_x = 1;
+  float accelerometer_y = 2;
+  float accelerometer_z = 3;
+  float compass_heading = 4;
+  float gyroscope_x = 5;
+  float gyroscope_y = 6;
+  float gyroscope_z = 7;
+}
+
+message ProviderStatus {
+  bool camera_active = 1;
+  int32 battery_level = 2;
+}
+
+// Provider receives commands from Consumer
+message ProviderCommand {
+  oneof command {
+    NavigationCommand navigation = 1;
+    LaserCommand laser = 2;
+    StopCommand stop = 3;
+    ZoomCommand zoom = 4;
+  }
+}
+
+message NavigationCommand {
+  enum Direction {
+    UNKNOWN = 0;
+    LEFT = 1;
+    RIGHT = 2;
+    UP = 3;
+    DOWN = 4;
+    FORWARD = 5;
+    BACKWARD = 6;
+  }
+  Direction direction = 1;
+  float intensity = 2;  // 0.0 to 1.0
+}
+
+message LaserCommand {
+  bool active = 1;
+  float screen_x = 2;  // Normalized 0.0 to 1.0
+  float screen_y = 3;  // Normalized 0.0 to 1.0
+}
+
+message StopCommand {
+  bool emergency = 1;
+}
+
+message ZoomCommand {
+  enum ZoomType {
+    IN = 0;
+    OUT = 1;
+    RESET = 2;
+  }
+  ZoomType type = 1;
+  float level = 2;  // Current zoom level
+}
+
+// Consumer messages
+message ConsumerCommand {
+  string session_id = 1;
+  string token = 2;
+  oneof command {
+    NavigationCommand navigation = 3;
+    LaserCommand laser = 4;
+    StopCommand stop = 5;
+    ZoomCommand zoom = 6;
+    VoiceCommand voice = 7;
+    TextCommand text = 8;
+  }
+}
+
+message VoiceCommand {
+  string transcribed_text = 1;
+  float confidence = 2;
+}
+
+message TextCommand {
+  string text = 1;
+}
+
+// Heartbeat
+message HeartbeatRequest {
+  string session_id = 1;
+  string token = 2;
+  string role = 3;  // "provider" or "consumer"
+}
+
+message HeartbeatResponse {
+  bool active = 1;
+  int64 session_duration_ms = 2;
+}
