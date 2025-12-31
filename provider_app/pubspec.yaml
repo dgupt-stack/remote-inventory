@@ -1,40 +1,41 @@
 name: provider_app
-description: Remote Inventory Provider App with JARVIS theme
+description: Remote Inventory Provider App
 publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   
-  # UI
-  cupertino_icons: ^1.0.2
-  google_fonts: ^6.1.0
-  
   # Camera
-  camera: ^0.10.5+5
+  camera: ^0.10.5
   
   # Sensors
-  sensors_plus: ^4.0.2
+  sensors_plus: ^3.0.0
   
   # gRPC
-  grpc: ^3.2.4
+  grpc: ^3.2.0
   protobuf: ^3.1.0
   
-  # State Management
-  provider: ^6.1.1
-  
   # Utilities
-  uuid: ^4.2.2
-  permission_handler: ^11.1.0
+  intl: ^0.18.0
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
+  
+  # Add Orbitron font for JARVIS theme
+  fonts:
+    - family: Orbitron
+      fonts:
+        - asset: fonts/Orbitron-Regular.ttf
+        - asset: fonts/Orbitron-Bold.ttf
+          weight: 700

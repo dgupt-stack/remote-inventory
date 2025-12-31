@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:intl/intl.dart';
 import 'dart:async';
 import '../widgets/guidance_overlay.dart';
-import '../shared/theme/jarvis_theme.dart';
+import '../shared/theme/jarvis_components.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -21,9 +22,12 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   late Future<void> _initializeControllerFuture;
+  late Timer _timeTimer;
+
   bool _isStreaming = false;
   String _sessionId = '';
-  String _connectionStatus = 'Initializing...';
+  String _currentTime = '';
+  double _zoom = 1.0;
 
   // Guidance state
   NavigationDirection _currentDirection = NavigationDirection.none;
@@ -41,269 +45,113 @@ class _CameraScreenState extends State<CameraScreen> {
     );
     _initializeControllerFuture = _cameraController.initialize();
     _createSession();
+
+    // Update time every second
+    _updateTime();
+    _timeTimer =
+        Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
+  }
+
+  void _updateTime() {
+    if (mounted) {
+      setState(() {
+        _currentTime =
+            DateFormat('h:mm:ss a').format(DateTime.now()).toUpperCase();
+      });
+    }
   }
 
   @override
   void dispose() {
+    _timeTimer.cancel();
     _cameraController.dispose();
     super.dispose();
   }
 
   Future<void> _createSession() async {
-    // TODO: Connect to gRPC backend and create session
     setState(() {
-      //_sessionId = 'SESSION-${DateTime.now().millisecondsSinceEpoch}';
       _sessionId = 'DEMO-SESSION';
-      _connectionStatus = 'Waiting for Consumer...';
     });
 
-    // Simulate connection (in prod, this comes from gRPC)
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
-      _connectionStatus = 'Connected';
       _isStreaming = true;
     });
-
-    // Start streaming frames
-    _startFrameStreaming();
   }
 
-  void _startFrameStreaming() {
-    // In production, this would capture frames and send via gRPC
-    // For now, we'll simulate the streaming
-    Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      if (!_isStreaming || !mounted) {
-        timer.cancel();
-        return;
-      }
-
-      // Capture and send frame
-      // TODO: Implement actual frame capture and gRPC streaming
-    });
-  }
-
-  void _handleCommand(String command) {
+  void _handleZoomChanged(double value) {
     setState(() {
-      switch (command) {
-        case 'left':
-          _currentDirection = NavigationDirection.left;
-          break;
-        case 'right':
-          _currentDirection = NavigationDirection.right;
-          break;
-        case 'up':
-          _currentDirection = NavigationDirection.up;
-          break;
-        case 'down':
-          _currentDirection = NavigationDirection.down;
-          break;
-        case 'stop':
-          _stopRequested = true;
-          _currentDirection = NavigationDirection.none;
-          break;
-        default:
-          _currentDirection = NavigationDirection.none;
-      }
+      _zoom = value;
     });
-
-    // Auto-clear direction after animation
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          _currentDirection = NavigationDirection.none;
-          if (_stopRequested) _stopRequested = false;
-        });
-      }
-    });
+    _cameraController.setZoomLevel(value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: JarvisColors.background,
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Stack(
+            return Column(
               children: [
-                // Camera preview
-                SizedBox.expand(
-                  child: CameraPreview(_cameraController),
-                ),
+                // Header
+                _buildHeader(),
 
-                // Guidance overlay
-                GuidanceOverlay(
-                  direction: _currentDirection,
-                  laserActive: _laserActive,
-                  laserPosition: _laserPosition,
-                  stopRequested: _stopRequested,
-                ),
-
-                // Top status bar
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.transparent,
+                // Main camera view with border
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: JarvisColors.borderCyan,
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: JarvisColors.primaryGlow,
+                            blurRadius: 20,
+                            spreadRadius: 2,
+                          ),
                         ],
                       ),
-                    ),
-                    child: SafeArea(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 12,
-                                height: 12,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: _isStreaming
-                                      ? JarvisTheme.successGreen
-                                      : JarvisTheme.warningRed,
-                                  boxShadow: JarvisTheme.neonGlow(
-                                    color: _isStreaming
-                                        ? JarvisTheme.successGreen
-                                        : JarvisTheme.warningRed,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                _connectionStatus,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                icon: const Icon(Icons.close),
-                                color: Colors.white,
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Session: $_sessionId',
-                            style: TextStyle(
-                              color: JarvisTheme.primaryCyan,
-                              fontSize: 12,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Stack(
+                          children: [
+                            // Camera preview
+                            SizedBox.expand(
+                              child: CameraPreview(_cameraController),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
+
+                            // Guidance overlay
+                            GuidanceOverlay(
+                              direction: _currentDirection,
+                              laserActive: _laserActive,
+                              laserPosition: _laserPosition,
+                              stopRequested: _stopRequested,
                             ),
-                            decoration: BoxDecoration(
-                              color: JarvisTheme.warningRed.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                color: JarvisTheme.warningRed,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.lock,
-                                  size: 12,
-                                  color: JarvisTheme.primaryCyan,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Privacy Protected',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+
+                            // Status badges overlay
+                            _buildStatusOverlay(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
 
-                // Debug controls (simulate consumer commands)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                    child: SafeArea(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Debug Controls (Simulating Consumer)',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.7),
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDebugButton(
-                                  '←', () => _handleCommand('left')),
-                              _buildDebugButton(
-                                  '↑', () => _handleCommand('up')),
-                              _buildDebugButton(
-                                  '↓', () => _handleCommand('down')),
-                              _buildDebugButton(
-                                  '→', () => _handleCommand('right')),
-                              _buildDebugButton(
-                                  '⏹', () => _handleCommand('stop'),
-                                  color: JarvisTheme.warningRed),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                // Bottom navigation
+                _buildBottomNav(),
               ],
             );
           } else {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: JarvisTheme.primaryCyan,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Initializing camera...',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
+              child: CircularProgressIndicator(
+                color: JarvisColors.primary,
               ),
             );
           }
@@ -312,22 +160,221 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Widget _buildDebugButton(String label, VoidCallback onPressed,
-      {Color? color}) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? JarvisTheme.primaryCyan,
-        shape: CircleBorder(),
-        padding: EdgeInsets.all(16),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+  Widget _buildHeader() {
+    return Container(
+      color: JarvisColors.background,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: SafeArea(
+        bottom: false,
+        child: Row(
+          children: [
+            // Badge icon (communication)
+            Stack(
+              children: [
+                Icon(
+                  Icons.forum_outlined,
+                  color: JarvisColors.primary,
+                  size: 28,
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: JarvisColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '4',
+                      style: TextStyle(
+                        color: JarvisColors.background,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const Spacer(),
+
+            // J.A.R.V.I.S title
+            Row(
+              children: [
+                Icon(
+                  Icons.auto_awesome,
+                  color: JarvisColors.primary,
+                  size: 18,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'J.A.R.V.I.S',
+                  style: JarvisTextStyles.header.copyWith(fontSize: 20),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.auto_awesome,
+                  color: JarvisColors.primary,
+                  size: 18,
+                ),
+              ],
+            ),
+
+            const Spacer(),
+
+            // Action icons
+            JarvisIconButton(
+              icon: Icons.open_in_full,
+              onPressed: () {},
+            ),
+            const SizedBox(width: 8),
+            JarvisIconButton(
+              icon: Icons.settings,
+              onPressed: () {},
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStatusOverlay() {
+    return Positioned.fill(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top row: SYS:ONLINE and TIME
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GlassBadge(
+                  text: 'SYS:ONLINE',
+                  leading: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: JarvisColors.success,
+                      boxShadow: [
+                        BoxShadow(
+                          color: JarvisColors.success,
+                          blurRadius: 8,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GlassBadge(
+                  text: _currentTime,
+                ),
+              ],
+            ),
+
+            const Spacer(),
+
+            // Bottom row: LIVE and ZOOM
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                GlassBadge(
+                  text: 'LIVE',
+                  textColor: JarvisColors.success,
+                  leading: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: JarvisColors.success,
+                      boxShadow: [
+                        BoxShadow(
+                          color: JarvisColors.success,
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                ZoomIndicator(
+                  zoom: _zoom,
+                  onZoomChanged: _handleZoomChanged,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return Container(
+      color: JarvisColors.background,
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Connection badge
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              decoration: BoxDecoration(
+                color: JarvisColors.primary.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.wifi,
+                    color: JarvisColors.primary,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '4',
+                    style: TextStyle(
+                      color: JarvisColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Navigation icons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavIcon(Icons.visibility_off),
+                _buildNavIcon(Icons.search),
+                _buildNavIcon(Icons.videocam, isCenter: true),
+                _buildNavIcon(Icons.zoom_in),
+                _buildNavIcon(Icons.info_outline),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavIcon(IconData icon, {bool isCenter = false}) {
+    return IconButton(
+      icon: Icon(
+        icon,
+        color: JarvisColors.primary,
+        size: isCenter ? 32 : 24,
+      ),
+      onPressed: () {},
+      splashRadius: 24,
     );
   }
 }
