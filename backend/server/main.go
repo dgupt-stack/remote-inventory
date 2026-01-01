@@ -41,10 +41,7 @@ func main() {
 	)
 
 	// Create and register inventory service
-	inventoryServer, err := NewServer()
-	if err != nil {
-		log.Fatalf("Failed to create server: %v", err)
-	}
+	inventoryServer := NewInventoryServer() // Changed from NewServer() to NewInventoryServer()
 
 	pb.RegisterInventoryServiceServer(grpcServer, inventoryServer)
 
