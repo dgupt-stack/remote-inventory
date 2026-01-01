@@ -181,72 +181,23 @@ class _CameraScreenState extends State<CameraScreen> {
       child: SafeArea(
         bottom: false,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Badge icon (communication)
-            Stack(
-              children: [
-                Icon(
-                  Icons.forum_outlined,
-                  color: JarvisColors.primary,
-                  size: 28,
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: JarvisColors.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '4',
-                      style: TextStyle(
-                        color: JarvisColors.background,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // J.A.R.V.I.S title
-            Row(
-              children: [
-                Icon(
-                  Icons.auto_awesome,
-                  color: JarvisColors.primary,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'J.A.R.V.I.S',
-                  style: JarvisTextStyles.header.copyWith(fontSize: 20),
-                ),
-                const SizedBox(width: 8),
-                Icon(
-                  Icons.auto_awesome,
-                  color: JarvisColors.primary,
-                  size: 18,
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            // Action icons
-            JarvisIconButton(
-              icon: Icons.open_in_full,
-              onPressed: () {},
+            Icon(
+              Icons.auto_awesome,
+              color: JarvisColors.primary,
+              size: 18,
             ),
             const SizedBox(width: 8),
-            JarvisIconButton(
-              icon: Icons.settings,
-              onPressed: () {},
+            Text(
+              'J.A.R.V.I.S',
+              style: JarvisTextStyles.header.copyWith(fontSize: 20),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.auto_awesome,
+              color: JarvisColors.primary,
+              size: 18,
             ),
           ],
         ),
@@ -337,7 +288,6 @@ class _CameraScreenState extends State<CameraScreen> {
           children: [
             // Connection badge
             Container(
-              margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 color: JarvisColors.primary.withOpacity(0.2),
@@ -362,33 +312,9 @@ class _CameraScreenState extends State<CameraScreen> {
                 ],
               ),
             ),
-
-            // Navigation icons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildNavIcon(Icons.visibility_off),
-                _buildNavIcon(Icons.search),
-                _buildNavIcon(Icons.videocam, isCenter: true),
-                _buildNavIcon(Icons.zoom_in),
-                _buildNavIcon(Icons.info_outline),
-              ],
-            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildNavIcon(IconData icon, {bool isCenter = false}) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: JarvisColors.primary,
-        size: isCenter ? 32 : 24,
-      ),
-      onPressed: () {},
-      splashRadius: 24,
     );
   }
 }
