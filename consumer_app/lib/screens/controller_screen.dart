@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import '../widgets/touch_controller.dart';
-import '../services/voice_service.dart';
+// import '../services/voice_service.dart'; // Temporarily disabled
 import '../shared/theme/jarvis_theme.dart';
 
 class ControllerScreen extends StatefulWidget {
@@ -25,19 +25,19 @@ class _ControllerScreenState extends State<ControllerScreen> {
   double _currentZoom = 1.0;
   List<String> _commandHistory = [];
   final _textController = TextEditingController();
-  late VoiceService _voiceService;
+  // late VoiceService _voiceService; // Temporarily disabled
 
   @override
   void initState() {
     super.initState();
-    _voiceService = VoiceService();
+    // _voiceService = VoiceService(); // Temporarily disabled
     _connectToSession();
   }
 
   @override
   void dispose() {
     _textController.dispose();
-    _voiceService.dispose();
+    // _voiceService.dispose(); // Temporarily disabled
     super.dispose();
   }
 
@@ -99,15 +99,16 @@ class _ControllerScreenState extends State<ControllerScreen> {
     });
 
     if (_voiceActive) {
-      final result = await _voiceService.startListening();
-      if (result != null) {
-        _sendCommand('voice', params: {'text': result});
-        setState(() {
-          _voiceActive = false;
-        });
-      }
+      // Voice service temporarily disabled
+      // final result = await _voiceService.startListening();
+      // if (result != null) {
+      //   _sendCommand('voice', params: {'text': result});
+      //   setState(() {
+      //     _voiceActive = false;
+      //   });
+      // }
     } else {
-      _voiceService.stopListening();
+      // _voiceService.stopListening();
     }
   }
 
