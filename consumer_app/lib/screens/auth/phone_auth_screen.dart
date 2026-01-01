@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../services/auth_service.dart';
 import '../shared/theme/jarvis_theme.dart';
 import 'otp_verification_screen.dart';
 
@@ -12,6 +13,7 @@ class PhoneAuthScreen extends StatefulWidget {
 
 class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   final _phoneController = TextEditingController();
+  final _authService = AuthService();
   bool _isLoading = false;
   String _selectedCountryCode = '+1';
 
@@ -38,24 +40,74 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
     final phoneNumber = _selectedCountryCode + _phoneController.text;
 
-    // TODO: Implement Firebase phone auth
-    // For now, navigate to OTP screen
-    await Future.delayed(Duration(seconds: 1));
+    await _authService.sendOTP(
+      phoneNumber: phoneNumber,
+      onCodeSent: (message) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OTPVerificationScreen(
+                phoneNumber: phoneNumber,
+              ),
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final result = await _authService.signInWithGoogle();
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPVerificationScreen(
-            phoneNumber: phoneNumber,
+      if (result != null) {
+        // User signed in successfully, AuthWrapper will handle navigation
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Google sign-in canceled or failed'),
+            backgroundColor: Colors.orange,
           ),
-        ),
-      );
+        );
+      }
     }
+  }
+
+  void _signInWithApple() {
+    // TODO: Implement Apple Sign-In
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Apple Sign-In coming soon'),
+        backgroundColor: Colors.blue,
+      ),
+    );
   }
 
   @override

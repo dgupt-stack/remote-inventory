@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../services/auth_service.dart';
 import '../shared/theme/jarvis_theme.dart';
 import 'dart:async';
 
@@ -18,6 +19,7 @@ class OTPVerificationScreen extends StatefulWidget {
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final _otpController = TextEditingController();
+  final _authService = AuthService();
   bool _isVerifying = false;
   int _resendTimer = 60;
   Timer? _timer;
@@ -54,33 +56,67 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       _isVerifying = true;
     });
 
-    // TODO: Implement Firebase OTP verification
-    await Future.delayed(Duration(seconds: 2));
+    final result = await _authService.verifyOTP(
+      otpCode: code,
+      onError: (error) {
+        if (mounted) {
+          setState(() {
+            _isVerifying = false;
+          });
 
-    if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+    );
+
+    if (mounted && result != null) {
+      // Auth successful - AuthWrapper will handle navigation automatically
       setState(() {
         _isVerifying = false;
       });
-
-      // Navigate to app on success
-      // Navigator.pushReplacement to SessionListScreen
+    } else if (mounted) {
+      setState(() {
+        _isVerifying = false;
+      });
     }
   }
 
   Future<void> _resendOTP() async {
     if (_resendTimer > 0) return;
 
-    // TODO: Implement resend OTP
-    setState(() {
-      _resendTimer = 60;
-    });
-    _startResendTimer();
+    // Resend via auth service
+    await _authService.sendOTP(
+      phoneNumber: widget.phoneNumber,
+      onCodeSent: (message) {
+        setState(() {
+          _resendTimer = 60;
+        });
+        _startResendTimer();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Code sent!'),
-        backgroundColor: JarvisTheme.primaryCyan,
-      ),
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Code sent!'),
+              backgroundColor: JarvisTheme.primaryCyan,
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
     );
   }
 
