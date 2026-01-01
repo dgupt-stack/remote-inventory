@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import '../widgets/guidance_overlay.dart';
 import '../shared/theme/jarvis_components.dart';
+import '../widgets/connection_request_dialog.dart';
+import '../services/request_watcher_service.dart';
 import 'consumer_mode_screen.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -24,11 +26,13 @@ class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   late Future<void> _initializeControllerFuture;
   late Timer _timeTimer;
+  final RequestWatcherService _requestWatcher = RequestWatcherService();
 
   bool _isStreaming = false;
   String _sessionId = '';
   String _currentTime = '';
   double _zoom = 1.0;
+  int _pendingRequests = 0;
 
   // Guidance state
   NavigationDirection _currentDirection = NavigationDirection.none;
@@ -66,18 +70,108 @@ class _CameraScreenState extends State<CameraScreen> {
   void dispose() {
     _timeTimer.cancel();
     _cameraController.dispose();
+    _requestWatcher.dispose();
     super.dispose();
   }
 
   Future<void> _createSession() async {
+    try {
+      final sessionId = await _requestWatcher.createSession(
+        providerId: 'provider-${DateTime.now().millisecondsSinceEpoch}',
+        providerName: widget.providerName,
+      );
+
+      setState(() {
+        _sessionId = sessionId;
+        _isStreaming = true;
+      });
+
+      // Start watching for connection requests
+      _requestWatcher.watchRequests(
+        sessionId: sessionId,
+        onRequest: _handleConnectionRequest,
+        onError: (error) {
+          print('Error watching requests: $error');
+        },
+      );
+    } catch (e) {
+      print('Error creating session: $e');
+      setState(() {
+        _sessionId = 'DEMO-SESSION';
+        _isStreaming = true;
+      });
+    }
+  }
+
+  void _handleConnectionRequest(ConnectionRequestInfo request) {
     setState(() {
-      _sessionId = 'DEMO-SESSION';
+      _pendingRequests++;
     });
 
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _isStreaming = true;
-    });
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => ConnectionRequestDialog(
+        requestId: request.requestId,
+        consumerName: request.consumerName,
+        onApprove: () => _approveRequest(request.requestId),
+        onDeny: () => _denyRequest(request.requestId),
+      ),
+    );
+  }
+
+  Future<void> _approveRequest(String requestId) async {
+    try {
+      await _requestWatcher.approveRequest(requestId);
+      setState(() {
+        _pendingRequests = (_pendingRequests - 1).clamp(0, 999);
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Connection approved'),
+            backgroundColor: JarvisColors.primary,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to approve: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _denyRequest(String requestId) async {
+    try {
+      await _requestWatcher.denyRequest(requestId, reason: 'Provider declined');
+      setState(() {
+        _pendingRequests = (_pendingRequests - 1).clamp(0, 999);
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Connection denied'),
+            backgroundColor: JarvisColors.borderCyan,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to deny: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _handleZoomChanged(double value) {
