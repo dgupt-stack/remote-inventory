@@ -7,28 +7,68 @@ import "google/api/annotations.proto";
 option go_package = "github.com/djgupt/remote-inventory/proto";
 
 // Session management and video streaming service
-service InventoryService {
-  // Session management
+service RemoteInventoryService {
+  // Create a new session for a provider
   rpc CreateSession(CreateSessionRequest) returns (SessionResponse) {
     option (google.api.http) = {
       post: "/v1/sessions"
       body: "*"
     };
   }
-  
-  rpc JoinSession(JoinSessionRequest) returns (SessionResponse) {
+
+  // List all active sessions (for consumers to discover providers)
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse) {
     option (google.api.http) = {
-      post: "/v1/sessions/{session_id}/join"
+      get: "/v1/sessions"
+    };
+  }
+
+  // Consumer requests to connect to a provider session
+  rpc RequestConnection(ConnectionRequest) returns (ConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/connect"
       body: "*"
     };
   }
-  
+
+  // Provider watches for incoming connection requests
+  rpc WatchConnectionRequests(WatchRequestsRequest) returns (stream ConnectionRequestNotification) {}
+
+  // Provider approves a connection request
+  rpc ApproveConnection(ApproveRequest) returns (ApproveResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/approve"
+      body: "*"
+    };
+  }
+
+  // Provider denies a connection request
+  rpc DenyConnection(DenyRequest) returns (DenyResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/deny"
+      body: "*"
+    };
+  }
+
+  // Consumer watches for approval status
+  rpc WatchApprovalStatus(WatchApprovalRequest) returns (stream ApprovalStatusUpdate) {}
+
+  // Streaming video (existing)
+  rpc StreamVideo(stream VideoFrame) returns (stream VideoFrame) {}
+
+  // Send command to provider (existing)
+  rpc SendCommand(Command) returns (CommandResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/commands"
+      body: "*"
+    };
+  }
+
   rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
     option (google.api.http) = {
       delete: "/v1/sessions/{session_id}"
     };
   }
-  
   // Bidirectional streaming for Provider video upload and command reception
   rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
   
@@ -183,4 +223,99 @@ message HeartbeatRequest {
 message HeartbeatResponse {
   bool active = 1;
   int64 session_duration_ms = 2;
+}
+
+// Session Discovery Messages
+message ListSessionsRequest {
+  string search_query = 1;
+}
+
+message ListSessionsResponse {
+  repeated SessionInfo sessions = 1;
+}
+
+message SessionInfo {
+  string session_id = 1;
+  string provider_name = 2;
+  string provider_location = 3;
+  int64 created_at = 4;
+  bool accepting_connections = 5;
+}
+
+// Connection Request Messages
+message ConnectionRequest {
+  string session_id = 1;
+  string consumer_id = 2;
+  string consumer_name = 3;
+}
+
+message ConnectionResponse {
+  string request_id = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message WatchRequestsRequest {
+  string session_id = 1;
+}
+
+message ConnectionRequestNotification {
+  string request_id = 1;
+  string consumer_id = 2;
+  string consumer_name = 3;
+  int64 requested_at = 4;
+}
+
+// Approval Messages
+message ApproveRequest {
+  string request_id = 1;
+}
+
+message ApproveResponse {
+  bool success = 1;
+  string session_id = 2;
+  string token = 3;
+}
+
+message DenyRequest {
+  string request_id = 1;
+  string reason = 2;
+}
+
+message DenyResponse {
+  bool success = 1;
+}
+
+message WatchApprovalRequest {
+  string request_id = 1;
+}
+
+message ApprovalStatusUpdate {
+  enum Status {
+    PENDING = 0;
+    APPROVED = 1;
+    DENIED = 2;
+  }
+  Status status = 1;
+  string session_id = 2;
+  string token = 3;
+  string message = 4;
+}
+
+// Command Messages
+message Command {
+  string session_id = 1;
+  oneof command_type {
+    NavigationCommand navigation = 2;
+    LaserCommand laser = 3;
+    StopCommand stop = 4;
+    ZoomCommand zoom = 5;
+    VoiceCommand voice = 6;
+    TextCommand text = 7;
+  }
+}
+
+message CommandResponse {
+  bool success = 1;
+  string message = 2;
 }
