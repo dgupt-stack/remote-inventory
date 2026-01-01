@@ -10,6 +10,14 @@ dependencies:
   flutter:
     sdk: flutter
   
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.2.1
+  
+  # UI
+  pin_code_fields: ^8.0.1
+  
   # Camera
   camera: ^0.10.5
   
