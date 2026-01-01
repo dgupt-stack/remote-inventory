@@ -13,7 +13,6 @@ class JarvisTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-
       colorScheme: ColorScheme.dark(
         primary: primaryCyan,
         secondary: accentBlue,
@@ -25,9 +24,7 @@ class JarvisTheme {
         onSurface: Colors.white,
         onBackground: Colors.white,
       ),
-
       scaffoldBackgroundColor: darkBackground,
-
       textTheme: TextTheme(
         displayLarge: TextStyle(
           fontSize: 32,
@@ -51,8 +48,7 @@ class JarvisTheme {
           color: Colors.white.withOpacity(0.7),
         ),
       ),
-
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: surfaceColor.withOpacity(0.6),
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -60,7 +56,6 @@ class JarvisTheme {
           side: BorderSide(color: primaryCyan.withOpacity(0.3), width: 1),
         ),
       ),
-
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryCyan,
@@ -74,7 +69,6 @@ class JarvisTheme {
           textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surfaceColor,

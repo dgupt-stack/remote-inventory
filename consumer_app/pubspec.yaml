@@ -17,9 +17,9 @@ dependencies:
   # Video player
   video_player: ^2.8.1
   
-  # Voice recognition
-  speech_to_text: ^6.6.0
-  flutter_tts: ^3.8.5
+  # Voice recognition - Temporarily disabled for build
+  # speech_to_text: ^6.6.0
+  # flutter_tts: ^3.8.5
   
   # gRPC
   grpc: ^3.2.4
