@@ -31,6 +31,11 @@ dependencies:
   # Utilities
   uuid: ^4.2.2
   permission_handler: ^11.1.0
+  
+  # For Provider mode
+  camera: ^0.10.5
+  sensors_plus: ^3.0.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

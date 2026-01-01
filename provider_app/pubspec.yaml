@@ -24,6 +24,10 @@ dependencies:
   # Utilities
   intl: ^0.18.0
   permission_handler: ^11.0.0
+  
+  # For Consumer mode
+  video_player: ^2.8.1
+  uuid: ^4.2.2
 
 dev_dependencies:
   flutter_test:

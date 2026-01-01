@@ -4,23 +4,22 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import '../widgets/guidance_overlay.dart';
 import '../shared/theme/jarvis_components.dart';
-import 'consumer_mode_screen.dart';
 
-class CameraScreen extends StatefulWidget {
+class ProviderModeScreen extends StatefulWidget {
   final CameraDescription camera;
   final String providerName;
 
-  const CameraScreen({
+  const ProviderModeScreen({
     super.key,
     required this.camera,
     required this.providerName,
   });
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<ProviderModeScreen> createState() => _ProviderModeScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _ProviderModeScreenState extends State<ProviderModeScreen> {
   late CameraController _cameraController;
   late Future<void> _initializeControllerFuture;
   late Timer _timeTimer;
@@ -153,23 +152,6 @@ class _CameraScreenState extends State<CameraScreen> {
             return const Center(child: CircularProgressIndicator());
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ConsumerModeScreen(
-                sessionId: _sessionId,
-                consumerName: 'Demo Consumer',
-              ),
-            ),
-          );
-        },
-        backgroundColor: JarvisColors.primary,
-        foregroundColor: JarvisColors.background,
-        icon: const Icon(Icons.gamepad),
-        label: const Text('View as Consumer'),
       ),
     );
   }

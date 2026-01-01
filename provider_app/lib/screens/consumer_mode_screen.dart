@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:camera/camera.dart';
 import '../widgets/touch_controller.dart';
 // import '../services/voice_service.dart'; // Temporarily disabled
 import '../shared/theme/jarvis_theme.dart';
-import 'provider_mode_screen.dart';
 
-class ControllerScreen extends StatefulWidget {
+class ConsumerModeScreen extends StatefulWidget {
   final String sessionId;
   final String consumerName;
 
-  const ControllerScreen({
+  const ConsumerModeScreen({
     super.key,
     required this.sessionId,
     required this.consumerName,
   });
 
   @override
-  State<ControllerScreen> createState() => _ControllerScreenState();
+  State<ConsumerModeScreen> createState() => _ConsumerModeScreenState();
 }
 
-class _ControllerScreenState extends State<ControllerScreen> {
+class _ConsumerModeScreenState extends State<ConsumerModeScreen> {
   bool _isConnected = false;
   bool _voiceActive = false;
   double _currentZoom = 1.0;
@@ -162,26 +160,6 @@ class _ControllerScreenState extends State<ControllerScreen> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          final cameras = await availableCameras();
-          if (cameras.isNotEmpty) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProviderModeScreen(
-                  camera: cameras.first,
-                  providerName: 'Demo Provider',
-                ),
-              ),
-            );
-          }
-        },
-        backgroundColor: JarvisTheme.primaryCyan,
-        foregroundColor: JarvisTheme.darkBackground,
-        icon: const Icon(Icons.videocam),
-        label: const Text('View as Provider'),
       ),
     );
   }
