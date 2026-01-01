@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as state_provider;
-import 'screens/controller_screen.dart';
+import 'screens/session_list_screen.dart';
 import '../shared/theme/jarvis_theme.dart';
 
 void main() {
@@ -15,7 +15,8 @@ class ConsumerApp extends StatelessWidget {
     return MaterialApp(
       title: 'JARVIS Consumer',
       theme: JarvisTheme.theme,
-      home: const HomeScreen(),
+      home:
+          const SessionListScreen(), // Changed from HomeScreen to SessionListScreen
       debugShowCheckedModeBanner: false,
     );
   }
