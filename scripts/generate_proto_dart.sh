@@ -21,16 +21,25 @@ if ! command -v protoc-gen-dart &> /dev/null; then
 fi
 
 # Create output directories
-mkdir -p provider_app/lib/generated
-mkdir -p consumer_app/lib/generated
+mkdir -p provider_app/lib/proto
+mkdir -p consumer_app/lib/proto
 
-# Generate Dart code
-protoc --dart_out=grpc:provider_app/lib/generated \
-    -Iproto proto/inventory_service.proto
+# Generate for provider app
+cd proto && protoc \
+  --dart_out=grpc:../provider_app/lib/proto \
+  -I. \
+  -I../backend/googleapis \
+  inventory_service.proto
 
-protoc --dart_out=grpc:consumer_app/lib/generated \
-    -Iproto proto/inventory_service.proto
+# Generate for consumer app
+protoc \
+  --dart_out=grpc:../consumer_app/lib/proto \
+  -I. \
+  -I../backend/googleapis \
+  inventory_service.proto
 
-echo "✅ Dart protobuf code generated successfully!"
-echo "   Provider: provider_app/lib/generated/"
-echo "   Consumer: consumer_app/lib/generated/"
+cd ..
+
+echo "✅ Dart protobuf generation complete!"
+echo "📁 Provider: provider_app/lib/proto/"
+echo "📁 Consumer: consumer_app/lib/proto/"
