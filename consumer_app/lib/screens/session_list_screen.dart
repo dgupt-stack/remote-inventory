@@ -323,15 +323,3 @@ class _SessionListScreenState extends State<SessionListScreen> {
     );
   }
 }
-
-class SessionInfo {
-  final String sessionId;
-  final String providerName;
-  final String providerLocation;
-
-  SessionInfo({
-    required this.sessionId,
-    required this.providerName,
-    required this.providerLocation,
-  });
-}

@@ -35,7 +35,7 @@ class RequestWatcherService {
             consumerId: notification.consumerId,
             consumerName: notification.consumerName,
             requestedAt: DateTime.fromMillisecondsSinceEpoch(
-              notification.requestedAt * 1000,
+              notification.requestedAt.toInt() * 1000,
             ),
           ));
         },

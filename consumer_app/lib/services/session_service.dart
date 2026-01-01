@@ -20,12 +20,14 @@ class SessionService {
     try {
       final request = ListSessionsRequest()..searchQuery = searchQuery;
       final response = await _client.listSessions(request);
-      
-      return response.sessions.map((s) => SessionInfo(
-        sessionId: s.sessionId,
-        providerName: s.providerName,
-        providerLocation: s.providerLocation,
-      )).toList();
+
+      return response.sessions
+          .map((s) => SessionInfo(
+                sessionId: s.sessionId,
+                providerName: s.providerName,
+                providerLocation: s.providerLocation,
+              ))
+          .toList();
     } catch (e) {
       throw Exception('Failed to list sessions: $e');
     }
@@ -41,12 +43,12 @@ class SessionService {
         ..sessionId = sessionId
         ..consumerId = consumerId
         ..consumerName = consumerName;
-      
+
       final response = await _client.requestConnection(request);
       if (!response.success) {
         throw Exception(response.message);
       }
-      
+
       return response.requestId;
     } catch (e) {
       throw Exception('Failed to request connection: $e');
@@ -57,7 +59,7 @@ class SessionService {
     try {
       final request = WatchApprovalRequest()..requestId = requestId;
       final stream = _client.watchApprovalStatus(request);
-      
+
       await for (final update in stream) {
         yield ApprovalStatus(
           status: _mapStatus(update.status),
@@ -92,7 +94,7 @@ class SessionService {
 class SessionInfo {
   final String sessionId;
   final String providerName;
-  final String provider Location;
+  final String providerLocation;
 
   SessionInfo({
     required this.sessionId,
