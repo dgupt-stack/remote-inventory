@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:camera/camera.dart';
 import '../shared/theme/jarvis_theme.dart';
 import 'session_list_screen.dart';
@@ -10,8 +9,7 @@ class ModeSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final displayName = user?.displayName ?? user?.phoneNumber ?? 'User';
+    final displayName = 'Guest User';
 
     return Scaffold(
       backgroundColor: JarvisTheme.darkBackground,
@@ -138,15 +136,14 @@ class ModeSelectorScreen extends StatelessWidget {
 
               Spacer(),
 
-              // Sign Out Button
+              // Sign Out Button (Disabled - no auth)
               TextButton.icon(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                },
-                icon: Icon(Icons.logout, color: Colors.white.withOpacity(0.5)),
+                onPressed: null,
+                icon: Icon(Icons.info_outline,
+                    color: Colors.white.withOpacity(0.3)),
                 label: Text(
-                  'Sign Out',
-                  style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                  'No Authentication',
+                  style: TextStyle(color: Colors.white.withOpacity(0.3)),
                 ),
               ),
 
