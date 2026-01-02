@@ -39,3 +39,7 @@ Thumbs.db
 *.iml
 *.pyc
 __pycache__/
+
+# Firebase credentials - never commit these
+**/firebase_options.dart
+**/google-services.json
