@@ -14,7 +14,7 @@ class JarvisApp extends StatelessWidget {
     return MaterialApp(
       title: 'JARVIS Remote Inventory',
       theme: JarvisTheme.theme,
-      home: const ModeSelectorScreen(), // Skip auth, go directly to mode selector
+      home: const ModeSelectorScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
