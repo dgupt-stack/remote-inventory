@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../services/auth_service.dart';
-import '../shared/theme/jarvis_theme.dart';
+import 'package:consumer_app/services/auth_service.dart';
+import 'package:consumer_app/shared/theme/jarvis_theme.dart';
 import 'otp_verification_screen.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
@@ -418,15 +418,5 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
         ),
       ),
     );
-  }
-
-  void _signInWithGoogle() {
-    // TODO: Implement Google Sign-In
-    print('Google Sign-In');
-  }
-
-  void _signInWithApple() {
-    // TODO: Implement Apple Sign-In
-    print('Apple Sign-In');
   }
 }

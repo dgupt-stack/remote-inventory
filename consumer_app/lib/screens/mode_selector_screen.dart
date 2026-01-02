@@ -110,8 +110,8 @@ class ModeSelectorScreen extends StatelessWidget {
                 icon: Icons.videocam,
                 gradient: LinearGradient(
                   colors: [
-                    JarvisTheme.primary.withOpacity(0.2),
-                    JarvisTheme.glowCyan.withOpacity(0.2),
+                    JarvisTheme.primaryCyan.withOpacity(0.2),
+                    JarvisTheme.accentBlue.withOpacity(0.2),
                   ],
                 ),
                 onTap: () async {
