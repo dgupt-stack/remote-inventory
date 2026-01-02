@@ -1,7 +1,9 @@
+```dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:camera/camera.dart';
+import 'firebase_options.dart';
 import 'screens/camera_screen.dart';
 import 'screens/auth/phone_auth_screen.dart';
 
@@ -11,7 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize cameras
   cameras = await availableCameras();

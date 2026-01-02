@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/session_list_screen.dart';
+import 'firebase_options.dart';
+import 'screens/mode_selector_screen.dart';
 import 'screens/auth/phone_auth_screen.dart';
 import '../shared/theme/jarvis_theme.dart';
-
-// TODO: Replace with your Firebase configuration
-// Run: flutterfire configure --project=remote-vision-6f76a
-// This will generate firebase_options.dart
-// For now, using placeholder initialization
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
   await Firebase.initializeApp(
-      // options: DefaultFirebaseOptions.currentPlatform,
-      );
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-  runApp(const ConsumerApp());
+  runApp(const JarvisApp());
 }
 
-class ConsumerApp extends StatelessWidget {
-  const ConsumerApp({super.key});
+class JarvisApp extends StatelessWidget {
+  const JarvisApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'JARVIS Consumer',
+      title: 'JARVIS Remote Inventory',
       theme: JarvisTheme.theme,
       home: const AuthWrapper(),
       debugShowCheckedModeBanner: false,
@@ -56,12 +52,12 @@ class AuthWrapper extends StatelessWidget {
           );
         }
 
-        // User is signed in
+        // User is signed in → Mode Selector
         if (snapshot.hasData && snapshot.data != null) {
-          return const SessionListScreen();
+          return const ModeSelectorScreen();
         }
 
-        // User is not signed in
+        // User is not signed in → Phone Auth
         return const PhoneAuthScreen();
       },
     );
