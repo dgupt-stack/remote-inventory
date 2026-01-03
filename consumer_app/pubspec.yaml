@@ -42,6 +42,10 @@ dependencies:
   camera: ^0.10.5
   sensors_plus: ^3.0.0
   intl: ^0.18.0
+  
+  # Privacy & Face Detection
+  google_mlkit_face_detection: ^0.10.0
+  image: ^4.1.7
 
 dev_dependencies:
   flutter_test:
