@@ -9,14 +9,25 @@ option go_package = "github.com/djgupt/remote-inventory/proto";
 service RemoteInventoryService {
   // Create a new session for a provider
   rpc CreateSession(CreateSessionRequest) returns (SessionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions"
+      body: "*"
+    };
   }
 
   // List all active sessions (for consumers to discover providers)
   rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/sessions"
+    };
   }
 
   // Consumer requests to connect to a provider session
   rpc RequestConnection(ConnectionRequest) returns (ConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/connect"
+      body: "*"
+    };
   }
 
   // Provider watches for incoming connection requests
@@ -24,10 +35,18 @@ service RemoteInventoryService {
 
   // Provider approves a connection request
   rpc ApproveConnection(ApproveRequest) returns (ApproveResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/approve"
+      body: "*"
+    };
   }
 
   // Provider denies a connection request
   rpc DenyConnection(DenyRequest) returns (DenyResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/deny"
+      body: "*"
+    };
   }
 
   // Consumer watches for approval status
@@ -38,9 +57,16 @@ service RemoteInventoryService {
 
   // Send command to provider (existing)
   rpc SendCommand(Command) returns (CommandResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/commands"
+      body: "*"
+    };
   }
 
   rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/sessions/{session_id}"
+    };
   }
   // Bidirectional streaming for Provider video upload and command reception
   rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
@@ -50,6 +76,10 @@ service RemoteInventoryService {
   
   // Heartbeat to keep sessions alive
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/heartbeat"
+      body: "*"
+    };
   }
 }
 

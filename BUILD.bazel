@@ -1,0 +1,4 @@
+load("@gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/djgupt/remote-inventory
+gazelle(name = "gazelle")

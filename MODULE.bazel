@@ -1,0 +1,21 @@
+module(
+    name = "remote_inventory",
+    version = "1.0.0",
+)
+
+bazel_dep(name = "rules_go", version = "0.50.1")
+bazel_dep(name = "gazelle", version = "0.40.0")
+bazel_dep(name = "protobuf", version = "29.0")
+bazel_dep(name = "rules_proto", version = "7.0.2")
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.24.0")  # Updated to 1.24.0
+
+# Use go_deps to get grpc-go
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.module(
+    path = "google.golang.org/grpc",
+    sum = "h1:RwQu2n6mJpHJVP7xP8W2fOqJe7NPNM5SApKK+J25BCI=",
+    version = "v1.78.0",
+)
+use_repo(go_deps, "org_golang_google_grpc")
