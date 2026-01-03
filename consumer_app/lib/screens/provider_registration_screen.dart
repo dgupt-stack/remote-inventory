@@ -3,6 +3,8 @@ import '../services/session_service.dart';
 import 'provider_waiting_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'dart:math';
 
 class ProviderRegistrationScreen extends StatefulWidget {
   const ProviderRegistrationScreen({super.key});
@@ -14,46 +16,62 @@ class ProviderRegistrationScreen extends StatefulWidget {
 
 class _ProviderRegistrationScreenState
     extends State<ProviderRegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _locationController = TextEditingController();
-  bool _isRegistering = false;
+  String _location = "Detecting location...";
+  String _deviceName = "Camera";
   bool _isDetectingLocation = false;
+  bool _locationWarning = false;
+  bool _isGoingOnline = false;
 
   @override
   void initState() {
     super.initState();
-    // Auto-detect location on screen load
     _detectLocation();
+    _getDeviceName();
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _locationController.dispose();
-    super.dispose();
+  Future<void> _getDeviceName() async {
+    final deviceInfo = DeviceInfoPlugin();
+    try {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        final androidInfo = await deviceInfo.androidInfo;
+        final model = androidInfo.model.replaceAll(' ', '');
+        final random = Random().nextInt(9999).toString().padLeft(4, '0');
+        setState(() {
+          _deviceName = 'Camera-$model-$random';
+        });
+      } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+        final iosInfo = await deviceInfo.iosInfo;
+        final model = iosInfo.utsname.machine.replaceAll(',', '');
+        final random = Random().nextInt(9999).toString().padLeft(4, '0');
+        setState(() {
+          _deviceName = 'Camera-$model-$random';
+        });
+      }
+    } catch (e) {
+      // Use default if device info fails
+      final random = Random().nextInt(9999).toString().padLeft(4, '0');
+      setState(() {
+        _deviceName = 'Camera-Device-$random';
+      });
+    }
   }
 
   Future<void> _detectLocation() async {
     setState(() => _isDetectingLocation = true);
 
     try {
-      // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
 
-      // If permission granted, get location
       if (permission != LocationPermission.denied &&
           permission != LocationPermission.deniedForever) {
-        // Get current position
         final position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
-          timeLimit: const Duration(seconds: 5), // Timeout after 5 seconds
+          timeLimit: const Duration(seconds: 5),
         );
 
-        // Reverse geocode to get address
         final placemarks = await placemarkFromCoordinates(
           position.latitude,
           position.longitude,
@@ -61,7 +79,6 @@ class _ProviderRegistrationScreenState
 
         if (placemarks.isNotEmpty) {
           final place = placemarks.first;
-          // Format address: "Street, City" or "Locality, City"
           final address = [
             place.street,
             place.locality,
@@ -70,7 +87,9 @@ class _ProviderRegistrationScreenState
 
           if (address.isNotEmpty) {
             setState(() {
-              _locationController.text = address;
+              _location = address;
+              _locationWarning = false;
+              _isDetectingLocation = false;
             });
             return;
           }
@@ -80,45 +99,34 @@ class _ProviderRegistrationScreenState
       print('⚠️  Location detection failed: $e');
     }
 
-    // Fallback to default US location
+    // Fallback to default
     if (mounted) {
       setState(() {
-        _locationController.text = 'San Francisco, CA'; // Default US location
+        _location = 'San Francisco, CA';
+        _locationWarning = true;
+        _isDetectingLocation = false;
       });
     }
-
-    setState(() => _isDetectingLocation = false);
   }
 
   Future<void> _goOnline() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    setState(() => _isRegistering = true);
-
-    // Use detected location or fallback default
-    final location = _locationController.text.isEmpty
-        ? 'San Francisco, CA'
-        : _locationController.text;
+    setState(() => _isGoingOnline = true);
 
     try {
-      // Register with backend
       final response = await SessionService().createSession(
-        providerName: _nameController.text.trim(),
+        providerName: _deviceName,
         providerId: 'provider-${DateTime.now().millisecondsSinceEpoch}',
-        location: location,
+        location: _location,
       );
 
       if (mounted) {
-        // Navigate to waiting screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ProviderWaitingScreen(
               sessionId: response.sessionId,
-              providerName: _nameController.text.trim(),
-              location: location,
+              providerName: _deviceName,
+              location: _location,
             ),
           ),
         );
@@ -131,7 +139,7 @@ class _ProviderRegistrationScreenState
             backgroundColor: Colors.redAccent,
           ),
         );
-        setState(() => _isRegistering = false);
+        setState(() => _isGoingOnline = false);
       }
     }
   }
@@ -141,134 +149,131 @@ class _ProviderRegistrationScreenState
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Provider Registration'),
+        title: const Text('Provider Mode'),
         backgroundColor: Colors.black,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: _formKey,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Title
               const Text(
                 'Go Online as Provider',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFF00D4FF),
-                  fontSize: 24,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'Enter your details to start receiving connection requests',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
 
-              // Provider Name Input
-              TextFormField(
-                controller: _nameController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Provider Name/Description',
-                  labelStyle: const TextStyle(color: Color(0xFF00D4FF)),
-                  hintText: 'e.g., Living Room Camera, Kitchen View',
-                  hintStyle: const TextStyle(color: Colors.white30),
-                  filled: true,
-                  fillColor: const Color(0xFF1A1A1A),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF00D4FF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.white24),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF00D4FF), width: 2),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a provider name';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              // Show detected location (read-only)
+              // Location Display
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.white24),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: _locationWarning
+                        ? Colors.orangeAccent.withOpacity(0.5)
+                        : const Color(0xFF00D4FF).withOpacity(0.3),
+                    width: 2,
+                  ),
                 ),
-                child: Row(
+                child: Column(
                   children: [
                     Icon(
                       _isDetectingLocation
                           ? Icons.location_searching
                           : Icons.location_on,
-                      color: const Color(0xFF00D4FF),
-                      size: 24,
+                      color: _locationWarning
+                          ? Colors.orangeAccent
+                          : const Color(0xFF00D4FF),
+                      size: 48,
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Location',
-                            style: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _isDetectingLocation
-                                ? 'Detecting location...'
-                                : _locationController.text.isEmpty
-                                    ? 'San Francisco, CA'
-                                    : _locationController.text,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 16),
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.6),
+                        fontSize: 14,
                       ),
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _location,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (_locationWarning) ...[
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.orangeAccent.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.orangeAccent.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.warning_amber_rounded,
+                              color: Colors.orangeAccent,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Using default location',
+                              style: TextStyle(
+                                color: Colors.orangeAccent.shade200,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 64),
 
               // Go Online Button
               SizedBox(
-                height: 56,
+                height: 64,
                 child: ElevatedButton(
-                  onPressed: _isRegistering ? null : _goOnline,
+                  onPressed:
+                      _isGoingOnline || _isDetectingLocation ? null : _goOnline,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00D4FF),
                     foregroundColor: Colors.black,
+                    disabledBackgroundColor: Colors.grey.shade800,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    elevation: 8,
                   ),
-                  child: _isRegistering
+                  child: _isGoingOnline
                       ? const SizedBox(
-                          width: 24,
-                          height: 24,
+                          width: 28,
+                          height: 28,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2,
+                            strokeWidth: 3,
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.black),
                           ),
@@ -276,14 +281,24 @@ class _ProviderRegistrationScreenState
                       : const Text(
                           'Go Online',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
+
+              // Device name hint
+              Text(
+                'Camera Name: $_deviceName',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.4),
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
         ),
