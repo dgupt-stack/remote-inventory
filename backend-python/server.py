@@ -203,55 +203,6 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         
         return response
     
-    def WatchApprovalStatus(self, request, context):
-        """Stream approval status updates to consumer"""
-        logger.info(f"👀 WatchApprovalStatus for request: {request.request_id}")
-        
-        request_id = request.request_id
-        
-        if request_id not in self.connection_requests:
-            logger.warning(f"  ❌ Request not found: {request_id}")
-            context.set_code(grpc.StatusCode.NOT_FOUND)
-            context.set_details("Request not found")
-            return
-        
-        # Stream status updates
-        max_wait = 30  # 30 seconds timeout
-        start_time = time.time()
-        
-        while context.is_active() and (time.time() - start_time) < max_wait:
-            current_status = self.pending_approvals.get(request_id, 'PENDING')
-            
-            if current_status == 'APPROVED':
-                yield pb2.ApprovalStatusUpdate(
-                    status=pb2.ApprovalStatusUpdate.APPROVED,
-                    session_id=self.connection_requests[request_id]['session_id'],
-                    token="session-token-placeholder",
-                    message="Connection approved by provider"
-                )
-                logger.info(f"  ✅ Sent APPROVED status for: {request_id}")
-                break
-            elif current_status == 'DENIED':
-                yield pb2.ApprovalStatusUpdate(
-                    status=pb2.ApprovalStatusUpdate.DENIED,
-                    session_id="",
-                    token="",
-                    message="Connection denied by provider"
-                )
-                logger.info(f"  ❌ Sent DENIED status for: {request_id}")
-                break
-            else:
-                # Still pending, send pending and wait
-                yield pb2.ApprovalStatusUpdate(
-                    status=pb2.ApprovalStatusUpdate.PENDING,
-                    session_id="",
-                    token="",
-                    message="Waiting for provider approval"
-                )
-                time.sleep(1)  # Check every second
-        
-        logger.info(f"⏸️  WatchApprovalStatus stream ended for: {request_id}")
-    
     def EndSession(self, request, context):
         """End a provider session"""
         logger.info(f"🛑 EndSession called for: {request.session_id}")
