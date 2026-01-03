@@ -131,6 +131,21 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         
         return response
     
+    def WatchApprovalStatus(self, request, context):
+        """Stream approval status updates to consumer (placeholder for now)"""
+        logger.info(f"👀 WatchApprovalStatus for request: {request.request_id}")
+        
+        # For now, just return pending status immediately and close stream
+        # TODO: Implement actual approval flow with Provider watching
+        yield pb2.ApprovalStatusUpdate(
+            status=pb2.ApprovalStatusUpdate.PENDING,
+            session_id="",
+            token="",
+            message="Waiting for provider approval (not implemented yet)"
+        )
+        
+        logger.info(f"⏸️  WatchApprovalStatus stream ended for: {request.request_id}")
+    
     def EndSession(self, request, context):
         """End a provider session"""
         logger.info(f"🛑 EndSession called for: {request.session_id}")
