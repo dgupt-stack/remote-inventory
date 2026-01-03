@@ -133,11 +133,67 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         # Initialize as pending
         self.pending_approvals[request_id] = 'PENDING'
         
-        response = pb2.ConnectionResponse(
+        return inventory_service_pb2.ConnectionResponse(
             request_id=request_id,
             success=True,
-            message="Connection request received"
+            message='Connection request sent'
         )
+
+    def WatchApprovalStatus(self, request, context):
+        """Stream approval status updates to Consumer (PENDING → APPROVED/DENIED)"""
+        request_id = request.request_id
+        logger.info(f"👀 WatchApprovalStatus for request: {request_id}")
+        
+        # Wait for approval status to change (max 30 seconds)
+        timeout = 30
+        start_time = time.time()
+        
+        while time.time() - start_time < timeout:
+            status = self.pending_approvals.get(request_id, 'PENDING')
+            
+            if status == 'APPROVED':
+                # Get session info for approved request
+                req_info = self.connection_requests.get(request_id, {})
+                session_id = req_info.get('session_id', '')
+                
+                logger.info(f"✅ Request {request_id} APPROVED")
+                yield inventory_service_pb2.ApprovalStatusUpdate(
+                    status=inventory_service_pb2.ApprovalStatusUpdate.APPROVED,
+                    session_id=session_id,
+                    token='consumer-token',  # Generate proper token in production
+                    message='Connection approved'
+                )
+                return
+                
+            elif status == 'DENIED':
+                logger.info(f"❌ Request {request_id} DENIED")
+                yield inventory_service_pb2.ApprovalStatusUpdate(
+                    status=inventory_service_pb2.ApprovalStatusUpdate.DENIED,
+                    session_id='',
+                    token='',
+                    message='Connection denied'
+                )
+                return
+            
+            # Still pending, send update
+            yield inventory_service_pb2.ApprovalStatusUpdate(
+                status=inventory_service_pb2.ApprovalStatusUpdate.PENDING,
+                session_id='',
+                token='',
+                message='Waiting for provider approval'
+            )
+            
+            time.sleep(1)  # Check every second
+        
+        # Timeout - send DENIED
+        logger.warning(f"⏱️  Request {request_id} timed out")
+        yield inventory_service_pb2.ApprovalStatusUpdate(
+            status=inventory_service_pb2.ApprovalStatusUpdate.DENIED,
+            session_id='',
+            token='',
+            message='Approval timeout'
+        )
+
         
         logger.info(f"  → Request ID: {request_id}")
         
