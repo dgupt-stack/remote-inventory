@@ -46,6 +46,10 @@ dependencies:
   # Privacy & Face Detection
   google_mlkit_face_detection: ^0.10.0
   image: ^4.1.7
+  
+  # Location Services
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:
