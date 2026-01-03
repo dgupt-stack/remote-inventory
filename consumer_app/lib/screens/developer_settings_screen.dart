@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/backend_config.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../services/session_service.dart';
 
 class DeveloperSettingsScreen extends StatefulWidget {
@@ -14,8 +15,22 @@ class DeveloperSettingsScreen extends StatefulWidget {
 
 class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
   BackendEnvironment _selectedEnvironment = BackendConfig.environment;
-  bool _testing = false;
-  String? _testResult;
+  bool _isTestingConnection = false;
+  String? _connectionResult;
+  PackageInfo? _packageInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPackageInfo();
+  }
+
+  Future<void> _loadPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
 
   Future<void> _testConnection() async {
     setState(() {
@@ -241,6 +256,29 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70, fontSize: 14),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }
