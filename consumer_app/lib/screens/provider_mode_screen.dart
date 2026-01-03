@@ -463,4 +463,47 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
       splashRadius: 24,
     );
   }
+
+  Widget _buildCameraPreview() {
+    if (_processedFrame != null && _privacyEnabled) {
+      // Show privacy-processed frame with blurred faces
+      return RawImage(
+        image: _processedFrame,
+        fit: BoxFit.cover,
+      );
+    } else {
+      // Fallback to camera preview (when no faces detected)
+      return CameraPreview(_cameraController);
+    }
+  }
+
+  Widget _buildPrivacyIndicator() {
+    return Positioned(
+      top: 100,
+      right: 16,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.redAccent.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.visibility_off, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              '$_facesDetected face${_facesDetected > 1 ? 's' : ''} blurred',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
