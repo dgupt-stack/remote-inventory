@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../services/session_service.dart';
+import '../services/grpc_service.dart';
+import '../proto/inventory_service.pbgrpc.dart';
+import '../utils/device_manager.dart';
 import 'provider_waiting_screen.dart';
+import 'provider_streaming_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -113,20 +117,28 @@ class _ProviderRegistrationScreenState
     setState(() => _isGoingOnline = true);
 
     try {
-      final response = await SessionService().createSession(
-        providerName: _deviceName,
-        providerId: 'provider-${DateTime.now().millisecondsSinceEpoch}',
-        location: _location,
+      // Get device ID
+      final deviceId = await DeviceManager.getDeviceId();
+
+      // Create session
+      final grpcService = GrpcService();
+      await grpcService.initialize();
+
+      final response = await grpcService.stub.createSession(
+        CreateSessionRequest()
+          ..providerId = deviceId
+          ..providerName = _deviceName
+          ..location = _location,
       );
 
       if (mounted) {
-        Navigator.pushReplacement(
+        // Navigate to streaming screen
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProviderWaitingScreen(
+            builder: (context) => ProviderStreamingScreen(
               sessionId: response.sessionId,
-              providerName: _deviceName,
-              location: _location,
+              deviceName: _deviceName,
             ),
           ),
         );
@@ -136,9 +148,12 @@ class _ProviderRegistrationScreenState
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to go online: $e'),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.red,
           ),
         );
+      }
+    } finally {
+      if (mounted) {
         setState(() => _isGoingOnline = false);
       }
     }
