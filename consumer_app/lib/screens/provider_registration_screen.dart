@@ -42,53 +42,52 @@ class _ProviderRegistrationScreenState
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permission denied');
+      }
+
+      // If permission granted, get location
+      if (permission != LocationPermission.denied &&
+          permission != LocationPermission.deniedForever) {
+        // Get current position
+        final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: const Duration(seconds: 5), // Timeout after 5 seconds
+        );
+
+        // Reverse geocode to get address
+        final placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          final place = placemarks.first;
+          // Format address: "Street, City" or "Locality, City"
+          final address = [
+            place.street,
+            place.locality,
+            place.subAdministrativeArea,
+          ].where((e) => e != null && e.isNotEmpty).take(2).join(', ');
+
+          if (address.isNotEmpty) {
+            setState(() {
+              _locationController.text = address;
+            });
+            return;
+          }
         }
       }
-
-      if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied');
-      }
-
-      // Get current position
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // Reverse geocode to get address
-      final placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-
-      if (placemarks.isNotEmpty) {
-        final place = placemarks.first;
-        // Format address: "Street, City" or "Locality, City"
-        final address = [
-          place.street,
-          place.locality,
-          place.subAdministrativeArea,
-        ].where((e) => e != null && e.isNotEmpty).take(2).join(', ');
-
-        setState(() {
-          _locationController.text =
-              address.isNotEmpty ? address : 'Current Location';
-        });
-      }
     } catch (e) {
-      // Silently fail - user can enter location manually
       print('⚠️  Location detection failed: $e');
-      if (mounted) {
-        setState(() {
-          _locationController.text = ''; // Leave empty for manual entry
-        });
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isDetectingLocation = false);
-      }
     }
+
+    // Fallback to default US location
+    if (mounted) {
+      setState(() {
+        _locationController.text = 'San Francisco, CA'; // Default US location
+      });
+    }
+
+    setState(() => _isDetectingLocation = false);
   }
 
   Future<void> _goOnline() async {
@@ -98,12 +97,17 @@ class _ProviderRegistrationScreenState
 
     setState(() => _isRegistering = true);
 
+    // Use detected location or fallback default
+    final location = _locationController.text.isEmpty
+        ? 'San Francisco, CA'
+        : _locationController.text;
+
     try {
       // Register with backend
       final response = await SessionService().createSession(
         providerName: _nameController.text.trim(),
         providerId: 'provider-${DateTime.now().millisecondsSinceEpoch}',
-        location: _locationController.text.trim(),
+        location: location,
       );
 
       if (mounted) {
@@ -114,7 +118,7 @@ class _ProviderRegistrationScreenState
             builder: (context) => ProviderWaitingScreen(
               sessionId: response.sessionId,
               providerName: _nameController.text.trim(),
-              location: _locationController.text.trim(),
+              location: location,
             ),
           ),
         );
@@ -197,58 +201,52 @@ class _ProviderRegistrationScreenState
 
               const SizedBox(height: 24),
 
-              // Location Input with auto-detect
-              TextFormField(
-                controller: _locationController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: 'Location/Address',
-                  labelStyle: const TextStyle(color: Color(0xFF00D4FF)),
-                  hintText: _isDetectingLocation
-                      ? 'Detecting location...'
-                      : 'e.g., 123 Main St, Home Office',
-                  hintStyle: const TextStyle(color: Colors.white30),
-                  filled: true,
-                  fillColor: const Color(0xFF1A1A1A),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFF00D4FF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Colors.white24),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF00D4FF), width: 2),
-                  ),
-                  suffixIcon: _isDetectingLocation
-                      ? const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color(0xFF00D4FF)),
+              // Show detected location (read-only)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white24),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _isDetectingLocation
+                          ? Icons.location_searching
+                          : Icons.location_on,
+                      color: const Color(0xFF00D4FF),
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Location',
+                            style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 12,
                             ),
                           ),
-                        )
-                      : IconButton(
-                          icon: const Icon(Icons.my_location,
-                              color: Color(0xFF00D4FF)),
-                          onPressed: _detectLocation,
-                          tooltip: 'Detect current location',
-                        ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _isDetectingLocation
+                                ? 'Detecting location...'
+                                : _locationController.text.isEmpty
+                                    ? 'San Francisco, CA'
+                                    : _locationController.text,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a location';
-                  }
-                  return null;
-                },
               ),
 
               const Spacer(),
