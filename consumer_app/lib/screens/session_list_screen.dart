@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
-import '../services/session_service.dart';
+import '../services/grpc_service.dart';
+import '../proto/inventory_service.pbgrpc.dart';
+import 'consumer_viewing_screen.dart';
 import '../shared/theme/jarvis_theme.dart';
 import 'waiting_approval_screen.dart';
 import 'controller_screen.dart';
@@ -247,7 +248,18 @@ class _SessionListScreenState extends State<SessionListScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => _requestConnection(session),
+          onTap: () {
+            // Navigate directly to viewing screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConsumerViewingScreen(
+                  sessionId: session.sessionId,
+                  providerName: session.providerName,
+                ),
+              ),
+            );
+          },
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(20),
