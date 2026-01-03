@@ -41,6 +41,9 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         self.connection_requests = {}  # request_id -> {session_id, consumer_id, consumer_name, timestamp}
         self.pending_approvals = {}    # request_id -> approval status
         
+        # NEW: Track WebRTC signals for relay
+        self.webrtc_signals = {}  # session_id -> [WebRTCSignal, ...]
+        
         logger.info("✅ Inventory Service initialized")
     
     def ListSessions(self, request, context):
@@ -288,3 +291,79 @@ def serve():
 
 if __name__ == "__main__":
     serve()
+
+    # ============================================================
+    # WEBRTC SIGNALING RPCS
+    # ============================================================
+    
+    def SendWebRTCSignal(self, request, context):
+        """Store and relay WebRTC signal (SDP or ICE) between devices"""
+        logger.info(f"📡 SendWebRTCSignal: {request.type} from {request.from_device_id} to {request.to_device_id}")
+        
+        session_id = request.session_id
+        
+        # Initialize signals list for session if needed
+        if session_id not in self.webrtc_signals:
+            self.webrtc_signals[session_id] = []
+        
+        # Store signal for target device
+        self.webrtc_signals[session_id].append({
+            'from_device': request.from_device_id,
+            'to_device': request.to_device_id,
+            'type': request.type,
+            'payload': request.payload,
+            'timestamp': time.time()
+        })
+        
+        logger.info(f"  ✅ Signal stored ({len(self.webrtc_signals[session_id])} total for session)")
+        
+        return pb2.SignalResponse(
+            success=True,
+            message="Signal stored"
+        )
+    
+    def WatchWebRTCSignals(self, request, context):
+        """Stream WebRTC signals to a device"""
+        logger.info(f"👀 WatchWebRTCSignals for device: {request.device_id} (session: {request.session_id})")
+        
+        session_id = request.session_id
+        device_id = request.device_id
+        delivered_count = 0
+        
+        # Stream signals for up to 60 seconds
+        timeout = 60
+        start_time = time.time()
+        
+        while context.is_active() and (time.time() - start_time) < timeout:
+            # Check for signals addressed to this device
+            if session_id in self.webrtc_signals:
+                pending_signals = [
+                    sig for sig in self.webrtc_signals[session_id]
+                    if sig['to_device'] == device_id
+                ]
+                
+                if pending_signals:
+                    for signal in pending_signals:
+                        # Send signal to device
+                        yield pb2.WebRTCSignal(
+                            session_id=session_id,
+                            from_device_id=signal['from_device'],
+                            to_device_id=signal['to_device'],
+                            type=signal['type'],
+                            payload=signal['payload']
+                        )
+                        delivered_count += 1
+                    
+                    # Remove delivered signals
+                    self.webrtc_signals[session_id] = [
+                        sig for sig in self.webrtc_signals[session_id]
+                        if sig['to_device'] != device_id
+                    ]
+                    
+                    logger.info(f"  ✅ Delivered {delivered_count} signal(s) to {device_id}")
+            
+            # Check every 100ms for new signals
+            time.sleep(0.1)
+        
+        logger.info(f"  ⏸️  WatchWebRTCSignals ended for {device_id} ({delivered_count} total delivered)")
+
