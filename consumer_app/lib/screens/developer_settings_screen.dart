@@ -65,6 +65,52 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // App Version Section
+          Card(
+            color: const Color(0xFF1A1A1A),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.info_outline,
+                          color: Color(0xFF00D4FF), size: 24),
+                      SizedBox(width: 12),
+                      Text(
+                        'App Information',
+                        style: TextStyle(
+                          color: Color(0xFF00D4FF),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  if (_packageInfo != null) ...[
+                    _buildInfoRow('Version', _packageInfo!.version),
+                    _buildInfoRow('Build Number', _packageInfo!.buildNumber),
+                    _buildInfoRow('Package', _packageInfo!.packageName),
+                    _buildInfoRow('App Name', _packageInfo!.appName),
+                  ] else
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFF00D4FF)),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
           // Header
           const Card(
             color: Color(0xFF1A1A1A),
