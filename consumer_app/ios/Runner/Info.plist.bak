@@ -45,9 +45,5 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-<key>NSCameraUsageDescription</key>
-<string>Provider mode needs camera access to stream video to consumers</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>Provider mode may use microphone for audio streaming</string>
 </dict>
 </plist>
