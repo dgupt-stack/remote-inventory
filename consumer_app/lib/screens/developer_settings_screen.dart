@@ -34,22 +34,22 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
 
   Future<void> _testConnection() async {
     setState(() {
-      _testing = true;
-      _testResult = null;
+      _isTestingConnection = true;
+      _connectionResult = null;
     });
 
     try {
       // Create new service instance to use updated config
       final sessions = await SessionService().listSessions();
       setState(() {
-        _testResult =
+        _connectionResult =
             '✅ Connected successfully!\nFound ${sessions.length} sessions';
-        _testing = false;
+        _isTestingConnection = false;
       });
     } catch (e) {
       setState(() {
-        _testResult = '❌ Connection failed:\n${e.toString()}';
-        _testing = false;
+        _connectionResult = '❌ Connection failed:\n${e.toString()}';
+        _isTestingConnection = false;
       });
     }
   }
@@ -171,7 +171,7 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
               setState(() {
                 _selectedEnvironment = value!;
                 BackendConfig.environment = value;
-                _testResult = null; // Clear previous test result
+                _connectionResult = null; // Clear previous test result
               });
             },
           ),
@@ -199,7 +199,7 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
               setState(() {
                 _selectedEnvironment = value!;
                 BackendConfig.environment = value;
-                _testResult = null; // Clear previous test result
+                _connectionResult = null; // Clear previous test result
               });
             },
           ),
@@ -211,7 +211,7 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _testing ? null : _testConnection,
+              onPressed: _isTestingConnection ? null : _testConnection,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF00D4FF),
                 foregroundColor: Colors.black,
@@ -219,7 +219,7 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: _testing
+              child: _isTestingConnection
                   ? const SizedBox(
                       width: 24,
                       height: 24,
@@ -239,18 +239,18 @@ class _DeveloperSettingsScreenState extends State<DeveloperSettingsScreen> {
           ),
 
           // Test Result
-          if (_testResult != null) ...[
+          if (_connectionResult != null) ...[
             const SizedBox(height: 16),
             Card(
-              color: _testResult!.contains('✅')
+              color: _connectionResult!.contains('✅')
                   ? const Color(0xFF1A3A1A)
                   : const Color(0xFF3A1A1A),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  _testResult!,
+                  _connectionResult!,
                   style: TextStyle(
-                    color: _testResult!.contains('✅')
+                    color: _connectionResult!.contains('✅')
                         ? Colors.greenAccent
                         : Colors.redAccent,
                     fontSize: 14,
