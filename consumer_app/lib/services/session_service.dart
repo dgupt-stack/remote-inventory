@@ -142,7 +142,7 @@ class SessionService {
   /// Approve a connection request (Provider side)
   Future<bool> approveConnection(String requestId) async {
     try {
-      final request = ApprovalRequest()..requestId = requestId;
+      final request = ApproveRequest()..requestId = requestId;
       final response = await _client.approveConnection(request);
 
       if (response.success) {
@@ -161,7 +161,9 @@ class SessionService {
   /// Deny a connection request (Provider side)
   Future<bool> denyConnection(String requestId) async {
     try {
-      final request = ApprovalRequest()..requestId = requestId;
+      final request = DenyRequest()
+        ..requestId = requestId
+        ..reason = ''; // Optional reason
       final response = await _client.denyConnection(request);
 
       if (response.success) {
