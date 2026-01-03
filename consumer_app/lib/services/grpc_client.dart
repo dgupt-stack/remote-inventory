@@ -15,8 +15,8 @@ class GrpcClientService {
   String? token;
 
   GrpcClientService({
-    this.host = 'localhost',
-    this.port = 8080,
+    this.host = 'remote-inventory-backend-mlwjajxybq-uc.a.run.app',
+    this.port = 443,
   });
 
   /// Initialize the gRPC connection
@@ -27,7 +27,7 @@ class GrpcClientService {
       host,
       port: port,
       options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+        credentials: ChannelCredentials.secure(), // TLS for Cloud Run
       ),
     );
 

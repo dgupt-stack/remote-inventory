@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../services/auth_service.dart';
-import '../shared/theme/jarvis_theme.dart';
+import '../../shared/theme/jarvis_theme.dart';
 import 'dart:async';
 
 class OTPVerificationScreen extends StatefulWidget {

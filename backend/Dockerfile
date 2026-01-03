@@ -1,7 +1,7 @@
 # Multi-stage build for optimized production image
 
 # Stage 1: Build Go binary
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 RUN apk add --no-cache git make
 
@@ -9,7 +9,6 @@ WORKDIR /app
 
 # Copy all source files
 COPY backend/ ./backend/
-COPY proto/ ./proto/
 
 # Build from backend directory
 WORKDIR /app/backend

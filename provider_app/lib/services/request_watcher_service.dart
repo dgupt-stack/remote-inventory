@@ -9,10 +9,10 @@ class RequestWatcherService {
 
   RequestWatcherService() {
     _channel = ClientChannel(
-      'localhost', // TODO: Replace with actual backend URL
-      port: 8080,
+      'remote-inventory-backend-mlwjajxybq-uc.a.run.app',
+      port: 443,
       options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+        credentials: ChannelCredentials.secure(), // TLS for Cloud Run
       ),
     );
     _client = RemoteInventoryServiceClient(_channel);

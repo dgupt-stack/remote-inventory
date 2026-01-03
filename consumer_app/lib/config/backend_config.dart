@@ -8,13 +8,13 @@ class BackendConfig {
   static const String localHost = '192.168.86.89';
   static const int localPort = 8080;
 
-  // Cloud Run backend (will be updated after deployment)
+  // Cloud Run backend (deployed and ready)
   static const String cloudRunUrl =
-      'jarvis-backend-uc.a.run.app'; // Placeholder
+      'remote-inventory-backend-mlwjajxybq-uc.a.run.app';
   static const int cloudRunPort = 443; // HTTPS
 
-  // Current environment (defaults to local)
-  static BackendEnvironment _currentEnvironment = BackendEnvironment.local;
+  // Current environment (defaults to Cloud Run for production)
+  static BackendEnvironment _currentEnvironment = BackendEnvironment.cloudRun;
 
   // Getters
   static BackendEnvironment get environment => _currentEnvironment;

@@ -48,7 +48,7 @@ fi
 # Step 1: Build Docker image
 echo -e "${BLUE}Step 1: Building Docker image...${NC}"
 cd ..
-docker build -f backend/Dockerfile -t ${IMAGE_NAME} .
+docker build --platform linux/amd64 -f backend/Dockerfile -t ${IMAGE_NAME} .
 cd backend
 
 if [ $? -eq 0 ]; then

@@ -2,12 +2,11 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v5.29.3
-// source: inventory_service.proto
+// source: proto/inventory_service.proto
 
-package proto
+package remote_inventory
 
 import (
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -67,11 +66,11 @@ func (x NavigationCommand_Direction) String() string {
 }
 
 func (NavigationCommand_Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_inventory_service_proto_enumTypes[0].Descriptor()
+	return file_proto_inventory_service_proto_enumTypes[0].Descriptor()
 }
 
 func (NavigationCommand_Direction) Type() protoreflect.EnumType {
-	return &file_inventory_service_proto_enumTypes[0]
+	return &file_proto_inventory_service_proto_enumTypes[0]
 }
 
 func (x NavigationCommand_Direction) Number() protoreflect.EnumNumber {
@@ -80,7 +79,7 @@ func (x NavigationCommand_Direction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use NavigationCommand_Direction.Descriptor instead.
 func (NavigationCommand_Direction) EnumDescriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{10, 0}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{10, 0}
 }
 
 type ZoomCommand_ZoomType int32
@@ -116,11 +115,11 @@ func (x ZoomCommand_ZoomType) String() string {
 }
 
 func (ZoomCommand_ZoomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_inventory_service_proto_enumTypes[1].Descriptor()
+	return file_proto_inventory_service_proto_enumTypes[1].Descriptor()
 }
 
 func (ZoomCommand_ZoomType) Type() protoreflect.EnumType {
-	return &file_inventory_service_proto_enumTypes[1]
+	return &file_proto_inventory_service_proto_enumTypes[1]
 }
 
 func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
@@ -129,7 +128,105 @@ func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ZoomCommand_ZoomType.Descriptor instead.
 func (ZoomCommand_ZoomType) EnumDescriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{13, 0}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{13, 0}
+}
+
+type ApprovalStatusUpdate_Status int32
+
+const (
+	ApprovalStatusUpdate_PENDING  ApprovalStatusUpdate_Status = 0
+	ApprovalStatusUpdate_APPROVED ApprovalStatusUpdate_Status = 1
+	ApprovalStatusUpdate_DENIED   ApprovalStatusUpdate_Status = 2
+)
+
+// Enum value maps for ApprovalStatusUpdate_Status.
+var (
+	ApprovalStatusUpdate_Status_name = map[int32]string{
+		0: "PENDING",
+		1: "APPROVED",
+		2: "DENIED",
+	}
+	ApprovalStatusUpdate_Status_value = map[string]int32{
+		"PENDING":  0,
+		"APPROVED": 1,
+		"DENIED":   2,
+	}
+)
+
+func (x ApprovalStatusUpdate_Status) Enum() *ApprovalStatusUpdate_Status {
+	p := new(ApprovalStatusUpdate_Status)
+	*p = x
+	return p
+}
+
+func (x ApprovalStatusUpdate_Status) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ApprovalStatusUpdate_Status) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_inventory_service_proto_enumTypes[2].Descriptor()
+}
+
+func (ApprovalStatusUpdate_Status) Type() protoreflect.EnumType {
+	return &file_proto_inventory_service_proto_enumTypes[2]
+}
+
+func (x ApprovalStatusUpdate_Status) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ApprovalStatusUpdate_Status.Descriptor instead.
+func (ApprovalStatusUpdate_Status) EnumDescriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{31, 0}
+}
+
+type WebRTCSignal_SignalType int32
+
+const (
+	WebRTCSignal_OFFER         WebRTCSignal_SignalType = 0
+	WebRTCSignal_ANSWER        WebRTCSignal_SignalType = 1
+	WebRTCSignal_ICE_CANDIDATE WebRTCSignal_SignalType = 2
+)
+
+// Enum value maps for WebRTCSignal_SignalType.
+var (
+	WebRTCSignal_SignalType_name = map[int32]string{
+		0: "OFFER",
+		1: "ANSWER",
+		2: "ICE_CANDIDATE",
+	}
+	WebRTCSignal_SignalType_value = map[string]int32{
+		"OFFER":         0,
+		"ANSWER":        1,
+		"ICE_CANDIDATE": 2,
+	}
+)
+
+func (x WebRTCSignal_SignalType) Enum() *WebRTCSignal_SignalType {
+	p := new(WebRTCSignal_SignalType)
+	*p = x
+	return p
+}
+
+func (x WebRTCSignal_SignalType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (WebRTCSignal_SignalType) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_inventory_service_proto_enumTypes[3].Descriptor()
+}
+
+func (WebRTCSignal_SignalType) Type() protoreflect.EnumType {
+	return &file_proto_inventory_service_proto_enumTypes[3]
+}
+
+func (x WebRTCSignal_SignalType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use WebRTCSignal_SignalType.Descriptor instead.
+func (WebRTCSignal_SignalType) EnumDescriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{34, 0}
 }
 
 // Session messages
@@ -137,13 +234,14 @@ type CreateSessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
 	ProviderName  string                 `protobuf:"bytes,2,opt,name=provider_name,json=providerName,proto3" json:"provider_name,omitempty"`
+	Location      string                 `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"` // Provider location/address
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateSessionRequest) Reset() {
 	*x = CreateSessionRequest{}
-	mi := &file_inventory_service_proto_msgTypes[0]
+	mi := &file_proto_inventory_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -155,7 +253,7 @@ func (x *CreateSessionRequest) String() string {
 func (*CreateSessionRequest) ProtoMessage() {}
 
 func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[0]
+	mi := &file_proto_inventory_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +266,7 @@ func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSessionRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{0}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CreateSessionRequest) GetProviderId() string {
@@ -185,6 +283,13 @@ func (x *CreateSessionRequest) GetProviderName() string {
 	return ""
 }
 
+func (x *CreateSessionRequest) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
 type JoinSessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
@@ -196,7 +301,7 @@ type JoinSessionRequest struct {
 
 func (x *JoinSessionRequest) Reset() {
 	*x = JoinSessionRequest{}
-	mi := &file_inventory_service_proto_msgTypes[1]
+	mi := &file_proto_inventory_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +313,7 @@ func (x *JoinSessionRequest) String() string {
 func (*JoinSessionRequest) ProtoMessage() {}
 
 func (x *JoinSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[1]
+	mi := &file_proto_inventory_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +326,7 @@ func (x *JoinSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JoinSessionRequest.ProtoReflect.Descriptor instead.
 func (*JoinSessionRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{1}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *JoinSessionRequest) GetSessionId() string {
@@ -257,7 +362,7 @@ type SessionResponse struct {
 
 func (x *SessionResponse) Reset() {
 	*x = SessionResponse{}
-	mi := &file_inventory_service_proto_msgTypes[2]
+	mi := &file_proto_inventory_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -269,7 +374,7 @@ func (x *SessionResponse) String() string {
 func (*SessionResponse) ProtoMessage() {}
 
 func (x *SessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[2]
+	mi := &file_proto_inventory_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -282,7 +387,7 @@ func (x *SessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionResponse.ProtoReflect.Descriptor instead.
 func (*SessionResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{2}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SessionResponse) GetSessionId() string {
@@ -323,7 +428,7 @@ type EndSessionRequest struct {
 
 func (x *EndSessionRequest) Reset() {
 	*x = EndSessionRequest{}
-	mi := &file_inventory_service_proto_msgTypes[3]
+	mi := &file_proto_inventory_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -335,7 +440,7 @@ func (x *EndSessionRequest) String() string {
 func (*EndSessionRequest) ProtoMessage() {}
 
 func (x *EndSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[3]
+	mi := &file_proto_inventory_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -348,7 +453,7 @@ func (x *EndSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndSessionRequest.ProtoReflect.Descriptor instead.
 func (*EndSessionRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{3}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *EndSessionRequest) GetSessionId() string {
@@ -374,7 +479,7 @@ type EndSessionResponse struct {
 
 func (x *EndSessionResponse) Reset() {
 	*x = EndSessionResponse{}
-	mi := &file_inventory_service_proto_msgTypes[4]
+	mi := &file_proto_inventory_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -386,7 +491,7 @@ func (x *EndSessionResponse) String() string {
 func (*EndSessionResponse) ProtoMessage() {}
 
 func (x *EndSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[4]
+	mi := &file_proto_inventory_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -399,7 +504,7 @@ func (x *EndSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndSessionResponse.ProtoReflect.Descriptor instead.
 func (*EndSessionResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{4}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *EndSessionResponse) GetSuccess() bool {
@@ -426,7 +531,7 @@ type ProviderMessage struct {
 
 func (x *ProviderMessage) Reset() {
 	*x = ProviderMessage{}
-	mi := &file_inventory_service_proto_msgTypes[5]
+	mi := &file_proto_inventory_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +543,7 @@ func (x *ProviderMessage) String() string {
 func (*ProviderMessage) ProtoMessage() {}
 
 func (x *ProviderMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[5]
+	mi := &file_proto_inventory_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +556,7 @@ func (x *ProviderMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderMessage.ProtoReflect.Descriptor instead.
 func (*ProviderMessage) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{5}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ProviderMessage) GetSessionId() string {
@@ -537,7 +642,7 @@ type VideoFrame struct {
 
 func (x *VideoFrame) Reset() {
 	*x = VideoFrame{}
-	mi := &file_inventory_service_proto_msgTypes[6]
+	mi := &file_proto_inventory_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -549,7 +654,7 @@ func (x *VideoFrame) String() string {
 func (*VideoFrame) ProtoMessage() {}
 
 func (x *VideoFrame) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[6]
+	mi := &file_proto_inventory_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -562,7 +667,7 @@ func (x *VideoFrame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VideoFrame.ProtoReflect.Descriptor instead.
 func (*VideoFrame) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{6}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *VideoFrame) GetFrameData() []byte {
@@ -615,7 +720,7 @@ type SensorData struct {
 
 func (x *SensorData) Reset() {
 	*x = SensorData{}
-	mi := &file_inventory_service_proto_msgTypes[7]
+	mi := &file_proto_inventory_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -627,7 +732,7 @@ func (x *SensorData) String() string {
 func (*SensorData) ProtoMessage() {}
 
 func (x *SensorData) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[7]
+	mi := &file_proto_inventory_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -640,7 +745,7 @@ func (x *SensorData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SensorData.ProtoReflect.Descriptor instead.
 func (*SensorData) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{7}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SensorData) GetAccelerometerX() float32 {
@@ -702,7 +807,7 @@ type ProviderStatus struct {
 
 func (x *ProviderStatus) Reset() {
 	*x = ProviderStatus{}
-	mi := &file_inventory_service_proto_msgTypes[8]
+	mi := &file_proto_inventory_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -714,7 +819,7 @@ func (x *ProviderStatus) String() string {
 func (*ProviderStatus) ProtoMessage() {}
 
 func (x *ProviderStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[8]
+	mi := &file_proto_inventory_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -727,7 +832,7 @@ func (x *ProviderStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderStatus.ProtoReflect.Descriptor instead.
 func (*ProviderStatus) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{8}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ProviderStatus) GetCameraActive() bool {
@@ -760,7 +865,7 @@ type ProviderCommand struct {
 
 func (x *ProviderCommand) Reset() {
 	*x = ProviderCommand{}
-	mi := &file_inventory_service_proto_msgTypes[9]
+	mi := &file_proto_inventory_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -772,7 +877,7 @@ func (x *ProviderCommand) String() string {
 func (*ProviderCommand) ProtoMessage() {}
 
 func (x *ProviderCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[9]
+	mi := &file_proto_inventory_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -785,7 +890,7 @@ func (x *ProviderCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderCommand.ProtoReflect.Descriptor instead.
 func (*ProviderCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{9}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ProviderCommand) GetCommand() isProviderCommand_Command {
@@ -869,7 +974,7 @@ type NavigationCommand struct {
 
 func (x *NavigationCommand) Reset() {
 	*x = NavigationCommand{}
-	mi := &file_inventory_service_proto_msgTypes[10]
+	mi := &file_proto_inventory_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +986,7 @@ func (x *NavigationCommand) String() string {
 func (*NavigationCommand) ProtoMessage() {}
 
 func (x *NavigationCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[10]
+	mi := &file_proto_inventory_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,7 +999,7 @@ func (x *NavigationCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NavigationCommand.ProtoReflect.Descriptor instead.
 func (*NavigationCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{10}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *NavigationCommand) GetDirection() NavigationCommand_Direction {
@@ -922,7 +1027,7 @@ type LaserCommand struct {
 
 func (x *LaserCommand) Reset() {
 	*x = LaserCommand{}
-	mi := &file_inventory_service_proto_msgTypes[11]
+	mi := &file_proto_inventory_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -934,7 +1039,7 @@ func (x *LaserCommand) String() string {
 func (*LaserCommand) ProtoMessage() {}
 
 func (x *LaserCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[11]
+	mi := &file_proto_inventory_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -947,7 +1052,7 @@ func (x *LaserCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LaserCommand.ProtoReflect.Descriptor instead.
 func (*LaserCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{11}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *LaserCommand) GetActive() bool {
@@ -980,7 +1085,7 @@ type StopCommand struct {
 
 func (x *StopCommand) Reset() {
 	*x = StopCommand{}
-	mi := &file_inventory_service_proto_msgTypes[12]
+	mi := &file_proto_inventory_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -992,7 +1097,7 @@ func (x *StopCommand) String() string {
 func (*StopCommand) ProtoMessage() {}
 
 func (x *StopCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[12]
+	mi := &file_proto_inventory_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1005,7 +1110,7 @@ func (x *StopCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopCommand.ProtoReflect.Descriptor instead.
 func (*StopCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{12}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *StopCommand) GetEmergency() bool {
@@ -1025,7 +1130,7 @@ type ZoomCommand struct {
 
 func (x *ZoomCommand) Reset() {
 	*x = ZoomCommand{}
-	mi := &file_inventory_service_proto_msgTypes[13]
+	mi := &file_proto_inventory_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1037,7 +1142,7 @@ func (x *ZoomCommand) String() string {
 func (*ZoomCommand) ProtoMessage() {}
 
 func (x *ZoomCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[13]
+	mi := &file_proto_inventory_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1050,7 +1155,7 @@ func (x *ZoomCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoomCommand.ProtoReflect.Descriptor instead.
 func (*ZoomCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{13}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ZoomCommand) GetType() ZoomCommand_ZoomType {
@@ -1087,7 +1192,7 @@ type ConsumerCommand struct {
 
 func (x *ConsumerCommand) Reset() {
 	*x = ConsumerCommand{}
-	mi := &file_inventory_service_proto_msgTypes[14]
+	mi := &file_proto_inventory_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1099,7 +1204,7 @@ func (x *ConsumerCommand) String() string {
 func (*ConsumerCommand) ProtoMessage() {}
 
 func (x *ConsumerCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[14]
+	mi := &file_proto_inventory_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1112,7 +1217,7 @@ func (x *ConsumerCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsumerCommand.ProtoReflect.Descriptor instead.
 func (*ConsumerCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{14}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ConsumerCommand) GetSessionId() string {
@@ -1240,7 +1345,7 @@ type VoiceCommand struct {
 
 func (x *VoiceCommand) Reset() {
 	*x = VoiceCommand{}
-	mi := &file_inventory_service_proto_msgTypes[15]
+	mi := &file_proto_inventory_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1252,7 +1357,7 @@ func (x *VoiceCommand) String() string {
 func (*VoiceCommand) ProtoMessage() {}
 
 func (x *VoiceCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[15]
+	mi := &file_proto_inventory_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1265,7 +1370,7 @@ func (x *VoiceCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VoiceCommand.ProtoReflect.Descriptor instead.
 func (*VoiceCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{15}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *VoiceCommand) GetTranscribedText() string {
@@ -1291,7 +1396,7 @@ type TextCommand struct {
 
 func (x *TextCommand) Reset() {
 	*x = TextCommand{}
-	mi := &file_inventory_service_proto_msgTypes[16]
+	mi := &file_proto_inventory_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1303,7 +1408,7 @@ func (x *TextCommand) String() string {
 func (*TextCommand) ProtoMessage() {}
 
 func (x *TextCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[16]
+	mi := &file_proto_inventory_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1316,7 +1421,7 @@ func (x *TextCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextCommand.ProtoReflect.Descriptor instead.
 func (*TextCommand) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{16}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TextCommand) GetText() string {
@@ -1338,7 +1443,7 @@ type HeartbeatRequest struct {
 
 func (x *HeartbeatRequest) Reset() {
 	*x = HeartbeatRequest{}
-	mi := &file_inventory_service_proto_msgTypes[17]
+	mi := &file_proto_inventory_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1350,7 +1455,7 @@ func (x *HeartbeatRequest) String() string {
 func (*HeartbeatRequest) ProtoMessage() {}
 
 func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[17]
+	mi := &file_proto_inventory_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1363,7 +1468,7 @@ func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatRequest.ProtoReflect.Descriptor instead.
 func (*HeartbeatRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{17}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *HeartbeatRequest) GetSessionId() string {
@@ -1397,7 +1502,7 @@ type HeartbeatResponse struct {
 
 func (x *HeartbeatResponse) Reset() {
 	*x = HeartbeatResponse{}
-	mi := &file_inventory_service_proto_msgTypes[18]
+	mi := &file_proto_inventory_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1409,7 +1514,7 @@ func (x *HeartbeatResponse) String() string {
 func (*HeartbeatResponse) ProtoMessage() {}
 
 func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[18]
+	mi := &file_proto_inventory_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1422,7 +1527,7 @@ func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatResponse.ProtoReflect.Descriptor instead.
 func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{18}
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *HeartbeatResponse) GetActive() bool {
@@ -1439,15 +1544,1114 @@ func (x *HeartbeatResponse) GetSessionDurationMs() int64 {
 	return 0
 }
 
-var File_inventory_service_proto protoreflect.FileDescriptor
+// Session Discovery Messages
+type ListSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SearchQuery   string                 `protobuf:"bytes,1,opt,name=search_query,json=searchQuery,proto3" json:"search_query,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
 
-const file_inventory_service_proto_rawDesc = "" +
+func (x *ListSessionsRequest) Reset() {
+	*x = ListSessionsRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsRequest) ProtoMessage() {}
+
+func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
+func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListSessionsRequest) GetSearchQuery() string {
+	if x != nil {
+		return x.SearchQuery
+	}
+	return ""
+}
+
+type ListSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sessions      []*SessionInfo         `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsResponse) Reset() {
+	*x = ListSessionsResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsResponse) ProtoMessage() {}
+
+func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ListSessionsResponse) GetSessions() []*SessionInfo {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+type SessionInfo struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	SessionId            string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	ProviderName         string                 `protobuf:"bytes,2,opt,name=provider_name,json=providerName,proto3" json:"provider_name,omitempty"`
+	ProviderLocation     string                 `protobuf:"bytes,3,opt,name=provider_location,json=providerLocation,proto3" json:"provider_location,omitempty"`
+	CreatedAt            int64                  `protobuf:"varint,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	AcceptingConnections bool                   `protobuf:"varint,5,opt,name=accepting_connections,json=acceptingConnections,proto3" json:"accepting_connections,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *SessionInfo) Reset() {
+	*x = SessionInfo{}
+	mi := &file_proto_inventory_service_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionInfo) ProtoMessage() {}
+
+func (x *SessionInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionInfo.ProtoReflect.Descriptor instead.
+func (*SessionInfo) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *SessionInfo) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *SessionInfo) GetProviderName() string {
+	if x != nil {
+		return x.ProviderName
+	}
+	return ""
+}
+
+func (x *SessionInfo) GetProviderLocation() string {
+	if x != nil {
+		return x.ProviderLocation
+	}
+	return ""
+}
+
+func (x *SessionInfo) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *SessionInfo) GetAcceptingConnections() bool {
+	if x != nil {
+		return x.AcceptingConnections
+	}
+	return false
+}
+
+// Connection Request Messages
+type ConnectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
+	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConnectionRequest) Reset() {
+	*x = ConnectionRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectionRequest) ProtoMessage() {}
+
+func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectionRequest.ProtoReflect.Descriptor instead.
+func (*ConnectionRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ConnectionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ConnectionRequest) GetConsumerId() string {
+	if x != nil {
+		return x.ConsumerId
+	}
+	return ""
+}
+
+func (x *ConnectionRequest) GetConsumerName() string {
+	if x != nil {
+		return x.ConsumerName
+	}
+	return ""
+}
+
+type ConnectionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Success       bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConnectionResponse) Reset() {
+	*x = ConnectionResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectionResponse) ProtoMessage() {}
+
+func (x *ConnectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectionResponse.ProtoReflect.Descriptor instead.
+func (*ConnectionResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ConnectionResponse) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *ConnectionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ConnectionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type WatchRequestsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchRequestsRequest) Reset() {
+	*x = WatchRequestsRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchRequestsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchRequestsRequest) ProtoMessage() {}
+
+func (x *WatchRequestsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchRequestsRequest.ProtoReflect.Descriptor instead.
+func (*WatchRequestsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *WatchRequestsRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type ConnectionRequestNotification struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
+	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
+	RequestedAt   int64                  `protobuf:"varint,4,opt,name=requested_at,json=requestedAt,proto3" json:"requested_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConnectionRequestNotification) Reset() {
+	*x = ConnectionRequestNotification{}
+	mi := &file_proto_inventory_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectionRequestNotification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectionRequestNotification) ProtoMessage() {}
+
+func (x *ConnectionRequestNotification) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectionRequestNotification.ProtoReflect.Descriptor instead.
+func (*ConnectionRequestNotification) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *ConnectionRequestNotification) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetConsumerId() string {
+	if x != nil {
+		return x.ConsumerId
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetConsumerName() string {
+	if x != nil {
+		return x.ConsumerName
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetRequestedAt() int64 {
+	if x != nil {
+		return x.RequestedAt
+	}
+	return 0
+}
+
+// Approval Messages
+type ApproveRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveRequest) Reset() {
+	*x = ApproveRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveRequest) ProtoMessage() {}
+
+func (x *ApproveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveRequest.ProtoReflect.Descriptor instead.
+func (*ApproveRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ApproveRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type ApproveResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveResponse) Reset() {
+	*x = ApproveResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveResponse) ProtoMessage() {}
+
+func (x *ApproveResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveResponse.ProtoReflect.Descriptor instead.
+func (*ApproveResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *ApproveResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ApproveResponse) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ApproveResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type DenyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DenyRequest) Reset() {
+	*x = DenyRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DenyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DenyRequest) ProtoMessage() {}
+
+func (x *DenyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DenyRequest.ProtoReflect.Descriptor instead.
+func (*DenyRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *DenyRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *DenyRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type DenyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DenyResponse) Reset() {
+	*x = DenyResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DenyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DenyResponse) ProtoMessage() {}
+
+func (x *DenyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DenyResponse.ProtoReflect.Descriptor instead.
+func (*DenyResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *DenyResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type WatchApprovalRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchApprovalRequest) Reset() {
+	*x = WatchApprovalRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchApprovalRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchApprovalRequest) ProtoMessage() {}
+
+func (x *WatchApprovalRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchApprovalRequest.ProtoReflect.Descriptor instead.
+func (*WatchApprovalRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *WatchApprovalRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type ApprovalStatusUpdate struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	Status        ApprovalStatusUpdate_Status `protobuf:"varint,1,opt,name=status,proto3,enum=inventory.ApprovalStatusUpdate_Status" json:"status,omitempty"`
+	SessionId     string                      `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Token         string                      `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	Message       string                      `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApprovalStatusUpdate) Reset() {
+	*x = ApprovalStatusUpdate{}
+	mi := &file_proto_inventory_service_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApprovalStatusUpdate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApprovalStatusUpdate) ProtoMessage() {}
+
+func (x *ApprovalStatusUpdate) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApprovalStatusUpdate.ProtoReflect.Descriptor instead.
+func (*ApprovalStatusUpdate) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *ApprovalStatusUpdate) GetStatus() ApprovalStatusUpdate_Status {
+	if x != nil {
+		return x.Status
+	}
+	return ApprovalStatusUpdate_PENDING
+}
+
+func (x *ApprovalStatusUpdate) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ApprovalStatusUpdate) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ApprovalStatusUpdate) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+// Command Messages
+type Command struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	SessionId string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	// Types that are valid to be assigned to CommandType:
+	//
+	//	*Command_Navigation
+	//	*Command_Laser
+	//	*Command_Stop
+	//	*Command_Zoom
+	//	*Command_Voice
+	//	*Command_Text
+	CommandType   isCommand_CommandType `protobuf_oneof:"command_type"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Command) Reset() {
+	*x = Command{}
+	mi := &file_proto_inventory_service_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Command) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Command) ProtoMessage() {}
+
+func (x *Command) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Command.ProtoReflect.Descriptor instead.
+func (*Command) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *Command) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *Command) GetCommandType() isCommand_CommandType {
+	if x != nil {
+		return x.CommandType
+	}
+	return nil
+}
+
+func (x *Command) GetNavigation() *NavigationCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Navigation); ok {
+			return x.Navigation
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetLaser() *LaserCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Laser); ok {
+			return x.Laser
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetStop() *StopCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Stop); ok {
+			return x.Stop
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetZoom() *ZoomCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Zoom); ok {
+			return x.Zoom
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetVoice() *VoiceCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Voice); ok {
+			return x.Voice
+		}
+	}
+	return nil
+}
+
+func (x *Command) GetText() *TextCommand {
+	if x != nil {
+		if x, ok := x.CommandType.(*Command_Text); ok {
+			return x.Text
+		}
+	}
+	return nil
+}
+
+type isCommand_CommandType interface {
+	isCommand_CommandType()
+}
+
+type Command_Navigation struct {
+	Navigation *NavigationCommand `protobuf:"bytes,2,opt,name=navigation,proto3,oneof"`
+}
+
+type Command_Laser struct {
+	Laser *LaserCommand `protobuf:"bytes,3,opt,name=laser,proto3,oneof"`
+}
+
+type Command_Stop struct {
+	Stop *StopCommand `protobuf:"bytes,4,opt,name=stop,proto3,oneof"`
+}
+
+type Command_Zoom struct {
+	Zoom *ZoomCommand `protobuf:"bytes,5,opt,name=zoom,proto3,oneof"`
+}
+
+type Command_Voice struct {
+	Voice *VoiceCommand `protobuf:"bytes,6,opt,name=voice,proto3,oneof"`
+}
+
+type Command_Text struct {
+	Text *TextCommand `protobuf:"bytes,7,opt,name=text,proto3,oneof"`
+}
+
+func (*Command_Navigation) isCommand_CommandType() {}
+
+func (*Command_Laser) isCommand_CommandType() {}
+
+func (*Command_Stop) isCommand_CommandType() {}
+
+func (*Command_Zoom) isCommand_CommandType() {}
+
+func (*Command_Voice) isCommand_CommandType() {}
+
+func (*Command_Text) isCommand_CommandType() {}
+
+type CommandResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CommandResponse) Reset() {
+	*x = CommandResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CommandResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CommandResponse) ProtoMessage() {}
+
+func (x *CommandResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CommandResponse.ProtoReflect.Descriptor instead.
+func (*CommandResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *CommandResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *CommandResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type WebRTCSignal struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	SessionId     string                  `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	FromDeviceId  string                  `protobuf:"bytes,2,opt,name=from_device_id,json=fromDeviceId,proto3" json:"from_device_id,omitempty"`
+	ToDeviceId    string                  `protobuf:"bytes,3,opt,name=to_device_id,json=toDeviceId,proto3" json:"to_device_id,omitempty"`
+	Type          WebRTCSignal_SignalType `protobuf:"varint,4,opt,name=type,proto3,enum=inventory.WebRTCSignal_SignalType" json:"type,omitempty"`
+	Payload       string                  `protobuf:"bytes,5,opt,name=payload,proto3" json:"payload,omitempty"` // JSON-encoded SDP or ICE candidate
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WebRTCSignal) Reset() {
+	*x = WebRTCSignal{}
+	mi := &file_proto_inventory_service_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WebRTCSignal) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WebRTCSignal) ProtoMessage() {}
+
+func (x *WebRTCSignal) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WebRTCSignal.ProtoReflect.Descriptor instead.
+func (*WebRTCSignal) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *WebRTCSignal) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *WebRTCSignal) GetFromDeviceId() string {
+	if x != nil {
+		return x.FromDeviceId
+	}
+	return ""
+}
+
+func (x *WebRTCSignal) GetToDeviceId() string {
+	if x != nil {
+		return x.ToDeviceId
+	}
+	return ""
+}
+
+func (x *WebRTCSignal) GetType() WebRTCSignal_SignalType {
+	if x != nil {
+		return x.Type
+	}
+	return WebRTCSignal_OFFER
+}
+
+func (x *WebRTCSignal) GetPayload() string {
+	if x != nil {
+		return x.Payload
+	}
+	return ""
+}
+
+type SignalResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SignalResponse) Reset() {
+	*x = SignalResponse{}
+	mi := &file_proto_inventory_service_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SignalResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignalResponse) ProtoMessage() {}
+
+func (x *SignalResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignalResponse.ProtoReflect.Descriptor instead.
+func (*SignalResponse) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *SignalResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SignalResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type WatchSignalsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	DeviceId      string                 `protobuf:"bytes,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"` // Device watching for signals
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchSignalsRequest) Reset() {
+	*x = WatchSignalsRequest{}
+	mi := &file_proto_inventory_service_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchSignalsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchSignalsRequest) ProtoMessage() {}
+
+func (x *WatchSignalsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_inventory_service_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchSignalsRequest.ProtoReflect.Descriptor instead.
+func (*WatchSignalsRequest) Descriptor() ([]byte, []int) {
+	return file_proto_inventory_service_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *WatchSignalsRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *WatchSignalsRequest) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
+}
+
+var File_proto_inventory_service_proto protoreflect.FileDescriptor
+
+const file_proto_inventory_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17inventory_service.proto\x12\tinventory\x1a\x1cgoogle/api/annotations.proto\"\\\n" +
+	"\x1dproto/inventory_service.proto\x12\tinventory\"x\n" +
 	"\x14CreateSessionRequest\x12\x1f\n" +
 	"\vprovider_id\x18\x01 \x01(\tR\n" +
 	"providerId\x12#\n" +
-	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\"y\n" +
+	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\x12\x1a\n" +
+	"\blocation\x18\x03 \x01(\tR\blocation\"y\n" +
 	"\x12JoinSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
@@ -1559,105 +2763,258 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x04role\x18\x03 \x01(\tR\x04role\"[\n" +
 	"\x11HeartbeatResponse\x12\x16\n" +
 	"\x06active\x18\x01 \x01(\bR\x06active\x12.\n" +
-	"\x13session_duration_ms\x18\x02 \x01(\x03R\x11sessionDurationMs2\xeb\x04\n" +
-	"\x10InventoryService\x12e\n" +
-	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/sessions\x12s\n" +
-	"\vJoinSession\x12\x1d.inventory.JoinSessionRequest\x1a\x1a.inventory.SessionResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/v1/sessions/{session_id}/join\x12l\n" +
+	"\x13session_duration_ms\x18\x02 \x01(\x03R\x11sessionDurationMs\"8\n" +
+	"\x13ListSessionsRequest\x12!\n" +
+	"\fsearch_query\x18\x01 \x01(\tR\vsearchQuery\"J\n" +
+	"\x14ListSessionsResponse\x122\n" +
+	"\bsessions\x18\x01 \x03(\v2\x16.inventory.SessionInfoR\bsessions\"\xd2\x01\n" +
+	"\vSessionInfo\x12\x1d\n" +
 	"\n" +
-	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/v1/sessions/{session_id}\x12L\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12#\n" +
+	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\x12+\n" +
+	"\x11provider_location\x18\x03 \x01(\tR\x10providerLocation\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\x03R\tcreatedAt\x123\n" +
+	"\x15accepting_connections\x18\x05 \x01(\bR\x14acceptingConnections\"x\n" +
+	"\x11ConnectionRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
+	"\vconsumer_id\x18\x02 \x01(\tR\n" +
+	"consumerId\x12#\n" +
+	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\"g\n" +
+	"\x12ConnectionResponse\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x18\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"5\n" +
+	"\x14WatchRequestsRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"\xa7\x01\n" +
+	"\x1dConnectionRequestNotification\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x1f\n" +
+	"\vconsumer_id\x18\x02 \x01(\tR\n" +
+	"consumerId\x12#\n" +
+	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\x12!\n" +
+	"\frequested_at\x18\x04 \x01(\x03R\vrequestedAt\"/\n" +
+	"\x0eApproveRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"`\n" +
+	"\x0fApproveResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"D\n" +
+	"\vDenyRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\"(\n" +
+	"\fDenyResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"5\n" +
+	"\x14WatchApprovalRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"\xd6\x01\n" +
+	"\x14ApprovalStatusUpdate\x12>\n" +
+	"\x06status\x18\x01 \x01(\x0e2&.inventory.ApprovalStatusUpdate.StatusR\x06status\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage\"/\n" +
+	"\x06Status\x12\v\n" +
+	"\aPENDING\x10\x00\x12\f\n" +
+	"\bAPPROVED\x10\x01\x12\n" +
+	"\n" +
+	"\x06DENIED\x10\x02\"\xe4\x02\n" +
+	"\aCommand\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12>\n" +
+	"\n" +
+	"navigation\x18\x02 \x01(\v2\x1c.inventory.NavigationCommandH\x00R\n" +
+	"navigation\x12/\n" +
+	"\x05laser\x18\x03 \x01(\v2\x17.inventory.LaserCommandH\x00R\x05laser\x12,\n" +
+	"\x04stop\x18\x04 \x01(\v2\x16.inventory.StopCommandH\x00R\x04stop\x12,\n" +
+	"\x04zoom\x18\x05 \x01(\v2\x16.inventory.ZoomCommandH\x00R\x04zoom\x12/\n" +
+	"\x05voice\x18\x06 \x01(\v2\x17.inventory.VoiceCommandH\x00R\x05voice\x12,\n" +
+	"\x04text\x18\a \x01(\v2\x16.inventory.TextCommandH\x00R\x04textB\x0e\n" +
+	"\fcommand_type\"E\n" +
+	"\x0fCommandResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xff\x01\n" +
+	"\fWebRTCSignal\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12$\n" +
+	"\x0efrom_device_id\x18\x02 \x01(\tR\ffromDeviceId\x12 \n" +
+	"\fto_device_id\x18\x03 \x01(\tR\n" +
+	"toDeviceId\x126\n" +
+	"\x04type\x18\x04 \x01(\x0e2\".inventory.WebRTCSignal.SignalTypeR\x04type\x12\x18\n" +
+	"\apayload\x18\x05 \x01(\tR\apayload\"6\n" +
+	"\n" +
+	"SignalType\x12\t\n" +
+	"\x05OFFER\x10\x00\x12\n" +
+	"\n" +
+	"\x06ANSWER\x10\x01\x12\x11\n" +
+	"\rICE_CANDIDATE\x10\x02\"D\n" +
+	"\x0eSignalResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"Q\n" +
+	"\x13WatchSignalsRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1b\n" +
+	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xb4\t\n" +
+	"\x16RemoteInventoryService\x12N\n" +
+	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x00\x12Q\n" +
+	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x00\x12R\n" +
+	"\x11RequestConnection\x12\x1c.inventory.ConnectionRequest\x1a\x1d.inventory.ConnectionResponse\"\x00\x12h\n" +
+	"\x17WatchConnectionRequests\x12\x1f.inventory.WatchRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"\x000\x01\x12L\n" +
+	"\x11ApproveConnection\x12\x19.inventory.ApproveRequest\x1a\x1a.inventory.ApproveResponse\"\x00\x12C\n" +
+	"\x0eDenyConnection\x12\x16.inventory.DenyRequest\x1a\x17.inventory.DenyResponse\"\x00\x12[\n" +
+	"\x13WatchApprovalStatus\x12\x1f.inventory.WatchApprovalRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"\x000\x01\x12F\n" +
+	"\x10SendWebRTCSignal\x12\x17.inventory.WebRTCSignal\x1a\x19.inventory.SignalResponse\x12O\n" +
+	"\x12WatchWebRTCSignals\x12\x1e.inventory.WatchSignalsRequest\x1a\x17.inventory.WebRTCSignal0\x01\x12A\n" +
+	"\vStreamVideo\x12\x15.inventory.VideoFrame\x1a\x15.inventory.VideoFrame\"\x00(\x010\x01\x12?\n" +
+	"\vSendCommand\x12\x12.inventory.Command\x1a\x1a.inventory.CommandResponse\"\x00\x12K\n" +
+	"\n" +
+	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"\x00\x12L\n" +
 	"\x0eProviderStream\x12\x1a.inventory.ProviderMessage\x1a\x1a.inventory.ProviderCommand(\x010\x01\x12G\n" +
-	"\x0eConsumerStream\x12\x1a.inventory.ConsumerCommand\x1a\x15.inventory.VideoFrame(\x010\x01\x12v\n" +
-	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/sessions/{session_id}/heartbeatB*Z(github.com/djgupt/remote-inventory/protob\x06proto3"
+	"\x0eConsumerStream\x12\x1a.inventory.ConsumerCommand\x1a\x15.inventory.VideoFrame(\x010\x01\x12H\n" +
+	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\"\x00B$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
 
 var (
-	file_inventory_service_proto_rawDescOnce sync.Once
-	file_inventory_service_proto_rawDescData []byte
+	file_proto_inventory_service_proto_rawDescOnce sync.Once
+	file_proto_inventory_service_proto_rawDescData []byte
 )
 
-func file_inventory_service_proto_rawDescGZIP() []byte {
-	file_inventory_service_proto_rawDescOnce.Do(func() {
-		file_inventory_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_inventory_service_proto_rawDesc), len(file_inventory_service_proto_rawDesc)))
+func file_proto_inventory_service_proto_rawDescGZIP() []byte {
+	file_proto_inventory_service_proto_rawDescOnce.Do(func() {
+		file_proto_inventory_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_inventory_service_proto_rawDesc), len(file_proto_inventory_service_proto_rawDesc)))
 	})
-	return file_inventory_service_proto_rawDescData
+	return file_proto_inventory_service_proto_rawDescData
 }
 
-var file_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
-var file_inventory_service_proto_goTypes = []any{
-	(NavigationCommand_Direction)(0), // 0: inventory.NavigationCommand.Direction
-	(ZoomCommand_ZoomType)(0),        // 1: inventory.ZoomCommand.ZoomType
-	(*CreateSessionRequest)(nil),     // 2: inventory.CreateSessionRequest
-	(*JoinSessionRequest)(nil),       // 3: inventory.JoinSessionRequest
-	(*SessionResponse)(nil),          // 4: inventory.SessionResponse
-	(*EndSessionRequest)(nil),        // 5: inventory.EndSessionRequest
-	(*EndSessionResponse)(nil),       // 6: inventory.EndSessionResponse
-	(*ProviderMessage)(nil),          // 7: inventory.ProviderMessage
-	(*VideoFrame)(nil),               // 8: inventory.VideoFrame
-	(*SensorData)(nil),               // 9: inventory.SensorData
-	(*ProviderStatus)(nil),           // 10: inventory.ProviderStatus
-	(*ProviderCommand)(nil),          // 11: inventory.ProviderCommand
-	(*NavigationCommand)(nil),        // 12: inventory.NavigationCommand
-	(*LaserCommand)(nil),             // 13: inventory.LaserCommand
-	(*StopCommand)(nil),              // 14: inventory.StopCommand
-	(*ZoomCommand)(nil),              // 15: inventory.ZoomCommand
-	(*ConsumerCommand)(nil),          // 16: inventory.ConsumerCommand
-	(*VoiceCommand)(nil),             // 17: inventory.VoiceCommand
-	(*TextCommand)(nil),              // 18: inventory.TextCommand
-	(*HeartbeatRequest)(nil),         // 19: inventory.HeartbeatRequest
-	(*HeartbeatResponse)(nil),        // 20: inventory.HeartbeatResponse
+var file_proto_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_proto_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_proto_inventory_service_proto_goTypes = []any{
+	(NavigationCommand_Direction)(0),      // 0: inventory.NavigationCommand.Direction
+	(ZoomCommand_ZoomType)(0),             // 1: inventory.ZoomCommand.ZoomType
+	(ApprovalStatusUpdate_Status)(0),      // 2: inventory.ApprovalStatusUpdate.Status
+	(WebRTCSignal_SignalType)(0),          // 3: inventory.WebRTCSignal.SignalType
+	(*CreateSessionRequest)(nil),          // 4: inventory.CreateSessionRequest
+	(*JoinSessionRequest)(nil),            // 5: inventory.JoinSessionRequest
+	(*SessionResponse)(nil),               // 6: inventory.SessionResponse
+	(*EndSessionRequest)(nil),             // 7: inventory.EndSessionRequest
+	(*EndSessionResponse)(nil),            // 8: inventory.EndSessionResponse
+	(*ProviderMessage)(nil),               // 9: inventory.ProviderMessage
+	(*VideoFrame)(nil),                    // 10: inventory.VideoFrame
+	(*SensorData)(nil),                    // 11: inventory.SensorData
+	(*ProviderStatus)(nil),                // 12: inventory.ProviderStatus
+	(*ProviderCommand)(nil),               // 13: inventory.ProviderCommand
+	(*NavigationCommand)(nil),             // 14: inventory.NavigationCommand
+	(*LaserCommand)(nil),                  // 15: inventory.LaserCommand
+	(*StopCommand)(nil),                   // 16: inventory.StopCommand
+	(*ZoomCommand)(nil),                   // 17: inventory.ZoomCommand
+	(*ConsumerCommand)(nil),               // 18: inventory.ConsumerCommand
+	(*VoiceCommand)(nil),                  // 19: inventory.VoiceCommand
+	(*TextCommand)(nil),                   // 20: inventory.TextCommand
+	(*HeartbeatRequest)(nil),              // 21: inventory.HeartbeatRequest
+	(*HeartbeatResponse)(nil),             // 22: inventory.HeartbeatResponse
+	(*ListSessionsRequest)(nil),           // 23: inventory.ListSessionsRequest
+	(*ListSessionsResponse)(nil),          // 24: inventory.ListSessionsResponse
+	(*SessionInfo)(nil),                   // 25: inventory.SessionInfo
+	(*ConnectionRequest)(nil),             // 26: inventory.ConnectionRequest
+	(*ConnectionResponse)(nil),            // 27: inventory.ConnectionResponse
+	(*WatchRequestsRequest)(nil),          // 28: inventory.WatchRequestsRequest
+	(*ConnectionRequestNotification)(nil), // 29: inventory.ConnectionRequestNotification
+	(*ApproveRequest)(nil),                // 30: inventory.ApproveRequest
+	(*ApproveResponse)(nil),               // 31: inventory.ApproveResponse
+	(*DenyRequest)(nil),                   // 32: inventory.DenyRequest
+	(*DenyResponse)(nil),                  // 33: inventory.DenyResponse
+	(*WatchApprovalRequest)(nil),          // 34: inventory.WatchApprovalRequest
+	(*ApprovalStatusUpdate)(nil),          // 35: inventory.ApprovalStatusUpdate
+	(*Command)(nil),                       // 36: inventory.Command
+	(*CommandResponse)(nil),               // 37: inventory.CommandResponse
+	(*WebRTCSignal)(nil),                  // 38: inventory.WebRTCSignal
+	(*SignalResponse)(nil),                // 39: inventory.SignalResponse
+	(*WatchSignalsRequest)(nil),           // 40: inventory.WatchSignalsRequest
 }
-var file_inventory_service_proto_depIdxs = []int32{
-	8,  // 0: inventory.ProviderMessage.video_frame:type_name -> inventory.VideoFrame
-	9,  // 1: inventory.ProviderMessage.sensor_data:type_name -> inventory.SensorData
-	10, // 2: inventory.ProviderMessage.status:type_name -> inventory.ProviderStatus
-	12, // 3: inventory.ProviderCommand.navigation:type_name -> inventory.NavigationCommand
-	13, // 4: inventory.ProviderCommand.laser:type_name -> inventory.LaserCommand
-	14, // 5: inventory.ProviderCommand.stop:type_name -> inventory.StopCommand
-	15, // 6: inventory.ProviderCommand.zoom:type_name -> inventory.ZoomCommand
+var file_proto_inventory_service_proto_depIdxs = []int32{
+	10, // 0: inventory.ProviderMessage.video_frame:type_name -> inventory.VideoFrame
+	11, // 1: inventory.ProviderMessage.sensor_data:type_name -> inventory.SensorData
+	12, // 2: inventory.ProviderMessage.status:type_name -> inventory.ProviderStatus
+	14, // 3: inventory.ProviderCommand.navigation:type_name -> inventory.NavigationCommand
+	15, // 4: inventory.ProviderCommand.laser:type_name -> inventory.LaserCommand
+	16, // 5: inventory.ProviderCommand.stop:type_name -> inventory.StopCommand
+	17, // 6: inventory.ProviderCommand.zoom:type_name -> inventory.ZoomCommand
 	0,  // 7: inventory.NavigationCommand.direction:type_name -> inventory.NavigationCommand.Direction
 	1,  // 8: inventory.ZoomCommand.type:type_name -> inventory.ZoomCommand.ZoomType
-	12, // 9: inventory.ConsumerCommand.navigation:type_name -> inventory.NavigationCommand
-	13, // 10: inventory.ConsumerCommand.laser:type_name -> inventory.LaserCommand
-	14, // 11: inventory.ConsumerCommand.stop:type_name -> inventory.StopCommand
-	15, // 12: inventory.ConsumerCommand.zoom:type_name -> inventory.ZoomCommand
-	17, // 13: inventory.ConsumerCommand.voice:type_name -> inventory.VoiceCommand
-	18, // 14: inventory.ConsumerCommand.text:type_name -> inventory.TextCommand
-	2,  // 15: inventory.InventoryService.CreateSession:input_type -> inventory.CreateSessionRequest
-	3,  // 16: inventory.InventoryService.JoinSession:input_type -> inventory.JoinSessionRequest
-	5,  // 17: inventory.InventoryService.EndSession:input_type -> inventory.EndSessionRequest
-	7,  // 18: inventory.InventoryService.ProviderStream:input_type -> inventory.ProviderMessage
-	16, // 19: inventory.InventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
-	19, // 20: inventory.InventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
-	4,  // 21: inventory.InventoryService.CreateSession:output_type -> inventory.SessionResponse
-	4,  // 22: inventory.InventoryService.JoinSession:output_type -> inventory.SessionResponse
-	6,  // 23: inventory.InventoryService.EndSession:output_type -> inventory.EndSessionResponse
-	11, // 24: inventory.InventoryService.ProviderStream:output_type -> inventory.ProviderCommand
-	8,  // 25: inventory.InventoryService.ConsumerStream:output_type -> inventory.VideoFrame
-	20, // 26: inventory.InventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
-	21, // [21:27] is the sub-list for method output_type
-	15, // [15:21] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	14, // 9: inventory.ConsumerCommand.navigation:type_name -> inventory.NavigationCommand
+	15, // 10: inventory.ConsumerCommand.laser:type_name -> inventory.LaserCommand
+	16, // 11: inventory.ConsumerCommand.stop:type_name -> inventory.StopCommand
+	17, // 12: inventory.ConsumerCommand.zoom:type_name -> inventory.ZoomCommand
+	19, // 13: inventory.ConsumerCommand.voice:type_name -> inventory.VoiceCommand
+	20, // 14: inventory.ConsumerCommand.text:type_name -> inventory.TextCommand
+	25, // 15: inventory.ListSessionsResponse.sessions:type_name -> inventory.SessionInfo
+	2,  // 16: inventory.ApprovalStatusUpdate.status:type_name -> inventory.ApprovalStatusUpdate.Status
+	14, // 17: inventory.Command.navigation:type_name -> inventory.NavigationCommand
+	15, // 18: inventory.Command.laser:type_name -> inventory.LaserCommand
+	16, // 19: inventory.Command.stop:type_name -> inventory.StopCommand
+	17, // 20: inventory.Command.zoom:type_name -> inventory.ZoomCommand
+	19, // 21: inventory.Command.voice:type_name -> inventory.VoiceCommand
+	20, // 22: inventory.Command.text:type_name -> inventory.TextCommand
+	3,  // 23: inventory.WebRTCSignal.type:type_name -> inventory.WebRTCSignal.SignalType
+	4,  // 24: inventory.RemoteInventoryService.CreateSession:input_type -> inventory.CreateSessionRequest
+	23, // 25: inventory.RemoteInventoryService.ListSessions:input_type -> inventory.ListSessionsRequest
+	26, // 26: inventory.RemoteInventoryService.RequestConnection:input_type -> inventory.ConnectionRequest
+	28, // 27: inventory.RemoteInventoryService.WatchConnectionRequests:input_type -> inventory.WatchRequestsRequest
+	30, // 28: inventory.RemoteInventoryService.ApproveConnection:input_type -> inventory.ApproveRequest
+	32, // 29: inventory.RemoteInventoryService.DenyConnection:input_type -> inventory.DenyRequest
+	34, // 30: inventory.RemoteInventoryService.WatchApprovalStatus:input_type -> inventory.WatchApprovalRequest
+	38, // 31: inventory.RemoteInventoryService.SendWebRTCSignal:input_type -> inventory.WebRTCSignal
+	40, // 32: inventory.RemoteInventoryService.WatchWebRTCSignals:input_type -> inventory.WatchSignalsRequest
+	10, // 33: inventory.RemoteInventoryService.StreamVideo:input_type -> inventory.VideoFrame
+	36, // 34: inventory.RemoteInventoryService.SendCommand:input_type -> inventory.Command
+	7,  // 35: inventory.RemoteInventoryService.EndSession:input_type -> inventory.EndSessionRequest
+	9,  // 36: inventory.RemoteInventoryService.ProviderStream:input_type -> inventory.ProviderMessage
+	18, // 37: inventory.RemoteInventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
+	21, // 38: inventory.RemoteInventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
+	6,  // 39: inventory.RemoteInventoryService.CreateSession:output_type -> inventory.SessionResponse
+	24, // 40: inventory.RemoteInventoryService.ListSessions:output_type -> inventory.ListSessionsResponse
+	27, // 41: inventory.RemoteInventoryService.RequestConnection:output_type -> inventory.ConnectionResponse
+	29, // 42: inventory.RemoteInventoryService.WatchConnectionRequests:output_type -> inventory.ConnectionRequestNotification
+	31, // 43: inventory.RemoteInventoryService.ApproveConnection:output_type -> inventory.ApproveResponse
+	33, // 44: inventory.RemoteInventoryService.DenyConnection:output_type -> inventory.DenyResponse
+	35, // 45: inventory.RemoteInventoryService.WatchApprovalStatus:output_type -> inventory.ApprovalStatusUpdate
+	39, // 46: inventory.RemoteInventoryService.SendWebRTCSignal:output_type -> inventory.SignalResponse
+	38, // 47: inventory.RemoteInventoryService.WatchWebRTCSignals:output_type -> inventory.WebRTCSignal
+	10, // 48: inventory.RemoteInventoryService.StreamVideo:output_type -> inventory.VideoFrame
+	37, // 49: inventory.RemoteInventoryService.SendCommand:output_type -> inventory.CommandResponse
+	8,  // 50: inventory.RemoteInventoryService.EndSession:output_type -> inventory.EndSessionResponse
+	13, // 51: inventory.RemoteInventoryService.ProviderStream:output_type -> inventory.ProviderCommand
+	10, // 52: inventory.RemoteInventoryService.ConsumerStream:output_type -> inventory.VideoFrame
+	22, // 53: inventory.RemoteInventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
+	39, // [39:54] is the sub-list for method output_type
+	24, // [24:39] is the sub-list for method input_type
+	24, // [24:24] is the sub-list for extension type_name
+	24, // [24:24] is the sub-list for extension extendee
+	0,  // [0:24] is the sub-list for field type_name
 }
 
-func init() { file_inventory_service_proto_init() }
-func file_inventory_service_proto_init() {
-	if File_inventory_service_proto != nil {
+func init() { file_proto_inventory_service_proto_init() }
+func file_proto_inventory_service_proto_init() {
+	if File_proto_inventory_service_proto != nil {
 		return
 	}
-	file_inventory_service_proto_msgTypes[5].OneofWrappers = []any{
+	file_proto_inventory_service_proto_msgTypes[5].OneofWrappers = []any{
 		(*ProviderMessage_VideoFrame)(nil),
 		(*ProviderMessage_SensorData)(nil),
 		(*ProviderMessage_Status)(nil),
 	}
-	file_inventory_service_proto_msgTypes[9].OneofWrappers = []any{
+	file_proto_inventory_service_proto_msgTypes[9].OneofWrappers = []any{
 		(*ProviderCommand_Navigation)(nil),
 		(*ProviderCommand_Laser)(nil),
 		(*ProviderCommand_Stop)(nil),
 		(*ProviderCommand_Zoom)(nil),
 	}
-	file_inventory_service_proto_msgTypes[14].OneofWrappers = []any{
+	file_proto_inventory_service_proto_msgTypes[14].OneofWrappers = []any{
 		(*ConsumerCommand_Navigation)(nil),
 		(*ConsumerCommand_Laser)(nil),
 		(*ConsumerCommand_Stop)(nil),
@@ -1665,22 +3022,30 @@ func file_inventory_service_proto_init() {
 		(*ConsumerCommand_Voice)(nil),
 		(*ConsumerCommand_Text)(nil),
 	}
+	file_proto_inventory_service_proto_msgTypes[32].OneofWrappers = []any{
+		(*Command_Navigation)(nil),
+		(*Command_Laser)(nil),
+		(*Command_Stop)(nil),
+		(*Command_Zoom)(nil),
+		(*Command_Voice)(nil),
+		(*Command_Text)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_service_proto_rawDesc), len(file_inventory_service_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   19,
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_inventory_service_proto_rawDesc), len(file_proto_inventory_service_proto_rawDesc)),
+			NumEnums:      4,
+			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_inventory_service_proto_goTypes,
-		DependencyIndexes: file_inventory_service_proto_depIdxs,
-		EnumInfos:         file_inventory_service_proto_enumTypes,
-		MessageInfos:      file_inventory_service_proto_msgTypes,
+		GoTypes:           file_proto_inventory_service_proto_goTypes,
+		DependencyIndexes: file_proto_inventory_service_proto_depIdxs,
+		EnumInfos:         file_proto_inventory_service_proto_enumTypes,
+		MessageInfos:      file_proto_inventory_service_proto_msgTypes,
 	}.Build()
-	File_inventory_service_proto = out.File
-	file_inventory_service_proto_goTypes = nil
-	file_inventory_service_proto_depIdxs = nil
+	File_proto_inventory_service_proto = out.File
+	file_proto_inventory_service_proto_goTypes = nil
+	file_proto_inventory_service_proto_depIdxs = nil
 }
