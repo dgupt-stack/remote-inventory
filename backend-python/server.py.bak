@@ -133,7 +133,7 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         # Initialize as pending
         self.pending_approvals[request_id] = 'PENDING'
         
-        return pb2.ConnectionResponse(
+        return inventory_service_pb2.ConnectionResponse(
             request_id=request_id,
             success=True,
             message='Connection request sent'
@@ -157,8 +157,8 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
                 session_id = req_info.get('session_id', '')
                 
                 logger.info(f"✅ Request {request_id} APPROVED")
-                yield pb2.ApprovalStatusUpdate(
-                    status=pb2.ApprovalStatusUpdate.APPROVED,
+                yield inventory_service_pb2.ApprovalStatusUpdate(
+                    status=inventory_service_pb2.ApprovalStatusUpdate.APPROVED,
                     session_id=session_id,
                     token='consumer-token',  # Generate proper token in production
                     message='Connection approved'
@@ -167,8 +167,8 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
                 
             elif status == 'DENIED':
                 logger.info(f"❌ Request {request_id} DENIED")
-                yield pb2.ApprovalStatusUpdate(
-                    status=pb2.ApprovalStatusUpdate.DENIED,
+                yield inventory_service_pb2.ApprovalStatusUpdate(
+                    status=inventory_service_pb2.ApprovalStatusUpdate.DENIED,
                     session_id='',
                     token='',
                     message='Connection denied'
@@ -176,8 +176,8 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
                 return
             
             # Still pending, send update
-            yield pb2.ApprovalStatusUpdate(
-                status=pb2.ApprovalStatusUpdate.PENDING,
+            yield inventory_service_pb2.ApprovalStatusUpdate(
+                status=inventory_service_pb2.ApprovalStatusUpdate.PENDING,
                 session_id='',
                 token='',
                 message='Waiting for provider approval'
@@ -187,8 +187,8 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         
         # Timeout - send DENIED
         logger.warning(f"⏱️  Request {request_id} timed out")
-        yield pb2.ApprovalStatusUpdate(
-            status=pb2.ApprovalStatusUpdate.DENIED,
+        yield inventory_service_pb2.ApprovalStatusUpdate(
+            status=inventory_service_pb2.ApprovalStatusUpdate.DENIED,
             session_id='',
             token='',
             message='Approval timeout'

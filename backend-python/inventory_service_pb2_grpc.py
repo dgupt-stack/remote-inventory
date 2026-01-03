@@ -70,6 +70,16 @@ class RemoteInventoryServiceStub(object):
                 request_serializer=inventory__service__pb2.WatchApprovalRequest.SerializeToString,
                 response_deserializer=inventory__service__pb2.ApprovalStatusUpdate.FromString,
                 _registered_method=True)
+        self.SendWebRTCSignal = channel.unary_unary(
+                '/inventory.RemoteInventoryService/SendWebRTCSignal',
+                request_serializer=inventory__service__pb2.WebRTCSignal.SerializeToString,
+                response_deserializer=inventory__service__pb2.SignalResponse.FromString,
+                _registered_method=True)
+        self.WatchWebRTCSignals = channel.unary_stream(
+                '/inventory.RemoteInventoryService/WatchWebRTCSignals',
+                request_serializer=inventory__service__pb2.WatchSignalsRequest.SerializeToString,
+                response_deserializer=inventory__service__pb2.WebRTCSignal.FromString,
+                _registered_method=True)
         self.StreamVideo = channel.stream_stream(
                 '/inventory.RemoteInventoryService/StreamVideo',
                 request_serializer=inventory__service__pb2.VideoFrame.SerializeToString,
@@ -155,6 +165,19 @@ class RemoteInventoryServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendWebRTCSignal(self, request, context):
+        """WebRTC Signaling (NEW)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def WatchWebRTCSignals(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def StreamVideo(self, request_iterator, context):
         """Streaming video (existing)
         """
@@ -233,6 +256,16 @@ def add_RemoteInventoryServiceServicer_to_server(servicer, server):
                     servicer.WatchApprovalStatus,
                     request_deserializer=inventory__service__pb2.WatchApprovalRequest.FromString,
                     response_serializer=inventory__service__pb2.ApprovalStatusUpdate.SerializeToString,
+            ),
+            'SendWebRTCSignal': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendWebRTCSignal,
+                    request_deserializer=inventory__service__pb2.WebRTCSignal.FromString,
+                    response_serializer=inventory__service__pb2.SignalResponse.SerializeToString,
+            ),
+            'WatchWebRTCSignals': grpc.unary_stream_rpc_method_handler(
+                    servicer.WatchWebRTCSignals,
+                    request_deserializer=inventory__service__pb2.WatchSignalsRequest.FromString,
+                    response_serializer=inventory__service__pb2.WebRTCSignal.SerializeToString,
             ),
             'StreamVideo': grpc.stream_stream_rpc_method_handler(
                     servicer.StreamVideo,
@@ -455,6 +488,60 @@ class RemoteInventoryService(object):
             '/inventory.RemoteInventoryService/WatchApprovalStatus',
             inventory__service__pb2.WatchApprovalRequest.SerializeToString,
             inventory__service__pb2.ApprovalStatusUpdate.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SendWebRTCSignal(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/inventory.RemoteInventoryService/SendWebRTCSignal',
+            inventory__service__pb2.WebRTCSignal.SerializeToString,
+            inventory__service__pb2.SignalResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def WatchWebRTCSignals(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/inventory.RemoteInventoryService/WatchWebRTCSignals',
+            inventory__service__pb2.WatchSignalsRequest.SerializeToString,
+            inventory__service__pb2.WebRTCSignal.FromString,
             options,
             channel_credentials,
             insecure,

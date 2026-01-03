@@ -49,6 +49,14 @@ class RemoteInventoryServiceClient extends $grpc.Client {
       '/inventory.RemoteInventoryService/WatchApprovalStatus',
       ($0.WatchApprovalRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ApprovalStatusUpdate.fromBuffer(value));
+  static final _$sendWebRTCSignal = $grpc.ClientMethod<$0.WebRTCSignal, $0.SignalResponse>(
+      '/inventory.RemoteInventoryService/SendWebRTCSignal',
+      ($0.WebRTCSignal value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.SignalResponse.fromBuffer(value));
+  static final _$watchWebRTCSignals = $grpc.ClientMethod<$0.WatchSignalsRequest, $0.WebRTCSignal>(
+      '/inventory.RemoteInventoryService/WatchWebRTCSignals',
+      ($0.WatchSignalsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.WebRTCSignal.fromBuffer(value));
   static final _$streamVideo = $grpc.ClientMethod<$0.VideoFrame, $0.VideoFrame>(
       '/inventory.RemoteInventoryService/StreamVideo',
       ($0.VideoFrame value) => value.writeToBuffer(),
@@ -106,6 +114,14 @@ class RemoteInventoryServiceClient extends $grpc.Client {
 
   $grpc.ResponseStream<$0.ApprovalStatusUpdate> watchApprovalStatus($0.WatchApprovalRequest request, {$grpc.CallOptions? options}) {
     return $createStreamingCall(_$watchApprovalStatus, $async.Stream.fromIterable([request]), options: options);
+  }
+
+  $grpc.ResponseFuture<$0.SignalResponse> sendWebRTCSignal($0.WebRTCSignal request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$sendWebRTCSignal, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.WebRTCSignal> watchWebRTCSignals($0.WatchSignalsRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$watchWebRTCSignals, $async.Stream.fromIterable([request]), options: options);
   }
 
   $grpc.ResponseStream<$0.VideoFrame> streamVideo($async.Stream<$0.VideoFrame> request, {$grpc.CallOptions? options}) {
@@ -187,6 +203,20 @@ abstract class RemoteInventoryServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.WatchApprovalRequest.fromBuffer(value),
         ($0.ApprovalStatusUpdate value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.WebRTCSignal, $0.SignalResponse>(
+        'SendWebRTCSignal',
+        sendWebRTCSignal_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.WebRTCSignal.fromBuffer(value),
+        ($0.SignalResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.WatchSignalsRequest, $0.WebRTCSignal>(
+        'WatchWebRTCSignals',
+        watchWebRTCSignals_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.WatchSignalsRequest.fromBuffer(value),
+        ($0.WebRTCSignal value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.VideoFrame, $0.VideoFrame>(
         'StreamVideo',
         streamVideo,
@@ -259,6 +289,14 @@ abstract class RemoteInventoryServiceBase extends $grpc.Service {
     yield* watchApprovalStatus(call, await request);
   }
 
+  $async.Future<$0.SignalResponse> sendWebRTCSignal_Pre($grpc.ServiceCall call, $async.Future<$0.WebRTCSignal> request) async {
+    return sendWebRTCSignal(call, await request);
+  }
+
+  $async.Stream<$0.WebRTCSignal> watchWebRTCSignals_Pre($grpc.ServiceCall call, $async.Future<$0.WatchSignalsRequest> request) async* {
+    yield* watchWebRTCSignals(call, await request);
+  }
+
   $async.Future<$0.CommandResponse> sendCommand_Pre($grpc.ServiceCall call, $async.Future<$0.Command> request) async {
     return sendCommand(call, await request);
   }
@@ -278,6 +316,8 @@ abstract class RemoteInventoryServiceBase extends $grpc.Service {
   $async.Future<$0.ApproveResponse> approveConnection($grpc.ServiceCall call, $0.ApproveRequest request);
   $async.Future<$0.DenyResponse> denyConnection($grpc.ServiceCall call, $0.DenyRequest request);
   $async.Stream<$0.ApprovalStatusUpdate> watchApprovalStatus($grpc.ServiceCall call, $0.WatchApprovalRequest request);
+  $async.Future<$0.SignalResponse> sendWebRTCSignal($grpc.ServiceCall call, $0.WebRTCSignal request);
+  $async.Stream<$0.WebRTCSignal> watchWebRTCSignals($grpc.ServiceCall call, $0.WatchSignalsRequest request);
   $async.Stream<$0.VideoFrame> streamVideo($grpc.ServiceCall call, $async.Stream<$0.VideoFrame> request);
   $async.Future<$0.CommandResponse> sendCommand($grpc.ServiceCall call, $0.Command request);
   $async.Future<$0.EndSessionResponse> endSession($grpc.ServiceCall call, $0.EndSessionRequest request);

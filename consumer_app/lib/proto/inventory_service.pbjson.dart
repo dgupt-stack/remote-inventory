@@ -595,3 +595,62 @@ final $typed_data.Uint8List commandResponseDescriptor = $convert.base64Decode(
     'Cg9Db21tYW5kUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIYCgdtZXNzYWdlGA'
     'IgASgJUgdtZXNzYWdl');
 
+@$core.Deprecated('Use webRTCSignalDescriptor instead')
+const WebRTCSignal$json = {
+  '1': 'WebRTCSignal',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'from_device_id', '3': 2, '4': 1, '5': 9, '10': 'fromDeviceId'},
+    {'1': 'to_device_id', '3': 3, '4': 1, '5': 9, '10': 'toDeviceId'},
+    {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.inventory.WebRTCSignal.SignalType', '10': 'type'},
+    {'1': 'payload', '3': 5, '4': 1, '5': 9, '10': 'payload'},
+  ],
+  '4': [WebRTCSignal_SignalType$json],
+};
+
+@$core.Deprecated('Use webRTCSignalDescriptor instead')
+const WebRTCSignal_SignalType$json = {
+  '1': 'SignalType',
+  '2': [
+    {'1': 'OFFER', '2': 0},
+    {'1': 'ANSWER', '2': 1},
+    {'1': 'ICE_CANDIDATE', '2': 2},
+  ],
+};
+
+/// Descriptor for `WebRTCSignal`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List webRTCSignalDescriptor = $convert.base64Decode(
+    'CgxXZWJSVENTaWduYWwSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEiQKDmZyb21fZG'
+    'V2aWNlX2lkGAIgASgJUgxmcm9tRGV2aWNlSWQSIAoMdG9fZGV2aWNlX2lkGAMgASgJUgp0b0Rl'
+    'dmljZUlkEjYKBHR5cGUYBCABKA4yIi5pbnZlbnRvcnkuV2ViUlRDU2lnbmFsLlNpZ25hbFR5cG'
+    'VSBHR5cGUSGAoHcGF5bG9hZBgFIAEoCVIHcGF5bG9hZCI2CgpTaWduYWxUeXBlEgkKBU9GRkVS'
+    'EAASCgoGQU5TV0VSEAESEQoNSUNFX0NBTkRJREFURRAC');
+
+@$core.Deprecated('Use signalResponseDescriptor instead')
+const SignalResponse$json = {
+  '1': 'SignalResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `SignalResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List signalResponseDescriptor = $convert.base64Decode(
+    'Cg5TaWduYWxSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNzEhgKB21lc3NhZ2UYAi'
+    'ABKAlSB21lc3NhZ2U=');
+
+@$core.Deprecated('Use watchSignalsRequestDescriptor instead')
+const WatchSignalsRequest$json = {
+  '1': 'WatchSignalsRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'device_id', '3': 2, '4': 1, '5': 9, '10': 'deviceId'},
+  ],
+};
+
+/// Descriptor for `WatchSignalsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchSignalsRequestDescriptor = $convert.base64Decode(
+    'ChNXYXRjaFNpZ25hbHNSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIbCg'
+    'lkZXZpY2VfaWQYAiABKAlSCGRldmljZUlk');
+

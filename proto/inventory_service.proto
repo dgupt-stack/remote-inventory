@@ -32,6 +32,10 @@ service RemoteInventoryService {
 
   // Consumer watches for approval status
   rpc WatchApprovalStatus(WatchApprovalRequest) returns (stream ApprovalStatusUpdate) {}
+  
+  // WebRTC Signaling (NEW)
+  rpc SendWebRTCSignal(WebRTCSignal) returns (SignalResponse);
+  rpc WatchWebRTCSignals(WatchSignalsRequest) returns (stream WebRTCSignal);
 
   // Streaming video (existing)
   rpc StreamVideo(stream VideoFrame) returns (stream VideoFrame) {}
@@ -288,4 +292,32 @@ message Command {
 message CommandResponse {
   bool success = 1;
   string message = 2;
+}
+
+// ============================================================
+// WEBRTC SIGNALING MESSAGES
+// ============================================================
+
+message WebRTCSignal {
+  string session_id = 1;
+  string from_device_id = 2;
+  string to_device_id = 3;
+  SignalType type = 4;
+  string payload = 5;  // JSON-encoded SDP or ICE candidate
+  
+  enum SignalType {
+    OFFER = 0;
+    ANSWER = 1;
+    ICE_CANDIDATE = 2;
+  }
+}
+
+message SignalResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message WatchSignalsRequest {
+  string session_id = 1;
+  string device_id = 2;  // Device watching for signals
 }

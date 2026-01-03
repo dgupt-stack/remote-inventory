@@ -72,5 +72,22 @@ class ApprovalStatusUpdate_Status extends $pb.ProtobufEnum {
   const ApprovalStatusUpdate_Status._($core.int v, $core.String n) : super(v, n);
 }
 
+class WebRTCSignal_SignalType extends $pb.ProtobufEnum {
+  static const WebRTCSignal_SignalType OFFER = WebRTCSignal_SignalType._(0, _omitEnumNames ? '' : 'OFFER');
+  static const WebRTCSignal_SignalType ANSWER = WebRTCSignal_SignalType._(1, _omitEnumNames ? '' : 'ANSWER');
+  static const WebRTCSignal_SignalType ICE_CANDIDATE = WebRTCSignal_SignalType._(2, _omitEnumNames ? '' : 'ICE_CANDIDATE');
+
+  static const $core.List<WebRTCSignal_SignalType> values = <WebRTCSignal_SignalType> [
+    OFFER,
+    ANSWER,
+    ICE_CANDIDATE,
+  ];
+
+  static final $core.Map<$core.int, WebRTCSignal_SignalType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static WebRTCSignal_SignalType? valueOf($core.int value) => _byValue[value];
+
+  const WebRTCSignal_SignalType._($core.int v, $core.String n) : super(v, n);
+}
+
 
 const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
