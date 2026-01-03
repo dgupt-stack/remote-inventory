@@ -4,15 +4,18 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import '../widgets/guidance_overlay.dart';
 import '../shared/theme/jarvis_components.dart';
+import '../services/session_service.dart';
 
 class ProviderModeScreen extends StatefulWidget {
   final CameraDescription camera;
   final String providerName;
+  final String sessionId; // NEW: Session was created in registration
 
   const ProviderModeScreen({
     super.key,
     required this.camera,
     required this.providerName,
+    required this.sessionId, // NEW
   });
 
   @override
@@ -65,18 +68,49 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
   void dispose() {
     _timeTimer.cancel();
     _cameraController.dispose();
+
+    // End backend session if created
+    if (_sessionId != null && _sessionId != 'DEMO-SESSION') {
+      SessionService().endSession(_sessionId!).then((success) {
+        print(success ? '✅ Session ended' : '⚠️  Failed to end session');
+      });
+    }
+
     super.dispose();
   }
 
   Future<void> _createSession() async {
-    setState(() {
-      _sessionId = 'DEMO-SESSION';
-    });
+    try {
+      // Call backend to create session
+      final response = await SessionService().createSession(
+        providerName: widget.providerName,
+        providerId: 'provider-${DateTime.now().millisecondsSinceEpoch}',
+        location: 'Unknown', // TODO: Get actual location
+      );
 
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _isStreaming = true;
-    });
+      setState(() {
+        _sessionId = response.sessionId;
+      });
+
+      print('✅ Provider session created: $_sessionId');
+
+      // Wait a moment then show as streaming
+      await Future.delayed(const Duration(seconds: 1));
+      setState(() {
+        _isStreaming = true;
+      });
+    } catch (e) {
+      print('❌ Failed to create backend session: $e');
+      // Fall back to demo mode
+      setState(() {
+        _sessionId = 'DEMO-SESSION';
+      });
+
+      await Future.delayed(const Duration(seconds: 1));
+      setState(() {
+        _isStreaming = true;
+      });
+    }
   }
 
   void _handleZoomChanged(double value) {

@@ -1,12 +1,12 @@
-package server
+package main
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/djgupt/remote-inventory/backend/cache"
-	pb "github.com/djgupt/remote-inventory/proto"
+	pb "github.com/djgupt/remote-inventory"
+	"github.com/djgupt/remote-inventory/cache"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

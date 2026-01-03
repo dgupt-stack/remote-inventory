@@ -36,6 +36,11 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
     
     def __init__(self):
         self.sessions: Dict[str, Session] = {}
+        
+        # NEW: Track connection requests and approvals
+        self.connection_requests = {}  # request_id -> {session_id, consumer_id, consumer_name, timestamp}
+        self.pending_approvals = {}    # request_id -> approval status
+        
         logger.info("✅ Inventory Service initialized")
     
     def ListSessions(self, request, context):
@@ -117,6 +122,17 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
             context.set_details("Session not found")
             return pb2.ConnectionResponse()
         
+        # Store the connection request
+        self.connection_requests[request_id] = {
+            'session_id': request.session_id,
+            'consumer_id': request.consumer_id,
+            'consumer_name': request.consumer_name,
+            'timestamp': time.time()
+        }
+        
+        # Initialize as pending
+        self.pending_approvals[request_id] = 'PENDING'
+        
         response = pb2.ConnectionResponse(
             request_id=request_id,
             success=True,
@@ -132,19 +148,53 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         return response
     
     def WatchApprovalStatus(self, request, context):
-        """Stream approval status updates to consumer (placeholder for now)"""
+        """Stream approval status updates to consumer"""
         logger.info(f"👀 WatchApprovalStatus for request: {request.request_id}")
         
-        # For now, just return pending status immediately and close stream
-        # TODO: Implement actual approval flow with Provider watching
-        yield pb2.ApprovalStatusUpdate(
-            status=pb2.ApprovalStatusUpdate.PENDING,
-            session_id="",
-            token="",
-            message="Waiting for provider approval (not implemented yet)"
-        )
+        request_id = request.request_id
         
-        logger.info(f"⏸️  WatchApprovalStatus stream ended for: {request.request_id}")
+        if request_id not in self.connection_requests:
+            logger.warning(f"  ❌ Request not found: {request_id}")
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Request not found")
+            return
+        
+        # Stream status updates
+        max_wait = 30  # 30 seconds timeout
+        start_time = time.time()
+        
+        while context.is_active() and (time.time() - start_time) < max_wait:
+            current_status = self.pending_approvals.get(request_id, 'PENDING')
+            
+            if current_status == 'APPROVED':
+                yield pb2.ApprovalStatusUpdate(
+                    status=pb2.ApprovalStatusUpdate.APPROVED,
+                    session_id=self.connection_requests[request_id]['session_id'],
+                    token="session-token-placeholder",
+                    message="Connection approved by provider"
+                )
+                logger.info(f"  ✅ Sent APPROVED status for: {request_id}")
+                break
+            elif current_status == 'DENIED':
+                yield pb2.ApprovalStatusUpdate(
+                    status=pb2.ApprovalStatusUpdate.DENIED,
+                    session_id="",
+                    token="",
+                    message="Connection denied by provider"
+                )
+                logger.info(f"  ❌ Sent DENIED status for: {request_id}")
+                break
+            else:
+                # Still pending, send pending and wait
+                yield pb2.ApprovalStatusUpdate(
+                    status=pb2.ApprovalStatusUpdate.PENDING,
+                    session_id="",
+                    token="",
+                    message="Waiting for provider approval"
+                )
+                time.sleep(1)  # Check every second
+        
+        logger.info(f"⏸️  WatchApprovalStatus stream ended for: {request_id}")
     
     def EndSession(self, request, context):
         """End a provider session"""
@@ -164,9 +214,45 @@ class InventoryServicer(pb2_grpc.RemoteInventoryServiceServicer):
         
         # DEBUG: Log response details (disable in production)
         if DEBUG_MODE:
-            logger.debug(f"  Response: {response}")
+            logger.debug(f"  Response: {response}\"")
         
         return response
+    
+    def ApproveConnection(self, request, context):
+        """Provider approves a connection request"""
+        logger.info(f"✅ ApproveConnection: {request.request_id}")
+        
+        request_id = request.request_id
+        
+        if request_id not in self.connection_requests:
+            logger.warning(f"  ❌ Request not found: {request_id}")
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Request not found")
+            return pb2.ApprovalResponse(success=False)
+        
+        # Update approval status
+        self.pending_approvals[request_id] = 'APPROVED'
+        logger.info(f"  → Request {request_id} approved")
+        
+        return pb2.ApprovalResponse(success=True)
+    
+    def DenyConnection(self, request, context):
+        """Provider denies a connection request"""
+        logger.info(f"❌ DenyConnection: {request.request_id}")
+        
+        request_id = request.request_id
+        
+        if request_id not in self.connection_requests:
+            logger.warning(f"  ❌ Request not found: {request_id}")
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Request not found")
+            return pb2.ApprovalResponse(success=False)
+        
+        # Update approval status
+        self.pending_approvals[request_id] = 'DENIED'
+        logger.info(f"  → Request {request_id} denied")
+        
+        return pb2.ApprovalResponse(success=True)
 
 
 def serve():

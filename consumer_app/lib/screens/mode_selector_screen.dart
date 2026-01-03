@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import '../shared/theme/jarvis_theme.dart';
 import 'session_list_screen.dart';
 import 'provider_mode_screen.dart';
+import 'developer_settings_screen.dart';
+import 'provider_registration_screen.dart';
 
 class ModeSelectorScreen extends StatelessWidget {
   const ModeSelectorScreen({super.key});
@@ -13,6 +15,21 @@ class ModeSelectorScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: JarvisTheme.darkBackground,
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        backgroundColor: JarvisTheme.primaryCyan.withOpacity(0.2),
+        foregroundColor: JarvisTheme.primaryCyan,
+        onPressed: () {
+          // TODO: Add admin authentication before showing settings
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DeveloperSettingsScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.settings),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -112,23 +129,12 @@ class ModeSelectorScreen extends StatelessWidget {
                     JarvisTheme.accentBlue.withOpacity(0.2),
                   ],
                 ),
-                onTap: () async {
-                  // Get available cameras
-                  final cameras = await availableCameras();
-                  if (cameras.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('No cameras available')),
-                    );
-                    return;
-                  }
-
-                  Navigator.pushReplacement(
+                onTap: () {
+                  // Navigate to Provider Registration instead of camera
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProviderModeScreen(
-                        camera: cameras.first,
-                        providerName: displayName,
-                      ),
+                      builder: (context) => const ProviderRegistrationScreen(),
                     ),
                   );
                 },

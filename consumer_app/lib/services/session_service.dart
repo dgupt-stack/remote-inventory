@@ -1,16 +1,24 @@
 import 'package:grpc/grpc.dart';
 import 'package:consumer_app/proto/inventory_service.pbgrpc.dart';
+import '../config/backend_config.dart';
 
 class SessionService {
   late ClientChannel _channel;
   late RemoteInventoryServiceClient _client;
 
   SessionService() {
+    // Use backend configuration instead of hardcoded values
+    final backendHost = BackendConfig.host;
+    final backendPort = BackendConfig.port;
+    final useTLS = BackendConfig.useTLS;
+
     _channel = ClientChannel(
-      'localhost', // TODO: Replace with actual backend URL
-      port: 8080,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+      backendHost,
+      port: backendPort,
+      options: ChannelOptions(
+        credentials: useTLS
+            ? ChannelCredentials.secure()
+            : ChannelCredentials.insecure(),
       ),
     );
     _client = RemoteInventoryServiceClient(_channel);
@@ -73,6 +81,64 @@ class SessionService {
     }
   }
 
+  /// Create a new provider session
+  /// Used by Provider mode to register with backend
+  Future<SessionResponse> createSession({
+    required String providerName,
+    String? providerId,
+    String? location,
+  }) async {
+    try {
+      final request = CreateSessionRequest()..providerName = providerName;
+
+      if (providerId != null) {
+        request.providerId = providerId;
+      }
+
+      if (location != null) {
+        request.location = location;
+      }
+
+      final response = await _client.createSession(request);
+
+      if (!response.success) {
+        throw Exception(response.message);
+      }
+
+      print('✅ Session created: ${response.sessionId}');
+
+      return SessionResponse(
+        sessionId: response.sessionId,
+        token: response.token,
+        success: response.success,
+        message: response.message,
+      );
+    } catch (e) {
+      print('❌ Failed to create session: $e');
+      throw Exception('Failed to create session: $e');
+    }
+  }
+
+  /// End a provider session
+  /// Called when Provider mode exits
+  Future<bool> endSession(String sessionId) async {
+    try {
+      final request = EndSessionRequest()..sessionId = sessionId;
+      final response = await _client.endSession(request);
+
+      if (response.success) {
+        print('✅ Session ended: $sessionId');
+      } else {
+        print('⚠️  Session end returned false: $sessionId');
+      }
+
+      return response.success;
+    } catch (e) {
+      print('❌ Failed to end session: $e');
+      return false;
+    }
+  }
+
   ApprovalStatusEnum _mapStatus(ApprovalStatusUpdate_Status status) {
     switch (status) {
       case ApprovalStatusUpdate_Status.PENDING:
@@ -89,6 +155,21 @@ class SessionService {
   void dispose() {
     _channel.shutdown();
   }
+}
+
+/// Response from createSession
+class SessionResponse {
+  final String sessionId;
+  final String token;
+  final bool success;
+  final String message;
+
+  SessionResponse({
+    required this.sessionId,
+    required this.token,
+    required this.success,
+    required this.message,
+  });
 }
 
 class SessionInfo {
