@@ -22,22 +22,27 @@ class ProviderWaitingScreen extends StatefulWidget {
 
 class _ProviderWaitingScreenState extends State<ProviderWaitingScreen> {
   int _requestCount = 0;
-  StreamSubscription<ConnectionRequestNotification>? _requestSubscription;
+  // TODO: Uncomment when WatchConnectionRequests RPC is implemented
+  // StreamSubscription<ConnectionRequestNotification>? _requestSubscription;
 
   @override
   void initState() {
     super.initState();
-    _listenForRequests();
+    // TODO: Enable when backend RPC is ready
+    // _listenForRequests();
   }
 
   @override
   void dispose() {
-    _requestSubscription?.cancel();
+    // TODO: Uncomment when listening is active
+    // _requestSubscription?.cancel();
     // End session when leaving
     SessionService().endSession(widget.sessionId);
     super.dispose();
   }
 
+  // TODO: Implement when WatchConnectionRequests RPC is ready in backend
+  /*
   void _listenForRequests() {
     print(
         '👂 Listening for connection requests on session: ${widget.sessionId}');
@@ -61,6 +66,7 @@ class _ProviderWaitingScreenState extends State<ProviderWaitingScreen> {
       },
     );
   }
+  */
 
   Future<void> _showRequestDialog(String consumerName, String requestId) async {
     final result = await showDialog<bool>(

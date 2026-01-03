@@ -173,6 +173,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
                 builder: (context) => ProviderModeScreen(
                   camera: cameras.first,
                   providerName: 'Demo Provider',
+                  sessionId: 'DEMO-SESSION', // Placeholder sessionId
                 ),
               ),
             );
