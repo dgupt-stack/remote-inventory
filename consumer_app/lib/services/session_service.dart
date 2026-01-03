@@ -139,6 +139,62 @@ class SessionService {
     }
   }
 
+  /// Approve a connection request (Provider side)
+  Future<bool> approveConnection(String requestId) async {
+    try {
+      final request = ApprovalRequest()..requestId = requestId;
+      final response = await _client.approveConnection(request);
+
+      if (response.success) {
+        print('✅ Connection approved: $requestId');
+      } else {
+        print('⚠️  Approve failed: $requestId');
+      }
+
+      return response.success;
+    } catch (e) {
+      print('❌ Failed to approve connection: $e');
+      return false;
+    }
+  }
+
+  /// Deny a connection request (Provider side)
+  Future<bool> denyConnection(String requestId) async {
+    try {
+      final request = ApprovalRequest()..requestId = requestId;
+      final response = await _client.denyConnection(request);
+
+      if (response.success) {
+        print('✅ Connection denied: $requestId');
+      } else {
+        print('⚠️  Deny failed: $requestId');
+      }
+
+      return response.success;
+    } catch (e) {
+      print('❌ Failed to deny connection: $e');
+      return false;
+    }
+  }
+
+  /// Watch for incoming connection requests (Provider side)
+  Stream<ConnectionRequestNotification> watchConnectionRequests(
+      String sessionId) async* {
+    try {
+      final request = WatchRequestsRequest()..sessionId = sessionId;
+      final stream = _client.watchConnectionRequests(request);
+
+      await for (final notification in stream) {
+        print(
+            '🔔 Received connection request from ${notification.consumerName}');
+        yield notification;
+      }
+    } catch (e) {
+      print('❌ Error watching connection requests: $e');
+      rethrow;
+    }
+  }
+
   ApprovalStatusEnum _mapStatus(ApprovalStatusUpdate_Status status) {
     switch (status) {
       case ApprovalStatusUpdate_Status.PENDING:

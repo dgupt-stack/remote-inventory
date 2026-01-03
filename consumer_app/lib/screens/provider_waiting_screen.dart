@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import '../services/session_service.dart';
 import 'provider_mode_screen.dart';
+import 'dart:async';
 
 class ProviderWaitingScreen extends StatefulWidget {
   final String sessionId;
@@ -21,12 +22,44 @@ class ProviderWaitingScreen extends StatefulWidget {
 
 class _ProviderWaitingScreenState extends State<ProviderWaitingScreen> {
   int _requestCount = 0;
+  StreamSubscription<ConnectionRequestNotification>? _requestSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenForRequests();
+  }
 
   @override
   void dispose() {
+    _requestSubscription?.cancel();
     // End session when leaving
     SessionService().endSession(widget.sessionId);
     super.dispose();
+  }
+
+  void _listenForRequests() {
+    print(
+        '👂 Listening for connection requests on session: ${widget.sessionId}');
+
+    _requestSubscription =
+        SessionService().watchConnectionRequests(widget.sessionId).listen(
+      (notification) {
+        print('🔔 Request received: ${notification.consumerName}');
+        setState(() {
+          _requestCount++;
+        });
+
+        // Show approval dialog
+        _showRequestDialog(
+          notification.consumerName,
+          notification.requestId,
+        );
+      },
+      onError: (error) {
+        print('❌ Error listening for requests: $error');
+      },
+    );
   }
 
   Future<void> _showRequestDialog(String consumerName, String requestId) async {

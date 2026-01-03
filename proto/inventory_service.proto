@@ -57,6 +57,7 @@ service RemoteInventoryService {
 message CreateSessionRequest {
   string provider_id = 1;
   string provider_name = 2;
+  string location = 3;  // Provider location/address
 }
 
 message JoinSessionRequest {

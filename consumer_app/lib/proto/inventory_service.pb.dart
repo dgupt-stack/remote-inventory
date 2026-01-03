@@ -23,6 +23,7 @@ class CreateSessionRequest extends $pb.GeneratedMessage {
   factory CreateSessionRequest({
     $core.String? providerId,
     $core.String? providerName,
+    $core.String? location,
   }) {
     final $result = create();
     if (providerId != null) {
@@ -30,6 +31,9 @@ class CreateSessionRequest extends $pb.GeneratedMessage {
     }
     if (providerName != null) {
       $result.providerName = providerName;
+    }
+    if (location != null) {
+      $result.location = location;
     }
     return $result;
   }
@@ -40,6 +44,7 @@ class CreateSessionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateSessionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'providerId')
     ..aOS(2, _omitFieldNames ? '' : 'providerName')
+    ..aOS(3, _omitFieldNames ? '' : 'location')
     ..hasRequiredFields = false
   ;
 
@@ -81,6 +86,15 @@ class CreateSessionRequest extends $pb.GeneratedMessage {
   $core.bool hasProviderName() => $_has(1);
   @$pb.TagNumber(2)
   void clearProviderName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get location => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set location($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLocation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLocation() => clearField(3);
 }
 
 class JoinSessionRequest extends $pb.GeneratedMessage {

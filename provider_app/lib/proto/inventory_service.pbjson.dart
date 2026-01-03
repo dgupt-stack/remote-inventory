@@ -19,13 +19,15 @@ const CreateSessionRequest$json = {
   '2': [
     {'1': 'provider_id', '3': 1, '4': 1, '5': 9, '10': 'providerId'},
     {'1': 'provider_name', '3': 2, '4': 1, '5': 9, '10': 'providerName'},
+    {'1': 'location', '3': 3, '4': 1, '5': 9, '10': 'location'},
   ],
 };
 
 /// Descriptor for `CreateSessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSessionRequestDescriptor = $convert.base64Decode(
     'ChRDcmVhdGVTZXNzaW9uUmVxdWVzdBIfCgtwcm92aWRlcl9pZBgBIAEoCVIKcHJvdmlkZXJJZB'
-    'IjCg1wcm92aWRlcl9uYW1lGAIgASgJUgxwcm92aWRlck5hbWU=');
+    'IjCg1wcm92aWRlcl9uYW1lGAIgASgJUgxwcm92aWRlck5hbWUSGgoIbG9jYXRpb24YAyABKAlS'
+    'CGxvY2F0aW9u');
 
 @$core.Deprecated('Use joinSessionRequestDescriptor instead')
 const JoinSessionRequest$json = {
