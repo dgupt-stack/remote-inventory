@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
+import 'dart:ui' as ui;
 import '../widgets/guidance_overlay.dart';
 import '../shared/theme/jarvis_components.dart';
 import '../services/session_service.dart';
+import '../services/privacy_service.dart';
 
 class ProviderModeScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -38,21 +40,62 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
   Offset _laserPosition = Offset.zero;
   bool _stopRequested = false;
 
+  // Privacy state
+  late PrivacyService _privacyService;
+  ui.Image? _processedFrame;
+  int _facesDetected = 0;
+  int _processingTimeMs = 0;
+  bool _privacyEnabled = true; // Always enabled for privacy
+  int _frameCount = 0; // For frame skipping optimization
+
   @override
   void initState() {
     super.initState();
-    _cameraController = CameraController(
-      widget.camera,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-    _initializeControllerFuture = _cameraController.initialize();
+    _privacyService = PrivacyService();
+    _initializeCamera();
     _createSession();
 
     // Update time every second
     _updateTime();
     _timeTimer =
         Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
+  }
+
+  Future<void> _initializeCamera() async {
+    _cameraController = CameraController(
+      widget.camera,
+      ResolutionPreset
+          .medium, // Medium for better performance with privacy processing
+      enableAudio: false,
+    );
+
+    await _cameraController.initialize();
+
+    if (mounted) {
+      // Start privacy processing
+      _startPrivacyProcessing();
+    }
+  }
+
+  void _startPrivacyProcessing() {
+    _cameraController.startImageStream((CameraImage image) async {
+      _frameCount++;
+
+      // Skip frames for performance (process every 3rd frame)
+      if (_frameCount % 3 != 0 || !_privacyEnabled) {
+        return;
+      }
+
+      final result = await _privacyService.processFrame(image);
+
+      if (mounted) {
+        setState(() {
+          _processedFrame = result.blurredImage;
+          _facesDetected = result.facesDetected;
+          _processingTimeMs = result.processingTimeMs;
+        });
+      }
+    });
   }
 
   void _updateTime() {
@@ -67,7 +110,16 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
   @override
   void dispose() {
     _timeTimer.cancel();
+
+    // Stop image stream before disposing camera
+    try {
+      _cameraController.stopImageStream();
+    } catch (e) {
+      // Image stream might not be running
+    }
+
     _cameraController.dispose();
+    _privacyService.dispose();
 
     // End backend session if created
     if (_sessionId != null && _sessionId != 'DEMO-SESSION') {
@@ -156,9 +208,9 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
                         borderRadius: BorderRadius.circular(18),
                         child: Stack(
                           children: [
-                            // Camera preview
+                            // Camera preview with privacy processing
                             SizedBox.expand(
-                              child: CameraPreview(_cameraController),
+                              child: _buildCameraPreview(),
                             ),
 
                             // Guidance overlay
@@ -168,6 +220,10 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
                               laserPosition: _laserPosition,
                               stopRequested: _stopRequested,
                             ),
+
+                            // Privacy indicator (top-right)
+                            if (_privacyEnabled && _facesDetected > 0)
+                              _buildPrivacyIndicator(),
 
                             // Status badges overlay
                             _buildStatusOverlay(),
