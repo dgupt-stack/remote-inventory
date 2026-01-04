@@ -35,7 +35,7 @@ func main() {
 	// Create and register inventory service
 	inventoryServer := NewInventoryServer()
 
-	pb.RegisterRemoteInventoryServiceServer(grpcServer, inventoryServer)
+	pb.RegisterInventoryServiceServer(grpcServer, inventoryServer)
 
 	// Enable reflection for debugging
 	reflection.Register(grpcServer)

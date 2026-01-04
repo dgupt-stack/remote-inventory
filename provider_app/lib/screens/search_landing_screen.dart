@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../services/session_service.dart';
 import '../services/location_service.dart';
 import '../shared/theme/jarvis_theme.dart';
+import '../config/app_config.dart';
 import 'camera_screen.dart';
 import 'package:camera/camera.dart';
 
@@ -488,43 +489,206 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
   void _showDebugMenu() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: JarvisTheme.surfaceColor,
-        title: Text(
-          'Developer Settings',
-          style: TextStyle(color: JarvisTheme.primaryCyan),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Backend: remote-inventory-backend-mlwjajxybq-uc.a.run.app:443',
-              style:
-                  TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          backgroundColor: JarvisTheme.surfaceColor,
+          title: Row(
+            children: [
+              Icon(Icons.settings, color: JarvisTheme.primaryCyan, size: 20),
+              SizedBox(width: 8),
+              Text(
+                'Developer Settings',
+                style: TextStyle(color: JarvisTheme.primaryCyan),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // App Info Section
+                _buildSettingsSection(
+                  'App Information',
+                  [
+                    _buildSettingsRow('Version', AppConfig.appVersion),
+                    _buildSettingsRow('Name', AppConfig.appName),
+                  ],
+                ),
+
+                Divider(color: JarvisTheme.primaryCyan.withOpacity(0.3)),
+
+                // Backend Environment Toggle
+                _buildSettingsSection(
+                  'Backend Environment',
+                  [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppConfig.environment ==
+                                        BackendEnvironment.local
+                                    ? '🏠 Local'
+                                    : '☁️ Cloud Run',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                AppConfig.backendUrl,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Switch(
+                            value: AppConfig.environment ==
+                                BackendEnvironment.cloudRun,
+                            onChanged: (value) {
+                              setState(() {
+                                AppConfig.toggleEnvironment();
+                              });
+                            },
+                            activeColor: JarvisTheme.primaryCyan,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                Divider(color: JarvisTheme.primaryCyan.withOpacity(0.3)),
+
+                // Backend Details
+                _buildSettingsSection(
+                  'Backend Configuration',
+                  [
+                    _buildSettingsRow('Host', AppConfig.backendHost),
+                    _buildSettingsRow('Port', '${AppConfig.backendPort}'),
+                    _buildSettingsRow(
+                        'TLS', AppConfig.useTLS ? 'Enabled' : 'Disabled'),
+                  ],
+                ),
+
+                Divider(color: JarvisTheme.primaryCyan.withOpacity(0.3)),
+
+                // API Status
+                _buildSettingsSection(
+                  'API Implementation',
+                  [
+                    _buildStatusRow('CreateSession', true),
+                    _buildStatusRow('ListSessions', false, note: 'Coming soon'),
+                    _buildStatusRow('RequestConnection', true),
+                    _buildStatusRow('WatchRequests', true),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              'TLS: Enabled',
-              style:
-                  TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'ListSessions API: Not implemented yet',
-              style:
-                  TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                // Reload providers list with new backend
+                _loadProviders();
+              },
+              child: Text(
+                'Apply & Close',
+                style: TextStyle(color: JarvisTheme.primaryCyan),
+              ),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Close',
-              style: TextStyle(color: JarvisTheme.primaryCyan),
+      ),
+    );
+  }
+
+  Widget _buildSettingsSection(String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: JarvisTheme.primaryCyan,
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8),
+        ...children,
+      ],
+    );
+  }
+
+  Widget _buildSettingsRow(String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 12,
             ),
           ),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.6),
+                fontSize: 12,
+              ),
+              textAlign: TextAlign.right,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusRow(String api, bool implemented, {String? note}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(
+            implemented ? Icons.check_circle : Icons.pending,
+            color: implemented ? JarvisTheme.successGreen : Colors.orange,
+            size: 14,
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              api,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 12,
+              ),
+            ),
+          ),
+          if (note != null)
+            Text(
+              note,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.5),
+                fontSize: 10,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
         ],
       ),
     );

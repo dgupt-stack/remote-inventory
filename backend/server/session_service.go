@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// InventoryServer implements the RemoteInventoryService
+// InventoryServer implements the InventoryService
 type InventoryServer struct {
-	pb.UnimplementedRemoteInventoryServiceServer
+	pb.UnimplementedInventoryServiceServer
 	sessionCache    *cache.SessionCache
 	requestStreams  map[string]chan *pb.ConnectionRequestNotification
 	approvalStreams map[string]chan *pb.ApprovalStatusUpdate
@@ -116,7 +116,7 @@ func (s *InventoryServer) RequestConnection(ctx context.Context, req *pb.Connect
 }
 
 // WatchConnectionRequests streams connection requests to provider
-func (s *InventoryServer) WatchConnectionRequests(req *pb.WatchRequestsRequest, stream pb.RemoteInventoryService_WatchConnectionRequestsServer) error {
+func (s *InventoryServer) WatchConnectionRequests(req *pb.WatchRequestsRequest, stream pb.InventoryService_WatchConnectionRequestsServer) error {
 	// Create channel for this session
 	reqChan := make(chan *pb.ConnectionRequestNotification, 10)
 	s.requestStreams[req.SessionId] = reqChan
@@ -211,7 +211,7 @@ func (s *InventoryServer) DenyConnection(ctx context.Context, req *pb.DenyReques
 }
 
 // WatchApprovalStatus streams approval status to consumer
-func (s *InventoryServer) WatchApprovalStatus(req *pb.WatchApprovalRequest, stream pb.RemoteInventoryService_WatchApprovalStatusServer) error {
+func (s *InventoryServer) WatchApprovalStatus(req *pb.WatchApprovalRequest, stream pb.InventoryService_WatchApprovalStatusServer) error {
 	// Create channel for this request
 	approvalChan := make(chan *pb.ApprovalStatusUpdate, 5)
 	s.approvalStreams[req.RequestId] = approvalChan

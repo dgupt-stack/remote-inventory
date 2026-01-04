@@ -6,7 +6,7 @@ option go_package = "github.com/djgupt/remote-inventory";
 
 
 // Session management and video streaming service
-service RemoteInventoryService {
+service InventoryService {
   // Create a new session for a provider
   rpc CreateSession(CreateSessionRequest) returns (SessionResponse) {
   }

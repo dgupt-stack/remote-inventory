@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v5.29.3
-// source: proto/inventory_service.proto
+// source: inventory_service.proto
 
 package remote_inventory
 
@@ -66,11 +66,11 @@ func (x NavigationCommand_Direction) String() string {
 }
 
 func (NavigationCommand_Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_inventory_service_proto_enumTypes[0].Descriptor()
+	return file_inventory_service_proto_enumTypes[0].Descriptor()
 }
 
 func (NavigationCommand_Direction) Type() protoreflect.EnumType {
-	return &file_proto_inventory_service_proto_enumTypes[0]
+	return &file_inventory_service_proto_enumTypes[0]
 }
 
 func (x NavigationCommand_Direction) Number() protoreflect.EnumNumber {
@@ -79,7 +79,7 @@ func (x NavigationCommand_Direction) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use NavigationCommand_Direction.Descriptor instead.
 func (NavigationCommand_Direction) EnumDescriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{10, 0}
+	return file_inventory_service_proto_rawDescGZIP(), []int{10, 0}
 }
 
 type ZoomCommand_ZoomType int32
@@ -115,11 +115,11 @@ func (x ZoomCommand_ZoomType) String() string {
 }
 
 func (ZoomCommand_ZoomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_inventory_service_proto_enumTypes[1].Descriptor()
+	return file_inventory_service_proto_enumTypes[1].Descriptor()
 }
 
 func (ZoomCommand_ZoomType) Type() protoreflect.EnumType {
-	return &file_proto_inventory_service_proto_enumTypes[1]
+	return &file_inventory_service_proto_enumTypes[1]
 }
 
 func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
@@ -128,7 +128,7 @@ func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ZoomCommand_ZoomType.Descriptor instead.
 func (ZoomCommand_ZoomType) EnumDescriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{13, 0}
+	return file_inventory_service_proto_rawDescGZIP(), []int{13, 0}
 }
 
 type ApprovalStatusUpdate_Status int32
@@ -164,11 +164,11 @@ func (x ApprovalStatusUpdate_Status) String() string {
 }
 
 func (ApprovalStatusUpdate_Status) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_inventory_service_proto_enumTypes[2].Descriptor()
+	return file_inventory_service_proto_enumTypes[2].Descriptor()
 }
 
 func (ApprovalStatusUpdate_Status) Type() protoreflect.EnumType {
-	return &file_proto_inventory_service_proto_enumTypes[2]
+	return &file_inventory_service_proto_enumTypes[2]
 }
 
 func (x ApprovalStatusUpdate_Status) Number() protoreflect.EnumNumber {
@@ -177,7 +177,7 @@ func (x ApprovalStatusUpdate_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ApprovalStatusUpdate_Status.Descriptor instead.
 func (ApprovalStatusUpdate_Status) EnumDescriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{31, 0}
+	return file_inventory_service_proto_rawDescGZIP(), []int{31, 0}
 }
 
 type WebRTCSignal_SignalType int32
@@ -213,11 +213,11 @@ func (x WebRTCSignal_SignalType) String() string {
 }
 
 func (WebRTCSignal_SignalType) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_inventory_service_proto_enumTypes[3].Descriptor()
+	return file_inventory_service_proto_enumTypes[3].Descriptor()
 }
 
 func (WebRTCSignal_SignalType) Type() protoreflect.EnumType {
-	return &file_proto_inventory_service_proto_enumTypes[3]
+	return &file_inventory_service_proto_enumTypes[3]
 }
 
 func (x WebRTCSignal_SignalType) Number() protoreflect.EnumNumber {
@@ -226,7 +226,7 @@ func (x WebRTCSignal_SignalType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WebRTCSignal_SignalType.Descriptor instead.
 func (WebRTCSignal_SignalType) EnumDescriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{34, 0}
+	return file_inventory_service_proto_rawDescGZIP(), []int{34, 0}
 }
 
 // Session messages
@@ -241,7 +241,7 @@ type CreateSessionRequest struct {
 
 func (x *CreateSessionRequest) Reset() {
 	*x = CreateSessionRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[0]
+	mi := &file_inventory_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -253,7 +253,7 @@ func (x *CreateSessionRequest) String() string {
 func (*CreateSessionRequest) ProtoMessage() {}
 
 func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[0]
+	mi := &file_inventory_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -266,7 +266,7 @@ func (x *CreateSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSessionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSessionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{0}
+	return file_inventory_service_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CreateSessionRequest) GetProviderId() string {
@@ -301,7 +301,7 @@ type JoinSessionRequest struct {
 
 func (x *JoinSessionRequest) Reset() {
 	*x = JoinSessionRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[1]
+	mi := &file_inventory_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -313,7 +313,7 @@ func (x *JoinSessionRequest) String() string {
 func (*JoinSessionRequest) ProtoMessage() {}
 
 func (x *JoinSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[1]
+	mi := &file_inventory_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -326,7 +326,7 @@ func (x *JoinSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JoinSessionRequest.ProtoReflect.Descriptor instead.
 func (*JoinSessionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{1}
+	return file_inventory_service_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *JoinSessionRequest) GetSessionId() string {
@@ -362,7 +362,7 @@ type SessionResponse struct {
 
 func (x *SessionResponse) Reset() {
 	*x = SessionResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[2]
+	mi := &file_inventory_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -374,7 +374,7 @@ func (x *SessionResponse) String() string {
 func (*SessionResponse) ProtoMessage() {}
 
 func (x *SessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[2]
+	mi := &file_inventory_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -387,7 +387,7 @@ func (x *SessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionResponse.ProtoReflect.Descriptor instead.
 func (*SessionResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{2}
+	return file_inventory_service_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SessionResponse) GetSessionId() string {
@@ -428,7 +428,7 @@ type EndSessionRequest struct {
 
 func (x *EndSessionRequest) Reset() {
 	*x = EndSessionRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[3]
+	mi := &file_inventory_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -440,7 +440,7 @@ func (x *EndSessionRequest) String() string {
 func (*EndSessionRequest) ProtoMessage() {}
 
 func (x *EndSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[3]
+	mi := &file_inventory_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -453,7 +453,7 @@ func (x *EndSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndSessionRequest.ProtoReflect.Descriptor instead.
 func (*EndSessionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{3}
+	return file_inventory_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *EndSessionRequest) GetSessionId() string {
@@ -479,7 +479,7 @@ type EndSessionResponse struct {
 
 func (x *EndSessionResponse) Reset() {
 	*x = EndSessionResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[4]
+	mi := &file_inventory_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -491,7 +491,7 @@ func (x *EndSessionResponse) String() string {
 func (*EndSessionResponse) ProtoMessage() {}
 
 func (x *EndSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[4]
+	mi := &file_inventory_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -504,7 +504,7 @@ func (x *EndSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndSessionResponse.ProtoReflect.Descriptor instead.
 func (*EndSessionResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{4}
+	return file_inventory_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *EndSessionResponse) GetSuccess() bool {
@@ -531,7 +531,7 @@ type ProviderMessage struct {
 
 func (x *ProviderMessage) Reset() {
 	*x = ProviderMessage{}
-	mi := &file_proto_inventory_service_proto_msgTypes[5]
+	mi := &file_inventory_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -543,7 +543,7 @@ func (x *ProviderMessage) String() string {
 func (*ProviderMessage) ProtoMessage() {}
 
 func (x *ProviderMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[5]
+	mi := &file_inventory_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -556,7 +556,7 @@ func (x *ProviderMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderMessage.ProtoReflect.Descriptor instead.
 func (*ProviderMessage) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{5}
+	return file_inventory_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ProviderMessage) GetSessionId() string {
@@ -642,7 +642,7 @@ type VideoFrame struct {
 
 func (x *VideoFrame) Reset() {
 	*x = VideoFrame{}
-	mi := &file_proto_inventory_service_proto_msgTypes[6]
+	mi := &file_inventory_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -654,7 +654,7 @@ func (x *VideoFrame) String() string {
 func (*VideoFrame) ProtoMessage() {}
 
 func (x *VideoFrame) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[6]
+	mi := &file_inventory_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -667,7 +667,7 @@ func (x *VideoFrame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VideoFrame.ProtoReflect.Descriptor instead.
 func (*VideoFrame) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{6}
+	return file_inventory_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *VideoFrame) GetFrameData() []byte {
@@ -720,7 +720,7 @@ type SensorData struct {
 
 func (x *SensorData) Reset() {
 	*x = SensorData{}
-	mi := &file_proto_inventory_service_proto_msgTypes[7]
+	mi := &file_inventory_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -732,7 +732,7 @@ func (x *SensorData) String() string {
 func (*SensorData) ProtoMessage() {}
 
 func (x *SensorData) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[7]
+	mi := &file_inventory_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -745,7 +745,7 @@ func (x *SensorData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SensorData.ProtoReflect.Descriptor instead.
 func (*SensorData) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{7}
+	return file_inventory_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SensorData) GetAccelerometerX() float32 {
@@ -807,7 +807,7 @@ type ProviderStatus struct {
 
 func (x *ProviderStatus) Reset() {
 	*x = ProviderStatus{}
-	mi := &file_proto_inventory_service_proto_msgTypes[8]
+	mi := &file_inventory_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -819,7 +819,7 @@ func (x *ProviderStatus) String() string {
 func (*ProviderStatus) ProtoMessage() {}
 
 func (x *ProviderStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[8]
+	mi := &file_inventory_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,7 +832,7 @@ func (x *ProviderStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderStatus.ProtoReflect.Descriptor instead.
 func (*ProviderStatus) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{8}
+	return file_inventory_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ProviderStatus) GetCameraActive() bool {
@@ -865,7 +865,7 @@ type ProviderCommand struct {
 
 func (x *ProviderCommand) Reset() {
 	*x = ProviderCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[9]
+	mi := &file_inventory_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -877,7 +877,7 @@ func (x *ProviderCommand) String() string {
 func (*ProviderCommand) ProtoMessage() {}
 
 func (x *ProviderCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[9]
+	mi := &file_inventory_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -890,7 +890,7 @@ func (x *ProviderCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProviderCommand.ProtoReflect.Descriptor instead.
 func (*ProviderCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{9}
+	return file_inventory_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ProviderCommand) GetCommand() isProviderCommand_Command {
@@ -974,7 +974,7 @@ type NavigationCommand struct {
 
 func (x *NavigationCommand) Reset() {
 	*x = NavigationCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[10]
+	mi := &file_inventory_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -986,7 +986,7 @@ func (x *NavigationCommand) String() string {
 func (*NavigationCommand) ProtoMessage() {}
 
 func (x *NavigationCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[10]
+	mi := &file_inventory_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -999,7 +999,7 @@ func (x *NavigationCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NavigationCommand.ProtoReflect.Descriptor instead.
 func (*NavigationCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{10}
+	return file_inventory_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *NavigationCommand) GetDirection() NavigationCommand_Direction {
@@ -1027,7 +1027,7 @@ type LaserCommand struct {
 
 func (x *LaserCommand) Reset() {
 	*x = LaserCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[11]
+	mi := &file_inventory_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1039,7 +1039,7 @@ func (x *LaserCommand) String() string {
 func (*LaserCommand) ProtoMessage() {}
 
 func (x *LaserCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[11]
+	mi := &file_inventory_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1052,7 +1052,7 @@ func (x *LaserCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LaserCommand.ProtoReflect.Descriptor instead.
 func (*LaserCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{11}
+	return file_inventory_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *LaserCommand) GetActive() bool {
@@ -1085,7 +1085,7 @@ type StopCommand struct {
 
 func (x *StopCommand) Reset() {
 	*x = StopCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[12]
+	mi := &file_inventory_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1097,7 +1097,7 @@ func (x *StopCommand) String() string {
 func (*StopCommand) ProtoMessage() {}
 
 func (x *StopCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[12]
+	mi := &file_inventory_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1110,7 +1110,7 @@ func (x *StopCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopCommand.ProtoReflect.Descriptor instead.
 func (*StopCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{12}
+	return file_inventory_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *StopCommand) GetEmergency() bool {
@@ -1130,7 +1130,7 @@ type ZoomCommand struct {
 
 func (x *ZoomCommand) Reset() {
 	*x = ZoomCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[13]
+	mi := &file_inventory_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1142,7 +1142,7 @@ func (x *ZoomCommand) String() string {
 func (*ZoomCommand) ProtoMessage() {}
 
 func (x *ZoomCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[13]
+	mi := &file_inventory_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1155,7 +1155,7 @@ func (x *ZoomCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZoomCommand.ProtoReflect.Descriptor instead.
 func (*ZoomCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{13}
+	return file_inventory_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ZoomCommand) GetType() ZoomCommand_ZoomType {
@@ -1192,7 +1192,7 @@ type ConsumerCommand struct {
 
 func (x *ConsumerCommand) Reset() {
 	*x = ConsumerCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[14]
+	mi := &file_inventory_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1204,7 +1204,7 @@ func (x *ConsumerCommand) String() string {
 func (*ConsumerCommand) ProtoMessage() {}
 
 func (x *ConsumerCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[14]
+	mi := &file_inventory_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1217,7 +1217,7 @@ func (x *ConsumerCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsumerCommand.ProtoReflect.Descriptor instead.
 func (*ConsumerCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{14}
+	return file_inventory_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ConsumerCommand) GetSessionId() string {
@@ -1345,7 +1345,7 @@ type VoiceCommand struct {
 
 func (x *VoiceCommand) Reset() {
 	*x = VoiceCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[15]
+	mi := &file_inventory_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1357,7 +1357,7 @@ func (x *VoiceCommand) String() string {
 func (*VoiceCommand) ProtoMessage() {}
 
 func (x *VoiceCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[15]
+	mi := &file_inventory_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1370,7 +1370,7 @@ func (x *VoiceCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VoiceCommand.ProtoReflect.Descriptor instead.
 func (*VoiceCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{15}
+	return file_inventory_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *VoiceCommand) GetTranscribedText() string {
@@ -1396,7 +1396,7 @@ type TextCommand struct {
 
 func (x *TextCommand) Reset() {
 	*x = TextCommand{}
-	mi := &file_proto_inventory_service_proto_msgTypes[16]
+	mi := &file_inventory_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1408,7 +1408,7 @@ func (x *TextCommand) String() string {
 func (*TextCommand) ProtoMessage() {}
 
 func (x *TextCommand) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[16]
+	mi := &file_inventory_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1421,7 +1421,7 @@ func (x *TextCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TextCommand.ProtoReflect.Descriptor instead.
 func (*TextCommand) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{16}
+	return file_inventory_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TextCommand) GetText() string {
@@ -1443,7 +1443,7 @@ type HeartbeatRequest struct {
 
 func (x *HeartbeatRequest) Reset() {
 	*x = HeartbeatRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[17]
+	mi := &file_inventory_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1455,7 +1455,7 @@ func (x *HeartbeatRequest) String() string {
 func (*HeartbeatRequest) ProtoMessage() {}
 
 func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[17]
+	mi := &file_inventory_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1468,7 +1468,7 @@ func (x *HeartbeatRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatRequest.ProtoReflect.Descriptor instead.
 func (*HeartbeatRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{17}
+	return file_inventory_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *HeartbeatRequest) GetSessionId() string {
@@ -1502,7 +1502,7 @@ type HeartbeatResponse struct {
 
 func (x *HeartbeatResponse) Reset() {
 	*x = HeartbeatResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[18]
+	mi := &file_inventory_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1514,7 +1514,7 @@ func (x *HeartbeatResponse) String() string {
 func (*HeartbeatResponse) ProtoMessage() {}
 
 func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[18]
+	mi := &file_inventory_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1527,7 +1527,7 @@ func (x *HeartbeatResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HeartbeatResponse.ProtoReflect.Descriptor instead.
 func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{18}
+	return file_inventory_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *HeartbeatResponse) GetActive() bool {
@@ -1554,7 +1554,7 @@ type ListSessionsRequest struct {
 
 func (x *ListSessionsRequest) Reset() {
 	*x = ListSessionsRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[19]
+	mi := &file_inventory_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1566,7 +1566,7 @@ func (x *ListSessionsRequest) String() string {
 func (*ListSessionsRequest) ProtoMessage() {}
 
 func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[19]
+	mi := &file_inventory_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1579,7 +1579,7 @@ func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
 func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{19}
+	return file_inventory_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListSessionsRequest) GetSearchQuery() string {
@@ -1598,7 +1598,7 @@ type ListSessionsResponse struct {
 
 func (x *ListSessionsResponse) Reset() {
 	*x = ListSessionsResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[20]
+	mi := &file_inventory_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1610,7 +1610,7 @@ func (x *ListSessionsResponse) String() string {
 func (*ListSessionsResponse) ProtoMessage() {}
 
 func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[20]
+	mi := &file_inventory_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1623,7 +1623,7 @@ func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{20}
+	return file_inventory_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListSessionsResponse) GetSessions() []*SessionInfo {
@@ -1646,7 +1646,7 @@ type SessionInfo struct {
 
 func (x *SessionInfo) Reset() {
 	*x = SessionInfo{}
-	mi := &file_proto_inventory_service_proto_msgTypes[21]
+	mi := &file_inventory_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1658,7 +1658,7 @@ func (x *SessionInfo) String() string {
 func (*SessionInfo) ProtoMessage() {}
 
 func (x *SessionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[21]
+	mi := &file_inventory_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1671,7 +1671,7 @@ func (x *SessionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionInfo.ProtoReflect.Descriptor instead.
 func (*SessionInfo) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{21}
+	return file_inventory_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *SessionInfo) GetSessionId() string {
@@ -1721,7 +1721,7 @@ type ConnectionRequest struct {
 
 func (x *ConnectionRequest) Reset() {
 	*x = ConnectionRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[22]
+	mi := &file_inventory_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1733,7 +1733,7 @@ func (x *ConnectionRequest) String() string {
 func (*ConnectionRequest) ProtoMessage() {}
 
 func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[22]
+	mi := &file_inventory_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1746,7 +1746,7 @@ func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionRequest.ProtoReflect.Descriptor instead.
 func (*ConnectionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{22}
+	return file_inventory_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ConnectionRequest) GetSessionId() string {
@@ -1781,7 +1781,7 @@ type ConnectionResponse struct {
 
 func (x *ConnectionResponse) Reset() {
 	*x = ConnectionResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[23]
+	mi := &file_inventory_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +1793,7 @@ func (x *ConnectionResponse) String() string {
 func (*ConnectionResponse) ProtoMessage() {}
 
 func (x *ConnectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[23]
+	mi := &file_inventory_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +1806,7 @@ func (x *ConnectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionResponse.ProtoReflect.Descriptor instead.
 func (*ConnectionResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{23}
+	return file_inventory_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ConnectionResponse) GetRequestId() string {
@@ -1839,7 +1839,7 @@ type WatchRequestsRequest struct {
 
 func (x *WatchRequestsRequest) Reset() {
 	*x = WatchRequestsRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[24]
+	mi := &file_inventory_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1851,7 +1851,7 @@ func (x *WatchRequestsRequest) String() string {
 func (*WatchRequestsRequest) ProtoMessage() {}
 
 func (x *WatchRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[24]
+	mi := &file_inventory_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1864,7 +1864,7 @@ func (x *WatchRequestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchRequestsRequest.ProtoReflect.Descriptor instead.
 func (*WatchRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{24}
+	return file_inventory_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *WatchRequestsRequest) GetSessionId() string {
@@ -1886,7 +1886,7 @@ type ConnectionRequestNotification struct {
 
 func (x *ConnectionRequestNotification) Reset() {
 	*x = ConnectionRequestNotification{}
-	mi := &file_proto_inventory_service_proto_msgTypes[25]
+	mi := &file_inventory_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1898,7 +1898,7 @@ func (x *ConnectionRequestNotification) String() string {
 func (*ConnectionRequestNotification) ProtoMessage() {}
 
 func (x *ConnectionRequestNotification) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[25]
+	mi := &file_inventory_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1911,7 +1911,7 @@ func (x *ConnectionRequestNotification) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionRequestNotification.ProtoReflect.Descriptor instead.
 func (*ConnectionRequestNotification) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{25}
+	return file_inventory_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ConnectionRequestNotification) GetRequestId() string {
@@ -1952,7 +1952,7 @@ type ApproveRequest struct {
 
 func (x *ApproveRequest) Reset() {
 	*x = ApproveRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[26]
+	mi := &file_inventory_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1964,7 +1964,7 @@ func (x *ApproveRequest) String() string {
 func (*ApproveRequest) ProtoMessage() {}
 
 func (x *ApproveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[26]
+	mi := &file_inventory_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1977,7 +1977,7 @@ func (x *ApproveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveRequest.ProtoReflect.Descriptor instead.
 func (*ApproveRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{26}
+	return file_inventory_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ApproveRequest) GetRequestId() string {
@@ -1998,7 +1998,7 @@ type ApproveResponse struct {
 
 func (x *ApproveResponse) Reset() {
 	*x = ApproveResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[27]
+	mi := &file_inventory_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2010,7 +2010,7 @@ func (x *ApproveResponse) String() string {
 func (*ApproveResponse) ProtoMessage() {}
 
 func (x *ApproveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[27]
+	mi := &file_inventory_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2023,7 +2023,7 @@ func (x *ApproveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveResponse.ProtoReflect.Descriptor instead.
 func (*ApproveResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{27}
+	return file_inventory_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ApproveResponse) GetSuccess() bool {
@@ -2057,7 +2057,7 @@ type DenyRequest struct {
 
 func (x *DenyRequest) Reset() {
 	*x = DenyRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[28]
+	mi := &file_inventory_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2069,7 +2069,7 @@ func (x *DenyRequest) String() string {
 func (*DenyRequest) ProtoMessage() {}
 
 func (x *DenyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[28]
+	mi := &file_inventory_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2082,7 +2082,7 @@ func (x *DenyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DenyRequest.ProtoReflect.Descriptor instead.
 func (*DenyRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{28}
+	return file_inventory_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *DenyRequest) GetRequestId() string {
@@ -2108,7 +2108,7 @@ type DenyResponse struct {
 
 func (x *DenyResponse) Reset() {
 	*x = DenyResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[29]
+	mi := &file_inventory_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2120,7 +2120,7 @@ func (x *DenyResponse) String() string {
 func (*DenyResponse) ProtoMessage() {}
 
 func (x *DenyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[29]
+	mi := &file_inventory_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2133,7 +2133,7 @@ func (x *DenyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DenyResponse.ProtoReflect.Descriptor instead.
 func (*DenyResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{29}
+	return file_inventory_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *DenyResponse) GetSuccess() bool {
@@ -2152,7 +2152,7 @@ type WatchApprovalRequest struct {
 
 func (x *WatchApprovalRequest) Reset() {
 	*x = WatchApprovalRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[30]
+	mi := &file_inventory_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2164,7 +2164,7 @@ func (x *WatchApprovalRequest) String() string {
 func (*WatchApprovalRequest) ProtoMessage() {}
 
 func (x *WatchApprovalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[30]
+	mi := &file_inventory_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2177,7 +2177,7 @@ func (x *WatchApprovalRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchApprovalRequest.ProtoReflect.Descriptor instead.
 func (*WatchApprovalRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{30}
+	return file_inventory_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *WatchApprovalRequest) GetRequestId() string {
@@ -2199,7 +2199,7 @@ type ApprovalStatusUpdate struct {
 
 func (x *ApprovalStatusUpdate) Reset() {
 	*x = ApprovalStatusUpdate{}
-	mi := &file_proto_inventory_service_proto_msgTypes[31]
+	mi := &file_inventory_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2211,7 +2211,7 @@ func (x *ApprovalStatusUpdate) String() string {
 func (*ApprovalStatusUpdate) ProtoMessage() {}
 
 func (x *ApprovalStatusUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[31]
+	mi := &file_inventory_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2224,7 +2224,7 @@ func (x *ApprovalStatusUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApprovalStatusUpdate.ProtoReflect.Descriptor instead.
 func (*ApprovalStatusUpdate) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{31}
+	return file_inventory_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ApprovalStatusUpdate) GetStatus() ApprovalStatusUpdate_Status {
@@ -2274,7 +2274,7 @@ type Command struct {
 
 func (x *Command) Reset() {
 	*x = Command{}
-	mi := &file_proto_inventory_service_proto_msgTypes[32]
+	mi := &file_inventory_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2286,7 +2286,7 @@ func (x *Command) String() string {
 func (*Command) ProtoMessage() {}
 
 func (x *Command) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[32]
+	mi := &file_inventory_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2299,7 +2299,7 @@ func (x *Command) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Command.ProtoReflect.Descriptor instead.
 func (*Command) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{32}
+	return file_inventory_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *Command) GetSessionId() string {
@@ -2420,7 +2420,7 @@ type CommandResponse struct {
 
 func (x *CommandResponse) Reset() {
 	*x = CommandResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[33]
+	mi := &file_inventory_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2432,7 +2432,7 @@ func (x *CommandResponse) String() string {
 func (*CommandResponse) ProtoMessage() {}
 
 func (x *CommandResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[33]
+	mi := &file_inventory_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2445,7 +2445,7 @@ func (x *CommandResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommandResponse.ProtoReflect.Descriptor instead.
 func (*CommandResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{33}
+	return file_inventory_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *CommandResponse) GetSuccess() bool {
@@ -2475,7 +2475,7 @@ type WebRTCSignal struct {
 
 func (x *WebRTCSignal) Reset() {
 	*x = WebRTCSignal{}
-	mi := &file_proto_inventory_service_proto_msgTypes[34]
+	mi := &file_inventory_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2487,7 +2487,7 @@ func (x *WebRTCSignal) String() string {
 func (*WebRTCSignal) ProtoMessage() {}
 
 func (x *WebRTCSignal) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[34]
+	mi := &file_inventory_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2500,7 +2500,7 @@ func (x *WebRTCSignal) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebRTCSignal.ProtoReflect.Descriptor instead.
 func (*WebRTCSignal) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{34}
+	return file_inventory_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *WebRTCSignal) GetSessionId() string {
@@ -2548,7 +2548,7 @@ type SignalResponse struct {
 
 func (x *SignalResponse) Reset() {
 	*x = SignalResponse{}
-	mi := &file_proto_inventory_service_proto_msgTypes[35]
+	mi := &file_inventory_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2560,7 +2560,7 @@ func (x *SignalResponse) String() string {
 func (*SignalResponse) ProtoMessage() {}
 
 func (x *SignalResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[35]
+	mi := &file_inventory_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2573,7 +2573,7 @@ func (x *SignalResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SignalResponse.ProtoReflect.Descriptor instead.
 func (*SignalResponse) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{35}
+	return file_inventory_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *SignalResponse) GetSuccess() bool {
@@ -2600,7 +2600,7 @@ type WatchSignalsRequest struct {
 
 func (x *WatchSignalsRequest) Reset() {
 	*x = WatchSignalsRequest{}
-	mi := &file_proto_inventory_service_proto_msgTypes[36]
+	mi := &file_inventory_service_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2612,7 +2612,7 @@ func (x *WatchSignalsRequest) String() string {
 func (*WatchSignalsRequest) ProtoMessage() {}
 
 func (x *WatchSignalsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_inventory_service_proto_msgTypes[36]
+	mi := &file_inventory_service_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2625,7 +2625,7 @@ func (x *WatchSignalsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchSignalsRequest.ProtoReflect.Descriptor instead.
 func (*WatchSignalsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_inventory_service_proto_rawDescGZIP(), []int{36}
+	return file_inventory_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *WatchSignalsRequest) GetSessionId() string {
@@ -2642,11 +2642,11 @@ func (x *WatchSignalsRequest) GetDeviceId() string {
 	return ""
 }
 
-var File_proto_inventory_service_proto protoreflect.FileDescriptor
+var File_inventory_service_proto protoreflect.FileDescriptor
 
-const file_proto_inventory_service_proto_rawDesc = "" +
+const file_inventory_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1dproto/inventory_service.proto\x12\tinventory\"x\n" +
+	"\x17inventory_service.proto\x12\tinventory\"x\n" +
 	"\x14CreateSessionRequest\x12\x1f\n" +
 	"\vprovider_id\x18\x01 \x01(\tR\n" +
 	"providerId\x12#\n" +
@@ -2860,8 +2860,8 @@ const file_proto_inventory_service_proto_rawDesc = "" +
 	"\x13WatchSignalsRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1b\n" +
-	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xb4\t\n" +
-	"\x16RemoteInventoryService\x12N\n" +
+	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xae\t\n" +
+	"\x10InventoryService\x12N\n" +
 	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x00\x12Q\n" +
 	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x00\x12R\n" +
 	"\x11RequestConnection\x12\x1c.inventory.ConnectionRequest\x1a\x1d.inventory.ConnectionResponse\"\x00\x12h\n" +
@@ -2880,20 +2880,20 @@ const file_proto_inventory_service_proto_rawDesc = "" +
 	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\"\x00B$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
 
 var (
-	file_proto_inventory_service_proto_rawDescOnce sync.Once
-	file_proto_inventory_service_proto_rawDescData []byte
+	file_inventory_service_proto_rawDescOnce sync.Once
+	file_inventory_service_proto_rawDescData []byte
 )
 
-func file_proto_inventory_service_proto_rawDescGZIP() []byte {
-	file_proto_inventory_service_proto_rawDescOnce.Do(func() {
-		file_proto_inventory_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_inventory_service_proto_rawDesc), len(file_proto_inventory_service_proto_rawDesc)))
+func file_inventory_service_proto_rawDescGZIP() []byte {
+	file_inventory_service_proto_rawDescOnce.Do(func() {
+		file_inventory_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_inventory_service_proto_rawDesc), len(file_inventory_service_proto_rawDesc)))
 	})
-	return file_proto_inventory_service_proto_rawDescData
+	return file_inventory_service_proto_rawDescData
 }
 
-var file_proto_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_proto_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
-var file_proto_inventory_service_proto_goTypes = []any{
+var file_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_inventory_service_proto_goTypes = []any{
 	(NavigationCommand_Direction)(0),      // 0: inventory.NavigationCommand.Direction
 	(ZoomCommand_ZoomType)(0),             // 1: inventory.ZoomCommand.ZoomType
 	(ApprovalStatusUpdate_Status)(0),      // 2: inventory.ApprovalStatusUpdate.Status
@@ -2936,7 +2936,7 @@ var file_proto_inventory_service_proto_goTypes = []any{
 	(*SignalResponse)(nil),                // 39: inventory.SignalResponse
 	(*WatchSignalsRequest)(nil),           // 40: inventory.WatchSignalsRequest
 }
-var file_proto_inventory_service_proto_depIdxs = []int32{
+var file_inventory_service_proto_depIdxs = []int32{
 	10, // 0: inventory.ProviderMessage.video_frame:type_name -> inventory.VideoFrame
 	11, // 1: inventory.ProviderMessage.sensor_data:type_name -> inventory.SensorData
 	12, // 2: inventory.ProviderMessage.status:type_name -> inventory.ProviderStatus
@@ -2961,36 +2961,36 @@ var file_proto_inventory_service_proto_depIdxs = []int32{
 	19, // 21: inventory.Command.voice:type_name -> inventory.VoiceCommand
 	20, // 22: inventory.Command.text:type_name -> inventory.TextCommand
 	3,  // 23: inventory.WebRTCSignal.type:type_name -> inventory.WebRTCSignal.SignalType
-	4,  // 24: inventory.RemoteInventoryService.CreateSession:input_type -> inventory.CreateSessionRequest
-	23, // 25: inventory.RemoteInventoryService.ListSessions:input_type -> inventory.ListSessionsRequest
-	26, // 26: inventory.RemoteInventoryService.RequestConnection:input_type -> inventory.ConnectionRequest
-	28, // 27: inventory.RemoteInventoryService.WatchConnectionRequests:input_type -> inventory.WatchRequestsRequest
-	30, // 28: inventory.RemoteInventoryService.ApproveConnection:input_type -> inventory.ApproveRequest
-	32, // 29: inventory.RemoteInventoryService.DenyConnection:input_type -> inventory.DenyRequest
-	34, // 30: inventory.RemoteInventoryService.WatchApprovalStatus:input_type -> inventory.WatchApprovalRequest
-	38, // 31: inventory.RemoteInventoryService.SendWebRTCSignal:input_type -> inventory.WebRTCSignal
-	40, // 32: inventory.RemoteInventoryService.WatchWebRTCSignals:input_type -> inventory.WatchSignalsRequest
-	10, // 33: inventory.RemoteInventoryService.StreamVideo:input_type -> inventory.VideoFrame
-	36, // 34: inventory.RemoteInventoryService.SendCommand:input_type -> inventory.Command
-	7,  // 35: inventory.RemoteInventoryService.EndSession:input_type -> inventory.EndSessionRequest
-	9,  // 36: inventory.RemoteInventoryService.ProviderStream:input_type -> inventory.ProviderMessage
-	18, // 37: inventory.RemoteInventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
-	21, // 38: inventory.RemoteInventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
-	6,  // 39: inventory.RemoteInventoryService.CreateSession:output_type -> inventory.SessionResponse
-	24, // 40: inventory.RemoteInventoryService.ListSessions:output_type -> inventory.ListSessionsResponse
-	27, // 41: inventory.RemoteInventoryService.RequestConnection:output_type -> inventory.ConnectionResponse
-	29, // 42: inventory.RemoteInventoryService.WatchConnectionRequests:output_type -> inventory.ConnectionRequestNotification
-	31, // 43: inventory.RemoteInventoryService.ApproveConnection:output_type -> inventory.ApproveResponse
-	33, // 44: inventory.RemoteInventoryService.DenyConnection:output_type -> inventory.DenyResponse
-	35, // 45: inventory.RemoteInventoryService.WatchApprovalStatus:output_type -> inventory.ApprovalStatusUpdate
-	39, // 46: inventory.RemoteInventoryService.SendWebRTCSignal:output_type -> inventory.SignalResponse
-	38, // 47: inventory.RemoteInventoryService.WatchWebRTCSignals:output_type -> inventory.WebRTCSignal
-	10, // 48: inventory.RemoteInventoryService.StreamVideo:output_type -> inventory.VideoFrame
-	37, // 49: inventory.RemoteInventoryService.SendCommand:output_type -> inventory.CommandResponse
-	8,  // 50: inventory.RemoteInventoryService.EndSession:output_type -> inventory.EndSessionResponse
-	13, // 51: inventory.RemoteInventoryService.ProviderStream:output_type -> inventory.ProviderCommand
-	10, // 52: inventory.RemoteInventoryService.ConsumerStream:output_type -> inventory.VideoFrame
-	22, // 53: inventory.RemoteInventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
+	4,  // 24: inventory.InventoryService.CreateSession:input_type -> inventory.CreateSessionRequest
+	23, // 25: inventory.InventoryService.ListSessions:input_type -> inventory.ListSessionsRequest
+	26, // 26: inventory.InventoryService.RequestConnection:input_type -> inventory.ConnectionRequest
+	28, // 27: inventory.InventoryService.WatchConnectionRequests:input_type -> inventory.WatchRequestsRequest
+	30, // 28: inventory.InventoryService.ApproveConnection:input_type -> inventory.ApproveRequest
+	32, // 29: inventory.InventoryService.DenyConnection:input_type -> inventory.DenyRequest
+	34, // 30: inventory.InventoryService.WatchApprovalStatus:input_type -> inventory.WatchApprovalRequest
+	38, // 31: inventory.InventoryService.SendWebRTCSignal:input_type -> inventory.WebRTCSignal
+	40, // 32: inventory.InventoryService.WatchWebRTCSignals:input_type -> inventory.WatchSignalsRequest
+	10, // 33: inventory.InventoryService.StreamVideo:input_type -> inventory.VideoFrame
+	36, // 34: inventory.InventoryService.SendCommand:input_type -> inventory.Command
+	7,  // 35: inventory.InventoryService.EndSession:input_type -> inventory.EndSessionRequest
+	9,  // 36: inventory.InventoryService.ProviderStream:input_type -> inventory.ProviderMessage
+	18, // 37: inventory.InventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
+	21, // 38: inventory.InventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
+	6,  // 39: inventory.InventoryService.CreateSession:output_type -> inventory.SessionResponse
+	24, // 40: inventory.InventoryService.ListSessions:output_type -> inventory.ListSessionsResponse
+	27, // 41: inventory.InventoryService.RequestConnection:output_type -> inventory.ConnectionResponse
+	29, // 42: inventory.InventoryService.WatchConnectionRequests:output_type -> inventory.ConnectionRequestNotification
+	31, // 43: inventory.InventoryService.ApproveConnection:output_type -> inventory.ApproveResponse
+	33, // 44: inventory.InventoryService.DenyConnection:output_type -> inventory.DenyResponse
+	35, // 45: inventory.InventoryService.WatchApprovalStatus:output_type -> inventory.ApprovalStatusUpdate
+	39, // 46: inventory.InventoryService.SendWebRTCSignal:output_type -> inventory.SignalResponse
+	38, // 47: inventory.InventoryService.WatchWebRTCSignals:output_type -> inventory.WebRTCSignal
+	10, // 48: inventory.InventoryService.StreamVideo:output_type -> inventory.VideoFrame
+	37, // 49: inventory.InventoryService.SendCommand:output_type -> inventory.CommandResponse
+	8,  // 50: inventory.InventoryService.EndSession:output_type -> inventory.EndSessionResponse
+	13, // 51: inventory.InventoryService.ProviderStream:output_type -> inventory.ProviderCommand
+	10, // 52: inventory.InventoryService.ConsumerStream:output_type -> inventory.VideoFrame
+	22, // 53: inventory.InventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
 	39, // [39:54] is the sub-list for method output_type
 	24, // [24:39] is the sub-list for method input_type
 	24, // [24:24] is the sub-list for extension type_name
@@ -2998,23 +2998,23 @@ var file_proto_inventory_service_proto_depIdxs = []int32{
 	0,  // [0:24] is the sub-list for field type_name
 }
 
-func init() { file_proto_inventory_service_proto_init() }
-func file_proto_inventory_service_proto_init() {
-	if File_proto_inventory_service_proto != nil {
+func init() { file_inventory_service_proto_init() }
+func file_inventory_service_proto_init() {
+	if File_inventory_service_proto != nil {
 		return
 	}
-	file_proto_inventory_service_proto_msgTypes[5].OneofWrappers = []any{
+	file_inventory_service_proto_msgTypes[5].OneofWrappers = []any{
 		(*ProviderMessage_VideoFrame)(nil),
 		(*ProviderMessage_SensorData)(nil),
 		(*ProviderMessage_Status)(nil),
 	}
-	file_proto_inventory_service_proto_msgTypes[9].OneofWrappers = []any{
+	file_inventory_service_proto_msgTypes[9].OneofWrappers = []any{
 		(*ProviderCommand_Navigation)(nil),
 		(*ProviderCommand_Laser)(nil),
 		(*ProviderCommand_Stop)(nil),
 		(*ProviderCommand_Zoom)(nil),
 	}
-	file_proto_inventory_service_proto_msgTypes[14].OneofWrappers = []any{
+	file_inventory_service_proto_msgTypes[14].OneofWrappers = []any{
 		(*ConsumerCommand_Navigation)(nil),
 		(*ConsumerCommand_Laser)(nil),
 		(*ConsumerCommand_Stop)(nil),
@@ -3022,7 +3022,7 @@ func file_proto_inventory_service_proto_init() {
 		(*ConsumerCommand_Voice)(nil),
 		(*ConsumerCommand_Text)(nil),
 	}
-	file_proto_inventory_service_proto_msgTypes[32].OneofWrappers = []any{
+	file_inventory_service_proto_msgTypes[32].OneofWrappers = []any{
 		(*Command_Navigation)(nil),
 		(*Command_Laser)(nil),
 		(*Command_Stop)(nil),
@@ -3034,18 +3034,18 @@ func file_proto_inventory_service_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_inventory_service_proto_rawDesc), len(file_proto_inventory_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_service_proto_rawDesc), len(file_inventory_service_proto_rawDesc)),
 			NumEnums:      4,
 			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_inventory_service_proto_goTypes,
-		DependencyIndexes: file_proto_inventory_service_proto_depIdxs,
-		EnumInfos:         file_proto_inventory_service_proto_enumTypes,
-		MessageInfos:      file_proto_inventory_service_proto_msgTypes,
+		GoTypes:           file_inventory_service_proto_goTypes,
+		DependencyIndexes: file_inventory_service_proto_depIdxs,
+		EnumInfos:         file_inventory_service_proto_enumTypes,
+		MessageInfos:      file_inventory_service_proto_msgTypes,
 	}.Build()
-	File_proto_inventory_service_proto = out.File
-	file_proto_inventory_service_proto_goTypes = nil
-	file_proto_inventory_service_proto_depIdxs = nil
+	File_inventory_service_proto = out.File
+	file_inventory_service_proto_goTypes = nil
+	file_inventory_service_proto_depIdxs = nil
 }

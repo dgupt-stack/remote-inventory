@@ -1,5 +1,6 @@
 import 'package:grpc/grpc.dart';
 import '../generated/inventory_service.pbgrpc.dart';
+import '../config/app_config.dart';
 
 // Simple session info model
 class SessionInfo {
@@ -23,14 +24,26 @@ class SessionService {
   late InventoryServiceClient _client;
 
   SessionService() {
+    _initializeClient();
+  }
+
+  void _initializeClient() {
     _channel = ClientChannel(
-      'remote-inventory-backend-mlwjajxybq-uc.a.run.app',
-      port: 443,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.secure(), // TLS for Cloud Run
+      AppConfig.backendHost,
+      port: AppConfig.backendPort,
+      options: ChannelOptions(
+        credentials: AppConfig.useTLS
+            ? ChannelCredentials.secure()
+            : ChannelCredentials.insecure(),
       ),
     );
     _client = InventoryServiceClient(_channel);
+  }
+
+  // Reinitialize when backend config changes
+  void reinitialize() {
+    _channel.shutdown();
+    _initializeClient();
   }
 
   // For now, return empty list until backend supports ListSessions

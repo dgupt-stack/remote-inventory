@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v5.29.3
-// source: proto/inventory_service.proto
+// source: inventory_service.proto
 
 package remote_inventory
 
@@ -19,29 +19,29 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RemoteInventoryService_CreateSession_FullMethodName           = "/inventory.RemoteInventoryService/CreateSession"
-	RemoteInventoryService_ListSessions_FullMethodName            = "/inventory.RemoteInventoryService/ListSessions"
-	RemoteInventoryService_RequestConnection_FullMethodName       = "/inventory.RemoteInventoryService/RequestConnection"
-	RemoteInventoryService_WatchConnectionRequests_FullMethodName = "/inventory.RemoteInventoryService/WatchConnectionRequests"
-	RemoteInventoryService_ApproveConnection_FullMethodName       = "/inventory.RemoteInventoryService/ApproveConnection"
-	RemoteInventoryService_DenyConnection_FullMethodName          = "/inventory.RemoteInventoryService/DenyConnection"
-	RemoteInventoryService_WatchApprovalStatus_FullMethodName     = "/inventory.RemoteInventoryService/WatchApprovalStatus"
-	RemoteInventoryService_SendWebRTCSignal_FullMethodName        = "/inventory.RemoteInventoryService/SendWebRTCSignal"
-	RemoteInventoryService_WatchWebRTCSignals_FullMethodName      = "/inventory.RemoteInventoryService/WatchWebRTCSignals"
-	RemoteInventoryService_StreamVideo_FullMethodName             = "/inventory.RemoteInventoryService/StreamVideo"
-	RemoteInventoryService_SendCommand_FullMethodName             = "/inventory.RemoteInventoryService/SendCommand"
-	RemoteInventoryService_EndSession_FullMethodName              = "/inventory.RemoteInventoryService/EndSession"
-	RemoteInventoryService_ProviderStream_FullMethodName          = "/inventory.RemoteInventoryService/ProviderStream"
-	RemoteInventoryService_ConsumerStream_FullMethodName          = "/inventory.RemoteInventoryService/ConsumerStream"
-	RemoteInventoryService_Heartbeat_FullMethodName               = "/inventory.RemoteInventoryService/Heartbeat"
+	InventoryService_CreateSession_FullMethodName           = "/inventory.InventoryService/CreateSession"
+	InventoryService_ListSessions_FullMethodName            = "/inventory.InventoryService/ListSessions"
+	InventoryService_RequestConnection_FullMethodName       = "/inventory.InventoryService/RequestConnection"
+	InventoryService_WatchConnectionRequests_FullMethodName = "/inventory.InventoryService/WatchConnectionRequests"
+	InventoryService_ApproveConnection_FullMethodName       = "/inventory.InventoryService/ApproveConnection"
+	InventoryService_DenyConnection_FullMethodName          = "/inventory.InventoryService/DenyConnection"
+	InventoryService_WatchApprovalStatus_FullMethodName     = "/inventory.InventoryService/WatchApprovalStatus"
+	InventoryService_SendWebRTCSignal_FullMethodName        = "/inventory.InventoryService/SendWebRTCSignal"
+	InventoryService_WatchWebRTCSignals_FullMethodName      = "/inventory.InventoryService/WatchWebRTCSignals"
+	InventoryService_StreamVideo_FullMethodName             = "/inventory.InventoryService/StreamVideo"
+	InventoryService_SendCommand_FullMethodName             = "/inventory.InventoryService/SendCommand"
+	InventoryService_EndSession_FullMethodName              = "/inventory.InventoryService/EndSession"
+	InventoryService_ProviderStream_FullMethodName          = "/inventory.InventoryService/ProviderStream"
+	InventoryService_ConsumerStream_FullMethodName          = "/inventory.InventoryService/ConsumerStream"
+	InventoryService_Heartbeat_FullMethodName               = "/inventory.InventoryService/Heartbeat"
 )
 
-// RemoteInventoryServiceClient is the client API for RemoteInventoryService service.
+// InventoryServiceClient is the client API for InventoryService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Session management and video streaming service
-type RemoteInventoryServiceClient interface {
+type InventoryServiceClient interface {
 	// Create a new session for a provider
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
 	// List all active sessions (for consumers to discover providers)
@@ -72,47 +72,47 @@ type RemoteInventoryServiceClient interface {
 	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
 }
 
-type remoteInventoryServiceClient struct {
+type inventoryServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewRemoteInventoryServiceClient(cc grpc.ClientConnInterface) RemoteInventoryServiceClient {
-	return &remoteInventoryServiceClient{cc}
+func NewInventoryServiceClient(cc grpc.ClientConnInterface) InventoryServiceClient {
+	return &inventoryServiceClient{cc}
 }
 
-func (c *remoteInventoryServiceClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
+func (c *inventoryServiceClient) CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SessionResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_CreateSession_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_CreateSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error) {
+func (c *inventoryServiceClient) ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListSessionsResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_ListSessions_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_ListSessions_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) RequestConnection(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (*ConnectionResponse, error) {
+func (c *inventoryServiceClient) RequestConnection(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (*ConnectionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ConnectionResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_RequestConnection_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_RequestConnection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) WatchConnectionRequests(ctx context.Context, in *WatchRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error) {
+func (c *inventoryServiceClient) WatchConnectionRequests(ctx context.Context, in *WatchRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[0], RemoteInventoryService_WatchConnectionRequests_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[0], InventoryService_WatchConnectionRequests_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,31 +127,31 @@ func (c *remoteInventoryServiceClient) WatchConnectionRequests(ctx context.Conte
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchConnectionRequestsClient = grpc.ServerStreamingClient[ConnectionRequestNotification]
+type InventoryService_WatchConnectionRequestsClient = grpc.ServerStreamingClient[ConnectionRequestNotification]
 
-func (c *remoteInventoryServiceClient) ApproveConnection(ctx context.Context, in *ApproveRequest, opts ...grpc.CallOption) (*ApproveResponse, error) {
+func (c *inventoryServiceClient) ApproveConnection(ctx context.Context, in *ApproveRequest, opts ...grpc.CallOption) (*ApproveResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ApproveResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_ApproveConnection_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_ApproveConnection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) DenyConnection(ctx context.Context, in *DenyRequest, opts ...grpc.CallOption) (*DenyResponse, error) {
+func (c *inventoryServiceClient) DenyConnection(ctx context.Context, in *DenyRequest, opts ...grpc.CallOption) (*DenyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DenyResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_DenyConnection_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_DenyConnection_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) WatchApprovalStatus(ctx context.Context, in *WatchApprovalRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error) {
+func (c *inventoryServiceClient) WatchApprovalStatus(ctx context.Context, in *WatchApprovalRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[1], RemoteInventoryService_WatchApprovalStatus_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[1], InventoryService_WatchApprovalStatus_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -166,21 +166,21 @@ func (c *remoteInventoryServiceClient) WatchApprovalStatus(ctx context.Context, 
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchApprovalStatusClient = grpc.ServerStreamingClient[ApprovalStatusUpdate]
+type InventoryService_WatchApprovalStatusClient = grpc.ServerStreamingClient[ApprovalStatusUpdate]
 
-func (c *remoteInventoryServiceClient) SendWebRTCSignal(ctx context.Context, in *WebRTCSignal, opts ...grpc.CallOption) (*SignalResponse, error) {
+func (c *inventoryServiceClient) SendWebRTCSignal(ctx context.Context, in *WebRTCSignal, opts ...grpc.CallOption) (*SignalResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SignalResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_SendWebRTCSignal_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_SendWebRTCSignal_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) WatchWebRTCSignals(ctx context.Context, in *WatchSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WebRTCSignal], error) {
+func (c *inventoryServiceClient) WatchWebRTCSignals(ctx context.Context, in *WatchSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WebRTCSignal], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[2], RemoteInventoryService_WatchWebRTCSignals_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[2], InventoryService_WatchWebRTCSignals_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -195,11 +195,11 @@ func (c *remoteInventoryServiceClient) WatchWebRTCSignals(ctx context.Context, i
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchWebRTCSignalsClient = grpc.ServerStreamingClient[WebRTCSignal]
+type InventoryService_WatchWebRTCSignalsClient = grpc.ServerStreamingClient[WebRTCSignal]
 
-func (c *remoteInventoryServiceClient) StreamVideo(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[VideoFrame, VideoFrame], error) {
+func (c *inventoryServiceClient) StreamVideo(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[VideoFrame, VideoFrame], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[3], RemoteInventoryService_StreamVideo_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[3], InventoryService_StreamVideo_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -208,31 +208,31 @@ func (c *remoteInventoryServiceClient) StreamVideo(ctx context.Context, opts ...
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_StreamVideoClient = grpc.BidiStreamingClient[VideoFrame, VideoFrame]
+type InventoryService_StreamVideoClient = grpc.BidiStreamingClient[VideoFrame, VideoFrame]
 
-func (c *remoteInventoryServiceClient) SendCommand(ctx context.Context, in *Command, opts ...grpc.CallOption) (*CommandResponse, error) {
+func (c *inventoryServiceClient) SendCommand(ctx context.Context, in *Command, opts ...grpc.CallOption) (*CommandResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CommandResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_SendCommand_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_SendCommand_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
+func (c *inventoryServiceClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EndSessionResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_EndSession_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_EndSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *remoteInventoryServiceClient) ProviderStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ProviderMessage, ProviderCommand], error) {
+func (c *inventoryServiceClient) ProviderStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ProviderMessage, ProviderCommand], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[4], RemoteInventoryService_ProviderStream_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[4], InventoryService_ProviderStream_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -241,11 +241,11 @@ func (c *remoteInventoryServiceClient) ProviderStream(ctx context.Context, opts 
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_ProviderStreamClient = grpc.BidiStreamingClient[ProviderMessage, ProviderCommand]
+type InventoryService_ProviderStreamClient = grpc.BidiStreamingClient[ProviderMessage, ProviderCommand]
 
-func (c *remoteInventoryServiceClient) ConsumerStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ConsumerCommand, VideoFrame], error) {
+func (c *inventoryServiceClient) ConsumerStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ConsumerCommand, VideoFrame], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &RemoteInventoryService_ServiceDesc.Streams[5], RemoteInventoryService_ConsumerStream_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[5], InventoryService_ConsumerStream_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -254,24 +254,24 @@ func (c *remoteInventoryServiceClient) ConsumerStream(ctx context.Context, opts 
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_ConsumerStreamClient = grpc.BidiStreamingClient[ConsumerCommand, VideoFrame]
+type InventoryService_ConsumerStreamClient = grpc.BidiStreamingClient[ConsumerCommand, VideoFrame]
 
-func (c *remoteInventoryServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
+func (c *inventoryServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HeartbeatResponse)
-	err := c.cc.Invoke(ctx, RemoteInventoryService_Heartbeat_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, InventoryService_Heartbeat_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// RemoteInventoryServiceServer is the server API for RemoteInventoryService service.
-// All implementations must embed UnimplementedRemoteInventoryServiceServer
+// InventoryServiceServer is the server API for InventoryService service.
+// All implementations must embed UnimplementedInventoryServiceServer
 // for forward compatibility.
 //
 // Session management and video streaming service
-type RemoteInventoryServiceServer interface {
+type InventoryServiceServer interface {
 	// Create a new session for a provider
 	CreateSession(context.Context, *CreateSessionRequest) (*SessionResponse, error)
 	// List all active sessions (for consumers to discover providers)
@@ -300,377 +300,376 @@ type RemoteInventoryServiceServer interface {
 	ConsumerStream(grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]) error
 	// Heartbeat to keep sessions alive
 	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
-	mustEmbedUnimplementedRemoteInventoryServiceServer()
+	mustEmbedUnimplementedInventoryServiceServer()
 }
 
-// UnimplementedRemoteInventoryServiceServer must be embedded to have
+// UnimplementedInventoryServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedRemoteInventoryServiceServer struct{}
+type UnimplementedInventoryServiceServer struct{}
 
-func (UnimplementedRemoteInventoryServiceServer) CreateSession(context.Context, *CreateSessionRequest) (*SessionResponse, error) {
+func (UnimplementedInventoryServiceServer) CreateSession(context.Context, *CreateSessionRequest) (*SessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSession not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error) {
+func (UnimplementedInventoryServiceServer) ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSessions not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) RequestConnection(context.Context, *ConnectionRequest) (*ConnectionResponse, error) {
+func (UnimplementedInventoryServiceServer) RequestConnection(context.Context, *ConnectionRequest) (*ConnectionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RequestConnection not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) WatchConnectionRequests(*WatchRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error {
+func (UnimplementedInventoryServiceServer) WatchConnectionRequests(*WatchRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error {
 	return status.Error(codes.Unimplemented, "method WatchConnectionRequests not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) ApproveConnection(context.Context, *ApproveRequest) (*ApproveResponse, error) {
+func (UnimplementedInventoryServiceServer) ApproveConnection(context.Context, *ApproveRequest) (*ApproveResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ApproveConnection not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) DenyConnection(context.Context, *DenyRequest) (*DenyResponse, error) {
+func (UnimplementedInventoryServiceServer) DenyConnection(context.Context, *DenyRequest) (*DenyResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DenyConnection not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) WatchApprovalStatus(*WatchApprovalRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error {
+func (UnimplementedInventoryServiceServer) WatchApprovalStatus(*WatchApprovalRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error {
 	return status.Error(codes.Unimplemented, "method WatchApprovalStatus not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) SendWebRTCSignal(context.Context, *WebRTCSignal) (*SignalResponse, error) {
+func (UnimplementedInventoryServiceServer) SendWebRTCSignal(context.Context, *WebRTCSignal) (*SignalResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendWebRTCSignal not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) WatchWebRTCSignals(*WatchSignalsRequest, grpc.ServerStreamingServer[WebRTCSignal]) error {
+func (UnimplementedInventoryServiceServer) WatchWebRTCSignals(*WatchSignalsRequest, grpc.ServerStreamingServer[WebRTCSignal]) error {
 	return status.Error(codes.Unimplemented, "method WatchWebRTCSignals not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) StreamVideo(grpc.BidiStreamingServer[VideoFrame, VideoFrame]) error {
+func (UnimplementedInventoryServiceServer) StreamVideo(grpc.BidiStreamingServer[VideoFrame, VideoFrame]) error {
 	return status.Error(codes.Unimplemented, "method StreamVideo not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) SendCommand(context.Context, *Command) (*CommandResponse, error) {
+func (UnimplementedInventoryServiceServer) SendCommand(context.Context, *Command) (*CommandResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendCommand not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
+func (UnimplementedInventoryServiceServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method EndSession not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) ProviderStream(grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]) error {
+func (UnimplementedInventoryServiceServer) ProviderStream(grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]) error {
 	return status.Error(codes.Unimplemented, "method ProviderStream not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) ConsumerStream(grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]) error {
+func (UnimplementedInventoryServiceServer) ConsumerStream(grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]) error {
 	return status.Error(codes.Unimplemented, "method ConsumerStream not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
+func (UnimplementedInventoryServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Heartbeat not implemented")
 }
-func (UnimplementedRemoteInventoryServiceServer) mustEmbedUnimplementedRemoteInventoryServiceServer() {
-}
-func (UnimplementedRemoteInventoryServiceServer) testEmbeddedByValue() {}
+func (UnimplementedInventoryServiceServer) mustEmbedUnimplementedInventoryServiceServer() {}
+func (UnimplementedInventoryServiceServer) testEmbeddedByValue()                          {}
 
-// UnsafeRemoteInventoryServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to RemoteInventoryServiceServer will
+// UnsafeInventoryServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InventoryServiceServer will
 // result in compilation errors.
-type UnsafeRemoteInventoryServiceServer interface {
-	mustEmbedUnimplementedRemoteInventoryServiceServer()
+type UnsafeInventoryServiceServer interface {
+	mustEmbedUnimplementedInventoryServiceServer()
 }
 
-func RegisterRemoteInventoryServiceServer(s grpc.ServiceRegistrar, srv RemoteInventoryServiceServer) {
-	// If the following call panics, it indicates UnimplementedRemoteInventoryServiceServer was
+func RegisterInventoryServiceServer(s grpc.ServiceRegistrar, srv InventoryServiceServer) {
+	// If the following call panics, it indicates UnimplementedInventoryServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&RemoteInventoryService_ServiceDesc, srv)
+	s.RegisterService(&InventoryService_ServiceDesc, srv)
 }
 
-func _RemoteInventoryService_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).CreateSession(ctx, in)
+		return srv.(InventoryServiceServer).CreateSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_CreateSession_FullMethodName,
+		FullMethod: InventoryService_CreateSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).CreateSession(ctx, req.(*CreateSessionRequest))
+		return srv.(InventoryServiceServer).CreateSession(ctx, req.(*CreateSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_ListSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_ListSessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListSessionsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).ListSessions(ctx, in)
+		return srv.(InventoryServiceServer).ListSessions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_ListSessions_FullMethodName,
+		FullMethod: InventoryService_ListSessions_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).ListSessions(ctx, req.(*ListSessionsRequest))
+		return srv.(InventoryServiceServer).ListSessions(ctx, req.(*ListSessionsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_RequestConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_RequestConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ConnectionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).RequestConnection(ctx, in)
+		return srv.(InventoryServiceServer).RequestConnection(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_RequestConnection_FullMethodName,
+		FullMethod: InventoryService_RequestConnection_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).RequestConnection(ctx, req.(*ConnectionRequest))
+		return srv.(InventoryServiceServer).RequestConnection(ctx, req.(*ConnectionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_WatchConnectionRequests_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _InventoryService_WatchConnectionRequests_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WatchRequestsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(RemoteInventoryServiceServer).WatchConnectionRequests(m, &grpc.GenericServerStream[WatchRequestsRequest, ConnectionRequestNotification]{ServerStream: stream})
+	return srv.(InventoryServiceServer).WatchConnectionRequests(m, &grpc.GenericServerStream[WatchRequestsRequest, ConnectionRequestNotification]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchConnectionRequestsServer = grpc.ServerStreamingServer[ConnectionRequestNotification]
+type InventoryService_WatchConnectionRequestsServer = grpc.ServerStreamingServer[ConnectionRequestNotification]
 
-func _RemoteInventoryService_ApproveConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_ApproveConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApproveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).ApproveConnection(ctx, in)
+		return srv.(InventoryServiceServer).ApproveConnection(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_ApproveConnection_FullMethodName,
+		FullMethod: InventoryService_ApproveConnection_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).ApproveConnection(ctx, req.(*ApproveRequest))
+		return srv.(InventoryServiceServer).ApproveConnection(ctx, req.(*ApproveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_DenyConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_DenyConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DenyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).DenyConnection(ctx, in)
+		return srv.(InventoryServiceServer).DenyConnection(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_DenyConnection_FullMethodName,
+		FullMethod: InventoryService_DenyConnection_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).DenyConnection(ctx, req.(*DenyRequest))
+		return srv.(InventoryServiceServer).DenyConnection(ctx, req.(*DenyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_WatchApprovalStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _InventoryService_WatchApprovalStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WatchApprovalRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(RemoteInventoryServiceServer).WatchApprovalStatus(m, &grpc.GenericServerStream[WatchApprovalRequest, ApprovalStatusUpdate]{ServerStream: stream})
+	return srv.(InventoryServiceServer).WatchApprovalStatus(m, &grpc.GenericServerStream[WatchApprovalRequest, ApprovalStatusUpdate]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchApprovalStatusServer = grpc.ServerStreamingServer[ApprovalStatusUpdate]
+type InventoryService_WatchApprovalStatusServer = grpc.ServerStreamingServer[ApprovalStatusUpdate]
 
-func _RemoteInventoryService_SendWebRTCSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_SendWebRTCSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebRTCSignal)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).SendWebRTCSignal(ctx, in)
+		return srv.(InventoryServiceServer).SendWebRTCSignal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_SendWebRTCSignal_FullMethodName,
+		FullMethod: InventoryService_SendWebRTCSignal_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).SendWebRTCSignal(ctx, req.(*WebRTCSignal))
+		return srv.(InventoryServiceServer).SendWebRTCSignal(ctx, req.(*WebRTCSignal))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_WatchWebRTCSignals_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _InventoryService_WatchWebRTCSignals_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(WatchSignalsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(RemoteInventoryServiceServer).WatchWebRTCSignals(m, &grpc.GenericServerStream[WatchSignalsRequest, WebRTCSignal]{ServerStream: stream})
+	return srv.(InventoryServiceServer).WatchWebRTCSignals(m, &grpc.GenericServerStream[WatchSignalsRequest, WebRTCSignal]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_WatchWebRTCSignalsServer = grpc.ServerStreamingServer[WebRTCSignal]
+type InventoryService_WatchWebRTCSignalsServer = grpc.ServerStreamingServer[WebRTCSignal]
 
-func _RemoteInventoryService_StreamVideo_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(RemoteInventoryServiceServer).StreamVideo(&grpc.GenericServerStream[VideoFrame, VideoFrame]{ServerStream: stream})
+func _InventoryService_StreamVideo_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(InventoryServiceServer).StreamVideo(&grpc.GenericServerStream[VideoFrame, VideoFrame]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_StreamVideoServer = grpc.BidiStreamingServer[VideoFrame, VideoFrame]
+type InventoryService_StreamVideoServer = grpc.BidiStreamingServer[VideoFrame, VideoFrame]
 
-func _RemoteInventoryService_SendCommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_SendCommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Command)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).SendCommand(ctx, in)
+		return srv.(InventoryServiceServer).SendCommand(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_SendCommand_FullMethodName,
+		FullMethod: InventoryService_SendCommand_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).SendCommand(ctx, req.(*Command))
+		return srv.(InventoryServiceServer).SendCommand(ctx, req.(*Command))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EndSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).EndSession(ctx, in)
+		return srv.(InventoryServiceServer).EndSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_EndSession_FullMethodName,
+		FullMethod: InventoryService_EndSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).EndSession(ctx, req.(*EndSessionRequest))
+		return srv.(InventoryServiceServer).EndSession(ctx, req.(*EndSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RemoteInventoryService_ProviderStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(RemoteInventoryServiceServer).ProviderStream(&grpc.GenericServerStream[ProviderMessage, ProviderCommand]{ServerStream: stream})
+func _InventoryService_ProviderStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(InventoryServiceServer).ProviderStream(&grpc.GenericServerStream[ProviderMessage, ProviderCommand]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_ProviderStreamServer = grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]
+type InventoryService_ProviderStreamServer = grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]
 
-func _RemoteInventoryService_ConsumerStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(RemoteInventoryServiceServer).ConsumerStream(&grpc.GenericServerStream[ConsumerCommand, VideoFrame]{ServerStream: stream})
+func _InventoryService_ConsumerStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(InventoryServiceServer).ConsumerStream(&grpc.GenericServerStream[ConsumerCommand, VideoFrame]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type RemoteInventoryService_ConsumerStreamServer = grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]
+type InventoryService_ConsumerStreamServer = grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]
 
-func _RemoteInventoryService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _InventoryService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HeartbeatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RemoteInventoryServiceServer).Heartbeat(ctx, in)
+		return srv.(InventoryServiceServer).Heartbeat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: RemoteInventoryService_Heartbeat_FullMethodName,
+		FullMethod: InventoryService_Heartbeat_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteInventoryServiceServer).Heartbeat(ctx, req.(*HeartbeatRequest))
+		return srv.(InventoryServiceServer).Heartbeat(ctx, req.(*HeartbeatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// RemoteInventoryService_ServiceDesc is the grpc.ServiceDesc for RemoteInventoryService service.
+// InventoryService_ServiceDesc is the grpc.ServiceDesc for InventoryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var RemoteInventoryService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "inventory.RemoteInventoryService",
-	HandlerType: (*RemoteInventoryServiceServer)(nil),
+var InventoryService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "inventory.InventoryService",
+	HandlerType: (*InventoryServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateSession",
-			Handler:    _RemoteInventoryService_CreateSession_Handler,
+			Handler:    _InventoryService_CreateSession_Handler,
 		},
 		{
 			MethodName: "ListSessions",
-			Handler:    _RemoteInventoryService_ListSessions_Handler,
+			Handler:    _InventoryService_ListSessions_Handler,
 		},
 		{
 			MethodName: "RequestConnection",
-			Handler:    _RemoteInventoryService_RequestConnection_Handler,
+			Handler:    _InventoryService_RequestConnection_Handler,
 		},
 		{
 			MethodName: "ApproveConnection",
-			Handler:    _RemoteInventoryService_ApproveConnection_Handler,
+			Handler:    _InventoryService_ApproveConnection_Handler,
 		},
 		{
 			MethodName: "DenyConnection",
-			Handler:    _RemoteInventoryService_DenyConnection_Handler,
+			Handler:    _InventoryService_DenyConnection_Handler,
 		},
 		{
 			MethodName: "SendWebRTCSignal",
-			Handler:    _RemoteInventoryService_SendWebRTCSignal_Handler,
+			Handler:    _InventoryService_SendWebRTCSignal_Handler,
 		},
 		{
 			MethodName: "SendCommand",
-			Handler:    _RemoteInventoryService_SendCommand_Handler,
+			Handler:    _InventoryService_SendCommand_Handler,
 		},
 		{
 			MethodName: "EndSession",
-			Handler:    _RemoteInventoryService_EndSession_Handler,
+			Handler:    _InventoryService_EndSession_Handler,
 		},
 		{
 			MethodName: "Heartbeat",
-			Handler:    _RemoteInventoryService_Heartbeat_Handler,
+			Handler:    _InventoryService_Heartbeat_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "WatchConnectionRequests",
-			Handler:       _RemoteInventoryService_WatchConnectionRequests_Handler,
+			Handler:       _InventoryService_WatchConnectionRequests_Handler,
 			ServerStreams: true,
 		},
 		{
 			StreamName:    "WatchApprovalStatus",
-			Handler:       _RemoteInventoryService_WatchApprovalStatus_Handler,
+			Handler:       _InventoryService_WatchApprovalStatus_Handler,
 			ServerStreams: true,
 		},
 		{
 			StreamName:    "WatchWebRTCSignals",
-			Handler:       _RemoteInventoryService_WatchWebRTCSignals_Handler,
+			Handler:       _InventoryService_WatchWebRTCSignals_Handler,
 			ServerStreams: true,
 		},
 		{
 			StreamName:    "StreamVideo",
-			Handler:       _RemoteInventoryService_StreamVideo_Handler,
+			Handler:       _InventoryService_StreamVideo_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 		{
 			StreamName:    "ProviderStream",
-			Handler:       _RemoteInventoryService_ProviderStream_Handler,
+			Handler:       _InventoryService_ProviderStream_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 		{
 			StreamName:    "ConsumerStream",
-			Handler:       _RemoteInventoryService_ConsumerStream_Handler,
+			Handler:       _InventoryService_ConsumerStream_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},
-	Metadata: "proto/inventory_service.proto",
+	Metadata: "inventory_service.proto",
 }
