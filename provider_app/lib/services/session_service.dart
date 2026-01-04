@@ -33,18 +33,20 @@ class SessionService {
     _client = InventoryServiceClient(_channel);
   }
 
-  // For now, return mock data until backend supports ListSessions
+  // For now, return empty list until backend supports ListSessions
   Future<List<SessionInfo>> listSessions({String searchQuery = ''}) async {
     try {
-      // TODO: Backend doesn't have ListSessions yet, using mock data
+      // TODO: Backend doesn't have ListSessions endpoint yet
       // Once backend is updated with the new proto, replace this with:
       // final request = ListSessionsRequest()..searchQuery = searchQuery;
       // final response = await _client.listSessions(request);
 
-      // Mock data for testing
+      // Return empty for now - will show "No providers available" message
       await Future.delayed(
           Duration(milliseconds: 500)); // Simulate network delay
+      return [];
 
+      /* OLD MOCK DATA - Removed
       final mockSessions = [
         SessionInfo(
           sessionId: 'session_123',
@@ -72,6 +74,7 @@ class SessionService {
       }
 
       return mockSessions;
+      */
     } catch (e) {
       print('Error listing sessions: $e');
       return [];

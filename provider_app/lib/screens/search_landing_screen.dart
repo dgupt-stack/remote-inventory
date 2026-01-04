@@ -76,8 +76,31 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
       if (address == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Unable to get location. Please enable GPS.'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Unable to get location',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Please enable GPS and grant location permission in Settings → App Permissions',
+                  style: TextStyle(fontSize: 12),
+                ),
+              ],
+            ),
             backgroundColor: JarvisTheme.warningRed,
+            duration: Duration(seconds: 5),
+            action: SnackBarAction(
+              label: 'Settings',
+              textColor: Colors.white,
+              onPressed: () {
+                // In a real app, would open app settings
+                // For now, just show a message
+              },
+            ),
           ),
         );
         setState(() {
@@ -190,30 +213,54 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                Icons.auto_awesome,
-                color: JarvisTheme.primaryCyan,
-                size: 24,
+              // Settings/Debug icon
+              IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: JarvisTheme.primaryCyan.withOpacity(0.7),
+                  size: 24,
+                ),
+                onPressed: () {
+                  _showDebugMenu();
+                },
               ),
-              const SizedBox(width: 12),
-              Text(
-                'J.A.R.V.I.S',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: JarvisTheme.primaryCyan,
-                  letterSpacing: 4,
-                  shadows: JarvisTheme.neonGlow(color: JarvisTheme.primaryCyan),
+
+              // Center JARVIS logo
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      color: JarvisTheme.primaryCyan,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'J.A.R.V.I.S',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: JarvisTheme.primaryCyan,
+                        letterSpacing: 4,
+                        shadows: JarvisTheme.neonGlow(
+                            color: JarvisTheme.primaryCyan),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Icon(
+                      Icons.auto_awesome,
+                      color: JarvisTheme.primaryCyan,
+                      size: 24,
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 12),
-              Icon(
-                Icons.auto_awesome,
-                color: JarvisTheme.primaryCyan,
-                size: 24,
-              ),
+
+              // Spacer to balance settings icon
+              SizedBox(width: 48),
             ],
           ),
           const SizedBox(height: 8),
@@ -434,6 +481,51 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
       SnackBar(
         content: Text('Connecting to ${provider.providerName}...'),
         backgroundColor: JarvisTheme.primaryCyan,
+      ),
+    );
+  }
+
+  void _showDebugMenu() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: JarvisTheme.surfaceColor,
+        title: Text(
+          'Developer Settings',
+          style: TextStyle(color: JarvisTheme.primaryCyan),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Backend: remote-inventory-backend-mlwjajxybq-uc.a.run.app:443',
+              style:
+                  TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'TLS: Enabled',
+              style:
+                  TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'ListSessions API: Not implemented yet',
+              style:
+                  TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 12),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Close',
+              style: TextStyle(color: JarvisTheme.primaryCyan),
+            ),
+          ),
+        ],
       ),
     );
   }
