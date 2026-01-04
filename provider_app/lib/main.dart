@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart'; // Disabled for now
 import 'package:camera/camera.dart';
 import 'firebase_options.dart';
-import 'screens/camera_screen.dart';
+import 'screens/search_landing_screen.dart';
 // import 'screens/auth/phone_auth_screen.dart'; // Disabled for now
 
 late List<CameraDescription> cameras;
@@ -30,11 +30,8 @@ class ProviderApp extends StatelessWidget {
     return MaterialApp(
       title: 'JARVIS Provider',
       theme: ThemeData.dark(),
-      // Skip auth for now - go directly to camera
-      home: CameraScreen(
-        camera: cameras.first,
-        providerName: 'Test Provider', // Default name for testing
-      ),
+      // Start with search/consumer screen
+      home: SearchLandingScreen(cameras: cameras),
       debugShowCheckedModeBanner: false,
     );
   }
