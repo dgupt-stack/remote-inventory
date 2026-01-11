@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import '../services/webrtc_provider_service.dart';
-import '../services/grpc_service.dart';
+import '../services/session_service.dart';
 
 /// Provider streaming screen - shows camera preview and connection status
 class ProviderStreamingScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ProviderStreamingScreenState extends State<ProviderStreamingScreen> {
 
       // Create WebRTC offer
       setState(() => _status = 'Creating connection...');
-      final grpcService = GrpcService();
+      final grpcService = SessionService();
       await grpcService.initialize();
 
       await _webrtcService.createOffer(

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	pb "github.com/djgupt/remote-inventory"
@@ -18,6 +19,9 @@ type InventoryServer struct {
 	sessionCache    *cache.SessionCache
 	requestStreams  map[string]chan *pb.ConnectionRequestNotification
 	approvalStreams map[string]chan *pb.ApprovalStatusUpdate
+	signalStreams   map[string]chan *pb.WebRTCSignal // sessionID:deviceID -> signal channel
+	signalCache     sync.Map                         // Cache recent signals for late joiners
+	mu              sync.RWMutex
 }
 
 // NewInventoryServer creates a new inventory server
@@ -26,6 +30,7 @@ func NewInventoryServer() *InventoryServer {
 		sessionCache:    cache.NewSessionCache(),
 		requestStreams:  make(map[string]chan *pb.ConnectionRequestNotification),
 		approvalStreams: make(map[string]chan *pb.ApprovalStatusUpdate),
+		signalStreams:   make(map[string]chan *pb.WebRTCSignal),
 	}
 }
 
@@ -37,7 +42,7 @@ func (s *InventoryServer) CreateSession(ctx context.Context, req *pb.CreateSessi
 	session := cache.SessionInfo{
 		SessionID:            sessionID,
 		ProviderName:         req.ProviderName,
-		ProviderLocation:     "Unknown", // TODO: Get from request or IP
+		ProviderLocation:     req.Location, // Use the location from request
 		CreatedAt:            time.Now(),
 		AcceptingConnections: true,
 	}
@@ -272,4 +277,122 @@ func (s *InventoryServer) EndSession(ctx context.Context, req *pb.EndSessionRequ
 	return &pb.EndSessionResponse{
 		Success: true,
 	}, nil
+}
+
+// SendWebRTCSignal sends WebRTC signaling data (SDP offer/answer or ICE candidate)
+func (s *InventoryServer) SendWebRTCSignal(ctx context.Context, req *pb.WebRTCSignal) (*pb.SignalResponse, error) {
+	// Verify session exists
+	_, err := s.sessionCache.GetSession(req.SessionId)
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "session not found: %v", err)
+	}
+
+	// Build stream key for target device
+	streamKey := fmt.Sprintf("%s:%s", req.SessionId, req.ToDeviceId)
+
+	// Try to send to any active watchers
+	s.mu.RLock()
+	if stream, ok := s.signalStreams[streamKey]; ok {
+		select {
+		case stream <- req:
+		default:
+			// Buffer full, cache the signal
+			s.cacheSignal(req)
+		}
+	} else {
+		// No active watcher, cache the signal
+		s.cacheSignal(req)
+	}
+	s.mu.RUnlock()
+
+	return &pb.SignalResponse{
+		Success: true,
+		Message: "Signal sent",
+	}, nil
+}
+
+// WatchWebRTCSignals watches for WebRTC signals directed to this device
+func (s *InventoryServer) WatchWebRTCSignals(req *pb.WatchSignalsRequest, stream pb.InventoryService_WatchWebRTCSignalsServer) error {
+	// Create channel for this device
+	streamKey := fmt.Sprintf("%s:%s", req.SessionId, req.DeviceId)
+	signalChan := make(chan *pb.WebRTCSignal, 10)
+
+	s.mu.Lock()
+	s.signalStreams[streamKey] = signalChan
+	s.mu.Unlock()
+
+	defer func() {
+		s.mu.Lock()
+		delete(s.signalStreams, streamKey)
+		s.mu.Unlock()
+	}()
+
+	// Send any cached signals first
+	cachedSignals := s.getCachedSignals(req.SessionId, req.DeviceId)
+	for _, signal := range cachedSignals {
+		if err := stream.Send(signal); err != nil {
+			return err
+		}
+	}
+
+	// Stream new signals
+	for {
+		select {
+		case signal := <-signalChan:
+			if err := stream.Send(signal); err != nil {
+				return err
+			}
+		case <-stream.Context().Done():
+			return nil
+		}
+	}
+}
+
+// Heartbeat keeps a session alive and returns session status
+func (s *InventoryServer) Heartbeat(ctx context.Context, req *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
+	session, err := s.sessionCache.GetSession(req.SessionId)
+	if err != nil {
+		return &pb.HeartbeatResponse{
+			Active: false,
+		}, nil
+	}
+
+	duration := time.Since(session.CreatedAt).Milliseconds()
+
+	return &pb.HeartbeatResponse{
+		Active:            true,
+		SessionDurationMs: duration,
+	}, nil
+}
+
+// Helper methods for signal caching
+func (s *InventoryServer) cacheSignal(signal *pb.WebRTCSignal) {
+	cacheKey := fmt.Sprintf("%s:%s", signal.SessionId, signal.ToDeviceId)
+
+	// Get or create signal list
+	var signals []*pb.WebRTCSignal
+	if val, ok := s.signalCache.Load(cacheKey); ok {
+		signals = val.([]*pb.WebRTCSignal)
+	}
+
+	// Add new signal (keep last 10)
+	signals = append(signals, signal)
+	if len(signals) > 10 {
+		signals = signals[len(signals)-10:]
+	}
+
+	s.signalCache.Store(cacheKey, signals)
+}
+
+func (s *InventoryServer) getCachedSignals(sessionID, deviceID string) []*pb.WebRTCSignal {
+	cacheKey := fmt.Sprintf("%s:%s", sessionID, deviceID)
+
+	if val, ok := s.signalCache.Load(cacheKey); ok {
+		signals := val.([]*pb.WebRTCSignal)
+		// Clear cache after retrieval
+		s.signalCache.Delete(cacheKey)
+		return signals
+	}
+
+	return nil
 }

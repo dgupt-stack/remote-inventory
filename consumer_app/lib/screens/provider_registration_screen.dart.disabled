@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/session_service.dart';
-import '../services/grpc_service.dart';
+import '../services/session_service.dart';
 import '../proto/inventory_service.pbgrpc.dart';
 import '../utils/device_manager.dart';
 import 'provider_waiting_screen.dart';
@@ -121,7 +121,7 @@ class _ProviderRegistrationScreenState
       final deviceId = await DeviceManager.getDeviceId();
 
       // Create session
-      final grpcService = GrpcService();
+      final grpcService = SessionService();
       await grpcService.initialize();
 
       final response = await grpcService.stub.createSession(

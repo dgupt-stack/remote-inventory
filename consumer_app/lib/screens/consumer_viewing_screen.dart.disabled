@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import '../services/webrtc_consumer_service.dart';
-import '../services/grpc_service.dart';
+import '../services/session_service.dart';
 import '../utils/device_manager.dart';
 
 /// Consumer viewing screen - displays Provider's live video stream
@@ -53,7 +53,7 @@ class _ConsumerViewingScreenState extends State<ConsumerViewingScreen> {
       final deviceId = await DeviceManager.getDeviceId();
 
       // Initialize gRPC
-      final grpcService = GrpcService();
+      final grpcService = SessionService();
       await grpcService.initialize();
 
       // Start watching for Provider's offer
