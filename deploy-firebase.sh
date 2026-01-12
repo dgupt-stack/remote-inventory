@@ -18,7 +18,7 @@ echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 
 # Configuration
-FIREBASE_APP_ID="${FIREBASE_APP_ID:-}"
+FIREBASE_APP_ID="${FIREBASE_APP_ID:-1:344355586136:android:3b55fa2f1e2fa9316e8a2d}"
 TESTER_EMAILS="dgupt@360world.com,provider@360world.com"
 RELEASE_NOTES="
 🎯 Unified Provider + Consumer App
