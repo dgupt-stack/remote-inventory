@@ -80,7 +80,7 @@ service InventoryService {
   // Consumer receives privacy-blurred video and sends commands
   rpc ConsumerStream(stream ConsumerCommand) returns (stream VideoFrame);
   
-  // Heartbeat to keep sessions alive
+  // Heartbeat to keep session alive
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
     option (google.api.http) = {
       post: "/v1/sessions/{session_id}/heartbeat"
@@ -88,7 +88,7 @@ service InventoryService {
     };
   }
 
-  // Connection Request Flow
+  // Connection Request Flow (v1.3.0)
   rpc RequestConnection(RequestConnectionRequest) returns (RequestConnectionResponse) {
     option (google.api.http) = {
       post: "/v1/sessions/{session_id}/connect"
@@ -263,11 +263,10 @@ message HeartbeatRequest {
 }
 
 message HeartbeatResponse {
-  bool active = 1;
-  int64 session_duration_ms = 2;
+  bool success = 1;
 }
 
-// Connection Request Messages
+// Connection Request Messages (v1.3.0)
 
 message RequestConnectionRequest {
   string session_id = 1;
