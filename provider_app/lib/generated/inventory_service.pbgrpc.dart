@@ -29,26 +29,10 @@ class InventoryServiceClient extends $grpc.Client {
       '/inventory.InventoryService/ListSessions',
       ($0.ListSessionsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.ListSessionsResponse.fromBuffer(value));
-  static final _$requestConnection = $grpc.ClientMethod<$0.ConnectionRequest, $0.ConnectionResponse>(
-      '/inventory.InventoryService/RequestConnection',
-      ($0.ConnectionRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.ConnectionResponse.fromBuffer(value));
-  static final _$watchConnectionRequests = $grpc.ClientMethod<$0.WatchRequestsRequest, $0.ConnectionRequestNotification>(
-      '/inventory.InventoryService/WatchConnectionRequests',
-      ($0.WatchRequestsRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.ConnectionRequestNotification.fromBuffer(value));
-  static final _$approveConnection = $grpc.ClientMethod<$0.ApproveRequest, $0.ApproveResponse>(
-      '/inventory.InventoryService/ApproveConnection',
-      ($0.ApproveRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.ApproveResponse.fromBuffer(value));
-  static final _$denyConnection = $grpc.ClientMethod<$0.DenyRequest, $0.DenyResponse>(
-      '/inventory.InventoryService/DenyConnection',
-      ($0.DenyRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.DenyResponse.fromBuffer(value));
-  static final _$watchApprovalStatus = $grpc.ClientMethod<$0.WatchApprovalRequest, $0.ApprovalStatusUpdate>(
-      '/inventory.InventoryService/WatchApprovalStatus',
-      ($0.WatchApprovalRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.ApprovalStatusUpdate.fromBuffer(value));
+  static final _$endSession = $grpc.ClientMethod<$0.EndSessionRequest, $0.EndSessionResponse>(
+      '/inventory.InventoryService/EndSession',
+      ($0.EndSessionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.EndSessionResponse.fromBuffer(value));
   static final _$sendWebRTCSignal = $grpc.ClientMethod<$0.WebRTCSignal, $0.SignalResponse>(
       '/inventory.InventoryService/SendWebRTCSignal',
       ($0.WebRTCSignal value) => value.writeToBuffer(),
@@ -57,18 +41,6 @@ class InventoryServiceClient extends $grpc.Client {
       '/inventory.InventoryService/WatchWebRTCSignals',
       ($0.WatchSignalsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.WebRTCSignal.fromBuffer(value));
-  static final _$streamVideo = $grpc.ClientMethod<$0.VideoFrame, $0.VideoFrame>(
-      '/inventory.InventoryService/StreamVideo',
-      ($0.VideoFrame value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.VideoFrame.fromBuffer(value));
-  static final _$sendCommand = $grpc.ClientMethod<$0.Command, $0.CommandResponse>(
-      '/inventory.InventoryService/SendCommand',
-      ($0.Command value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.CommandResponse.fromBuffer(value));
-  static final _$endSession = $grpc.ClientMethod<$0.EndSessionRequest, $0.EndSessionResponse>(
-      '/inventory.InventoryService/EndSession',
-      ($0.EndSessionRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.EndSessionResponse.fromBuffer(value));
   static final _$providerStream = $grpc.ClientMethod<$0.ProviderMessage, $0.ProviderCommand>(
       '/inventory.InventoryService/ProviderStream',
       ($0.ProviderMessage value) => value.writeToBuffer(),
@@ -81,6 +53,26 @@ class InventoryServiceClient extends $grpc.Client {
       '/inventory.InventoryService/Heartbeat',
       ($0.HeartbeatRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.HeartbeatResponse.fromBuffer(value));
+  static final _$requestConnection = $grpc.ClientMethod<$0.RequestConnectionRequest, $0.RequestConnectionResponse>(
+      '/inventory.InventoryService/RequestConnection',
+      ($0.RequestConnectionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.RequestConnectionResponse.fromBuffer(value));
+  static final _$approveConnection = $grpc.ClientMethod<$0.ApproveConnectionRequest, $0.ApproveConnectionResponse>(
+      '/inventory.InventoryService/ApproveConnection',
+      ($0.ApproveConnectionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ApproveConnectionResponse.fromBuffer(value));
+  static final _$denyConnection = $grpc.ClientMethod<$0.DenyConnectionRequest, $0.DenyConnectionResponse>(
+      '/inventory.InventoryService/DenyConnection',
+      ($0.DenyConnectionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.DenyConnectionResponse.fromBuffer(value));
+  static final _$watchConnectionRequests = $grpc.ClientMethod<$0.WatchConnectionRequestsRequest, $0.ConnectionRequestNotification>(
+      '/inventory.InventoryService/WatchConnectionRequests',
+      ($0.WatchConnectionRequestsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ConnectionRequestNotification.fromBuffer(value));
+  static final _$watchApprovalStatus = $grpc.ClientMethod<$0.WatchApprovalStatusRequest, $0.ApprovalStatusUpdate>(
+      '/inventory.InventoryService/WatchApprovalStatus',
+      ($0.WatchApprovalStatusRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ApprovalStatusUpdate.fromBuffer(value));
 
   InventoryServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -96,24 +88,8 @@ class InventoryServiceClient extends $grpc.Client {
     return $createUnaryCall(_$listSessions, request, options: options);
   }
 
-  $grpc.ResponseFuture<$0.ConnectionResponse> requestConnection($0.ConnectionRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$requestConnection, request, options: options);
-  }
-
-  $grpc.ResponseStream<$0.ConnectionRequestNotification> watchConnectionRequests($0.WatchRequestsRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$watchConnectionRequests, $async.Stream.fromIterable([request]), options: options);
-  }
-
-  $grpc.ResponseFuture<$0.ApproveResponse> approveConnection($0.ApproveRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$approveConnection, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.DenyResponse> denyConnection($0.DenyRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$denyConnection, request, options: options);
-  }
-
-  $grpc.ResponseStream<$0.ApprovalStatusUpdate> watchApprovalStatus($0.WatchApprovalRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$watchApprovalStatus, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$0.EndSessionResponse> endSession($0.EndSessionRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$endSession, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.SignalResponse> sendWebRTCSignal($0.WebRTCSignal request, {$grpc.CallOptions? options}) {
@@ -122,18 +98,6 @@ class InventoryServiceClient extends $grpc.Client {
 
   $grpc.ResponseStream<$0.WebRTCSignal> watchWebRTCSignals($0.WatchSignalsRequest request, {$grpc.CallOptions? options}) {
     return $createStreamingCall(_$watchWebRTCSignals, $async.Stream.fromIterable([request]), options: options);
-  }
-
-  $grpc.ResponseStream<$0.VideoFrame> streamVideo($async.Stream<$0.VideoFrame> request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$streamVideo, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.CommandResponse> sendCommand($0.Command request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$sendCommand, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.EndSessionResponse> endSession($0.EndSessionRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$endSession, request, options: options);
   }
 
   $grpc.ResponseStream<$0.ProviderCommand> providerStream($async.Stream<$0.ProviderMessage> request, {$grpc.CallOptions? options}) {
@@ -146,6 +110,26 @@ class InventoryServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.HeartbeatResponse> heartbeat($0.HeartbeatRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$heartbeat, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.RequestConnectionResponse> requestConnection($0.RequestConnectionRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$requestConnection, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ApproveConnectionResponse> approveConnection($0.ApproveConnectionRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$approveConnection, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.DenyConnectionResponse> denyConnection($0.DenyConnectionRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$denyConnection, request, options: options);
+  }
+
+  $grpc.ResponseStream<$0.ConnectionRequestNotification> watchConnectionRequests($0.WatchConnectionRequestsRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$watchConnectionRequests, $async.Stream.fromIterable([request]), options: options);
+  }
+
+  $grpc.ResponseStream<$0.ApprovalStatusUpdate> watchApprovalStatus($0.WatchApprovalStatusRequest request, {$grpc.CallOptions? options}) {
+    return $createStreamingCall(_$watchApprovalStatus, $async.Stream.fromIterable([request]), options: options);
   }
 }
 
@@ -168,41 +152,13 @@ abstract class InventoryServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ListSessionsRequest.fromBuffer(value),
         ($0.ListSessionsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.ConnectionRequest, $0.ConnectionResponse>(
-        'RequestConnection',
-        requestConnection_Pre,
+    $addMethod($grpc.ServiceMethod<$0.EndSessionRequest, $0.EndSessionResponse>(
+        'EndSession',
+        endSession_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.ConnectionRequest.fromBuffer(value),
-        ($0.ConnectionResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.WatchRequestsRequest, $0.ConnectionRequestNotification>(
-        'WatchConnectionRequests',
-        watchConnectionRequests_Pre,
-        false,
-        true,
-        ($core.List<$core.int> value) => $0.WatchRequestsRequest.fromBuffer(value),
-        ($0.ConnectionRequestNotification value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.ApproveRequest, $0.ApproveResponse>(
-        'ApproveConnection',
-        approveConnection_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.ApproveRequest.fromBuffer(value),
-        ($0.ApproveResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.DenyRequest, $0.DenyResponse>(
-        'DenyConnection',
-        denyConnection_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.DenyRequest.fromBuffer(value),
-        ($0.DenyResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.WatchApprovalRequest, $0.ApprovalStatusUpdate>(
-        'WatchApprovalStatus',
-        watchApprovalStatus_Pre,
-        false,
-        true,
-        ($core.List<$core.int> value) => $0.WatchApprovalRequest.fromBuffer(value),
-        ($0.ApprovalStatusUpdate value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $0.EndSessionRequest.fromBuffer(value),
+        ($0.EndSessionResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.WebRTCSignal, $0.SignalResponse>(
         'SendWebRTCSignal',
         sendWebRTCSignal_Pre,
@@ -217,27 +173,6 @@ abstract class InventoryServiceBase extends $grpc.Service {
         true,
         ($core.List<$core.int> value) => $0.WatchSignalsRequest.fromBuffer(value),
         ($0.WebRTCSignal value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.VideoFrame, $0.VideoFrame>(
-        'StreamVideo',
-        streamVideo,
-        true,
-        true,
-        ($core.List<$core.int> value) => $0.VideoFrame.fromBuffer(value),
-        ($0.VideoFrame value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Command, $0.CommandResponse>(
-        'SendCommand',
-        sendCommand_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Command.fromBuffer(value),
-        ($0.CommandResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.EndSessionRequest, $0.EndSessionResponse>(
-        'EndSession',
-        endSession_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.EndSessionRequest.fromBuffer(value),
-        ($0.EndSessionResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ProviderMessage, $0.ProviderCommand>(
         'ProviderStream',
         providerStream,
@@ -259,6 +194,41 @@ abstract class InventoryServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.HeartbeatRequest.fromBuffer(value),
         ($0.HeartbeatResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.RequestConnectionRequest, $0.RequestConnectionResponse>(
+        'RequestConnection',
+        requestConnection_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.RequestConnectionRequest.fromBuffer(value),
+        ($0.RequestConnectionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ApproveConnectionRequest, $0.ApproveConnectionResponse>(
+        'ApproveConnection',
+        approveConnection_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ApproveConnectionRequest.fromBuffer(value),
+        ($0.ApproveConnectionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.DenyConnectionRequest, $0.DenyConnectionResponse>(
+        'DenyConnection',
+        denyConnection_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.DenyConnectionRequest.fromBuffer(value),
+        ($0.DenyConnectionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.WatchConnectionRequestsRequest, $0.ConnectionRequestNotification>(
+        'WatchConnectionRequests',
+        watchConnectionRequests_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.WatchConnectionRequestsRequest.fromBuffer(value),
+        ($0.ConnectionRequestNotification value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.WatchApprovalStatusRequest, $0.ApprovalStatusUpdate>(
+        'WatchApprovalStatus',
+        watchApprovalStatus_Pre,
+        false,
+        true,
+        ($core.List<$core.int> value) => $0.WatchApprovalStatusRequest.fromBuffer(value),
+        ($0.ApprovalStatusUpdate value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.SessionResponse> createSession_Pre($grpc.ServiceCall call, $async.Future<$0.CreateSessionRequest> request) async {
@@ -269,24 +239,8 @@ abstract class InventoryServiceBase extends $grpc.Service {
     return listSessions(call, await request);
   }
 
-  $async.Future<$0.ConnectionResponse> requestConnection_Pre($grpc.ServiceCall call, $async.Future<$0.ConnectionRequest> request) async {
-    return requestConnection(call, await request);
-  }
-
-  $async.Stream<$0.ConnectionRequestNotification> watchConnectionRequests_Pre($grpc.ServiceCall call, $async.Future<$0.WatchRequestsRequest> request) async* {
-    yield* watchConnectionRequests(call, await request);
-  }
-
-  $async.Future<$0.ApproveResponse> approveConnection_Pre($grpc.ServiceCall call, $async.Future<$0.ApproveRequest> request) async {
-    return approveConnection(call, await request);
-  }
-
-  $async.Future<$0.DenyResponse> denyConnection_Pre($grpc.ServiceCall call, $async.Future<$0.DenyRequest> request) async {
-    return denyConnection(call, await request);
-  }
-
-  $async.Stream<$0.ApprovalStatusUpdate> watchApprovalStatus_Pre($grpc.ServiceCall call, $async.Future<$0.WatchApprovalRequest> request) async* {
-    yield* watchApprovalStatus(call, await request);
+  $async.Future<$0.EndSessionResponse> endSession_Pre($grpc.ServiceCall call, $async.Future<$0.EndSessionRequest> request) async {
+    return endSession(call, await request);
   }
 
   $async.Future<$0.SignalResponse> sendWebRTCSignal_Pre($grpc.ServiceCall call, $async.Future<$0.WebRTCSignal> request) async {
@@ -297,31 +251,41 @@ abstract class InventoryServiceBase extends $grpc.Service {
     yield* watchWebRTCSignals(call, await request);
   }
 
-  $async.Future<$0.CommandResponse> sendCommand_Pre($grpc.ServiceCall call, $async.Future<$0.Command> request) async {
-    return sendCommand(call, await request);
-  }
-
-  $async.Future<$0.EndSessionResponse> endSession_Pre($grpc.ServiceCall call, $async.Future<$0.EndSessionRequest> request) async {
-    return endSession(call, await request);
-  }
-
   $async.Future<$0.HeartbeatResponse> heartbeat_Pre($grpc.ServiceCall call, $async.Future<$0.HeartbeatRequest> request) async {
     return heartbeat(call, await request);
   }
 
+  $async.Future<$0.RequestConnectionResponse> requestConnection_Pre($grpc.ServiceCall call, $async.Future<$0.RequestConnectionRequest> request) async {
+    return requestConnection(call, await request);
+  }
+
+  $async.Future<$0.ApproveConnectionResponse> approveConnection_Pre($grpc.ServiceCall call, $async.Future<$0.ApproveConnectionRequest> request) async {
+    return approveConnection(call, await request);
+  }
+
+  $async.Future<$0.DenyConnectionResponse> denyConnection_Pre($grpc.ServiceCall call, $async.Future<$0.DenyConnectionRequest> request) async {
+    return denyConnection(call, await request);
+  }
+
+  $async.Stream<$0.ConnectionRequestNotification> watchConnectionRequests_Pre($grpc.ServiceCall call, $async.Future<$0.WatchConnectionRequestsRequest> request) async* {
+    yield* watchConnectionRequests(call, await request);
+  }
+
+  $async.Stream<$0.ApprovalStatusUpdate> watchApprovalStatus_Pre($grpc.ServiceCall call, $async.Future<$0.WatchApprovalStatusRequest> request) async* {
+    yield* watchApprovalStatus(call, await request);
+  }
+
   $async.Future<$0.SessionResponse> createSession($grpc.ServiceCall call, $0.CreateSessionRequest request);
   $async.Future<$0.ListSessionsResponse> listSessions($grpc.ServiceCall call, $0.ListSessionsRequest request);
-  $async.Future<$0.ConnectionResponse> requestConnection($grpc.ServiceCall call, $0.ConnectionRequest request);
-  $async.Stream<$0.ConnectionRequestNotification> watchConnectionRequests($grpc.ServiceCall call, $0.WatchRequestsRequest request);
-  $async.Future<$0.ApproveResponse> approveConnection($grpc.ServiceCall call, $0.ApproveRequest request);
-  $async.Future<$0.DenyResponse> denyConnection($grpc.ServiceCall call, $0.DenyRequest request);
-  $async.Stream<$0.ApprovalStatusUpdate> watchApprovalStatus($grpc.ServiceCall call, $0.WatchApprovalRequest request);
+  $async.Future<$0.EndSessionResponse> endSession($grpc.ServiceCall call, $0.EndSessionRequest request);
   $async.Future<$0.SignalResponse> sendWebRTCSignal($grpc.ServiceCall call, $0.WebRTCSignal request);
   $async.Stream<$0.WebRTCSignal> watchWebRTCSignals($grpc.ServiceCall call, $0.WatchSignalsRequest request);
-  $async.Stream<$0.VideoFrame> streamVideo($grpc.ServiceCall call, $async.Stream<$0.VideoFrame> request);
-  $async.Future<$0.CommandResponse> sendCommand($grpc.ServiceCall call, $0.Command request);
-  $async.Future<$0.EndSessionResponse> endSession($grpc.ServiceCall call, $0.EndSessionRequest request);
   $async.Stream<$0.ProviderCommand> providerStream($grpc.ServiceCall call, $async.Stream<$0.ProviderMessage> request);
   $async.Stream<$0.VideoFrame> consumerStream($grpc.ServiceCall call, $async.Stream<$0.ConsumerCommand> request);
   $async.Future<$0.HeartbeatResponse> heartbeat($grpc.ServiceCall call, $0.HeartbeatRequest request);
+  $async.Future<$0.RequestConnectionResponse> requestConnection($grpc.ServiceCall call, $0.RequestConnectionRequest request);
+  $async.Future<$0.ApproveConnectionResponse> approveConnection($grpc.ServiceCall call, $0.ApproveConnectionRequest request);
+  $async.Future<$0.DenyConnectionResponse> denyConnection($grpc.ServiceCall call, $0.DenyConnectionRequest request);
+  $async.Stream<$0.ConnectionRequestNotification> watchConnectionRequests($grpc.ServiceCall call, $0.WatchConnectionRequestsRequest request);
+  $async.Stream<$0.ApprovalStatusUpdate> watchApprovalStatus($grpc.ServiceCall call, $0.WatchApprovalStatusRequest request);
 }

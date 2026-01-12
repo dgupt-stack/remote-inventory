@@ -1598,15 +1598,11 @@ class HeartbeatRequest extends $pb.GeneratedMessage {
 
 class HeartbeatResponse extends $pb.GeneratedMessage {
   factory HeartbeatResponse({
-    $core.bool? active,
-    $fixnum.Int64? sessionDurationMs,
+    $core.bool? success,
   }) {
     final $result = create();
-    if (active != null) {
-      $result.active = active;
-    }
-    if (sessionDurationMs != null) {
-      $result.sessionDurationMs = sessionDurationMs;
+    if (success != null) {
+      $result.success = success;
     }
     return $result;
   }
@@ -1615,8 +1611,7 @@ class HeartbeatResponse extends $pb.GeneratedMessage {
   factory HeartbeatResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'HeartbeatResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'active')
-    ..aInt64(2, _omitFieldNames ? '' : 'sessionDurationMs')
+    ..aOB(1, _omitFieldNames ? '' : 'success')
     ..hasRequiredFields = false
   ;
 
@@ -1642,22 +1637,653 @@ class HeartbeatResponse extends $pb.GeneratedMessage {
   static HeartbeatResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get active => $_getBF(0);
+  $core.bool get success => $_getBF(0);
   @$pb.TagNumber(1)
-  set active($core.bool v) { $_setBool(0, v); }
+  set success($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasActive() => $_has(0);
+  $core.bool hasSuccess() => $_has(0);
   @$pb.TagNumber(1)
-  void clearActive() => clearField(1);
+  void clearSuccess() => clearField(1);
+}
+
+class RequestConnectionRequest extends $pb.GeneratedMessage {
+  factory RequestConnectionRequest({
+    $core.String? sessionId,
+    $core.String? consumerId,
+    $core.String? consumerName,
+  }) {
+    final $result = create();
+    if (sessionId != null) {
+      $result.sessionId = sessionId;
+    }
+    if (consumerId != null) {
+      $result.consumerId = consumerId;
+    }
+    if (consumerName != null) {
+      $result.consumerName = consumerName;
+    }
+    return $result;
+  }
+  RequestConnectionRequest._() : super();
+  factory RequestConnectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RequestConnectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RequestConnectionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..aOS(2, _omitFieldNames ? '' : 'consumerId')
+    ..aOS(3, _omitFieldNames ? '' : 'consumerName')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RequestConnectionRequest clone() => RequestConnectionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RequestConnectionRequest copyWith(void Function(RequestConnectionRequest) updates) => super.copyWith((message) => updates(message as RequestConnectionRequest)) as RequestConnectionRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RequestConnectionRequest create() => RequestConnectionRequest._();
+  RequestConnectionRequest createEmptyInstance() => create();
+  static $pb.PbList<RequestConnectionRequest> createRepeated() => $pb.PbList<RequestConnectionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static RequestConnectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RequestConnectionRequest>(create);
+  static RequestConnectionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $fixnum.Int64 get sessionDurationMs => $_getI64(1);
+  $core.String get consumerId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set sessionDurationMs($fixnum.Int64 v) { $_setInt64(1, v); }
+  set consumerId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasSessionDurationMs() => $_has(1);
+  $core.bool hasConsumerId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearSessionDurationMs() => clearField(2);
+  void clearConsumerId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get consumerName => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set consumerName($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasConsumerName() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearConsumerName() => clearField(3);
+}
+
+class RequestConnectionResponse extends $pb.GeneratedMessage {
+  factory RequestConnectionResponse({
+    $core.String? requestId,
+  }) {
+    final $result = create();
+    if (requestId != null) {
+      $result.requestId = requestId;
+    }
+    return $result;
+  }
+  RequestConnectionResponse._() : super();
+  factory RequestConnectionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory RequestConnectionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RequestConnectionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requestId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  RequestConnectionResponse clone() => RequestConnectionResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  RequestConnectionResponse copyWith(void Function(RequestConnectionResponse) updates) => super.copyWith((message) => updates(message as RequestConnectionResponse)) as RequestConnectionResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static RequestConnectionResponse create() => RequestConnectionResponse._();
+  RequestConnectionResponse createEmptyInstance() => create();
+  static $pb.PbList<RequestConnectionResponse> createRepeated() => $pb.PbList<RequestConnectionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static RequestConnectionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<RequestConnectionResponse>(create);
+  static RequestConnectionResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requestId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requestId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequestId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequestId() => clearField(1);
+}
+
+class ApproveConnectionRequest extends $pb.GeneratedMessage {
+  factory ApproveConnectionRequest({
+    $core.String? requestId,
+  }) {
+    final $result = create();
+    if (requestId != null) {
+      $result.requestId = requestId;
+    }
+    return $result;
+  }
+  ApproveConnectionRequest._() : super();
+  factory ApproveConnectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ApproveConnectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveConnectionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requestId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ApproveConnectionRequest clone() => ApproveConnectionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ApproveConnectionRequest copyWith(void Function(ApproveConnectionRequest) updates) => super.copyWith((message) => updates(message as ApproveConnectionRequest)) as ApproveConnectionRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ApproveConnectionRequest create() => ApproveConnectionRequest._();
+  ApproveConnectionRequest createEmptyInstance() => create();
+  static $pb.PbList<ApproveConnectionRequest> createRepeated() => $pb.PbList<ApproveConnectionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ApproveConnectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApproveConnectionRequest>(create);
+  static ApproveConnectionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requestId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requestId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequestId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequestId() => clearField(1);
+}
+
+class ApproveConnectionResponse extends $pb.GeneratedMessage {
+  factory ApproveConnectionResponse({
+    $core.String? sessionId,
+    $core.String? token,
+  }) {
+    final $result = create();
+    if (sessionId != null) {
+      $result.sessionId = sessionId;
+    }
+    if (token != null) {
+      $result.token = token;
+    }
+    return $result;
+  }
+  ApproveConnectionResponse._() : super();
+  factory ApproveConnectionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ApproveConnectionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveConnectionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..aOS(2, _omitFieldNames ? '' : 'token')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ApproveConnectionResponse clone() => ApproveConnectionResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ApproveConnectionResponse copyWith(void Function(ApproveConnectionResponse) updates) => super.copyWith((message) => updates(message as ApproveConnectionResponse)) as ApproveConnectionResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ApproveConnectionResponse create() => ApproveConnectionResponse._();
+  ApproveConnectionResponse createEmptyInstance() => create();
+  static $pb.PbList<ApproveConnectionResponse> createRepeated() => $pb.PbList<ApproveConnectionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ApproveConnectionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApproveConnectionResponse>(create);
+  static ApproveConnectionResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get token => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set token($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearToken() => clearField(2);
+}
+
+class DenyConnectionRequest extends $pb.GeneratedMessage {
+  factory DenyConnectionRequest({
+    $core.String? requestId,
+    $core.String? reason,
+  }) {
+    final $result = create();
+    if (requestId != null) {
+      $result.requestId = requestId;
+    }
+    if (reason != null) {
+      $result.reason = reason;
+    }
+    return $result;
+  }
+  DenyConnectionRequest._() : super();
+  factory DenyConnectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DenyConnectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DenyConnectionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requestId')
+    ..aOS(2, _omitFieldNames ? '' : 'reason')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DenyConnectionRequest clone() => DenyConnectionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DenyConnectionRequest copyWith(void Function(DenyConnectionRequest) updates) => super.copyWith((message) => updates(message as DenyConnectionRequest)) as DenyConnectionRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DenyConnectionRequest create() => DenyConnectionRequest._();
+  DenyConnectionRequest createEmptyInstance() => create();
+  static $pb.PbList<DenyConnectionRequest> createRepeated() => $pb.PbList<DenyConnectionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static DenyConnectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DenyConnectionRequest>(create);
+  static DenyConnectionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requestId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requestId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequestId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequestId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get reason => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set reason($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasReason() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearReason() => clearField(2);
+}
+
+class DenyConnectionResponse extends $pb.GeneratedMessage {
+  factory DenyConnectionResponse({
+    $core.bool? success,
+  }) {
+    final $result = create();
+    if (success != null) {
+      $result.success = success;
+    }
+    return $result;
+  }
+  DenyConnectionResponse._() : super();
+  factory DenyConnectionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DenyConnectionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DenyConnectionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DenyConnectionResponse clone() => DenyConnectionResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DenyConnectionResponse copyWith(void Function(DenyConnectionResponse) updates) => super.copyWith((message) => updates(message as DenyConnectionResponse)) as DenyConnectionResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DenyConnectionResponse create() => DenyConnectionResponse._();
+  DenyConnectionResponse createEmptyInstance() => create();
+  static $pb.PbList<DenyConnectionResponse> createRepeated() => $pb.PbList<DenyConnectionResponse>();
+  @$core.pragma('dart2js:noInline')
+  static DenyConnectionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DenyConnectionResponse>(create);
+  static DenyConnectionResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => clearField(1);
+}
+
+class WatchConnectionRequestsRequest extends $pb.GeneratedMessage {
+  factory WatchConnectionRequestsRequest({
+    $core.String? sessionId,
+  }) {
+    final $result = create();
+    if (sessionId != null) {
+      $result.sessionId = sessionId;
+    }
+    return $result;
+  }
+  WatchConnectionRequestsRequest._() : super();
+  factory WatchConnectionRequestsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory WatchConnectionRequestsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'WatchConnectionRequestsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  WatchConnectionRequestsRequest clone() => WatchConnectionRequestsRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  WatchConnectionRequestsRequest copyWith(void Function(WatchConnectionRequestsRequest) updates) => super.copyWith((message) => updates(message as WatchConnectionRequestsRequest)) as WatchConnectionRequestsRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static WatchConnectionRequestsRequest create() => WatchConnectionRequestsRequest._();
+  WatchConnectionRequestsRequest createEmptyInstance() => create();
+  static $pb.PbList<WatchConnectionRequestsRequest> createRepeated() => $pb.PbList<WatchConnectionRequestsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static WatchConnectionRequestsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WatchConnectionRequestsRequest>(create);
+  static WatchConnectionRequestsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => clearField(1);
+}
+
+class ConnectionRequestNotification extends $pb.GeneratedMessage {
+  factory ConnectionRequestNotification({
+    $core.String? requestId,
+    $core.String? consumerId,
+    $core.String? consumerName,
+    $fixnum.Int64? timestamp,
+  }) {
+    final $result = create();
+    if (requestId != null) {
+      $result.requestId = requestId;
+    }
+    if (consumerId != null) {
+      $result.consumerId = consumerId;
+    }
+    if (consumerName != null) {
+      $result.consumerName = consumerName;
+    }
+    if (timestamp != null) {
+      $result.timestamp = timestamp;
+    }
+    return $result;
+  }
+  ConnectionRequestNotification._() : super();
+  factory ConnectionRequestNotification.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ConnectionRequestNotification.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConnectionRequestNotification', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requestId')
+    ..aOS(2, _omitFieldNames ? '' : 'consumerId')
+    ..aOS(3, _omitFieldNames ? '' : 'consumerName')
+    ..aInt64(4, _omitFieldNames ? '' : 'timestamp')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ConnectionRequestNotification clone() => ConnectionRequestNotification()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ConnectionRequestNotification copyWith(void Function(ConnectionRequestNotification) updates) => super.copyWith((message) => updates(message as ConnectionRequestNotification)) as ConnectionRequestNotification;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ConnectionRequestNotification create() => ConnectionRequestNotification._();
+  ConnectionRequestNotification createEmptyInstance() => create();
+  static $pb.PbList<ConnectionRequestNotification> createRepeated() => $pb.PbList<ConnectionRequestNotification>();
+  @$core.pragma('dart2js:noInline')
+  static ConnectionRequestNotification getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConnectionRequestNotification>(create);
+  static ConnectionRequestNotification? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requestId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requestId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequestId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequestId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get consumerId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set consumerId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasConsumerId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearConsumerId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get consumerName => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set consumerName($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasConsumerName() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearConsumerName() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $fixnum.Int64 get timestamp => $_getI64(3);
+  @$pb.TagNumber(4)
+  set timestamp($fixnum.Int64 v) { $_setInt64(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTimestamp() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTimestamp() => clearField(4);
+}
+
+class WatchApprovalStatusRequest extends $pb.GeneratedMessage {
+  factory WatchApprovalStatusRequest({
+    $core.String? requestId,
+  }) {
+    final $result = create();
+    if (requestId != null) {
+      $result.requestId = requestId;
+    }
+    return $result;
+  }
+  WatchApprovalStatusRequest._() : super();
+  factory WatchApprovalStatusRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory WatchApprovalStatusRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'WatchApprovalStatusRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requestId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  WatchApprovalStatusRequest clone() => WatchApprovalStatusRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  WatchApprovalStatusRequest copyWith(void Function(WatchApprovalStatusRequest) updates) => super.copyWith((message) => updates(message as WatchApprovalStatusRequest)) as WatchApprovalStatusRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static WatchApprovalStatusRequest create() => WatchApprovalStatusRequest._();
+  WatchApprovalStatusRequest createEmptyInstance() => create();
+  static $pb.PbList<WatchApprovalStatusRequest> createRepeated() => $pb.PbList<WatchApprovalStatusRequest>();
+  @$core.pragma('dart2js:noInline')
+  static WatchApprovalStatusRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WatchApprovalStatusRequest>(create);
+  static WatchApprovalStatusRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requestId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requestId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequestId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequestId() => clearField(1);
+}
+
+class ApprovalStatusUpdate extends $pb.GeneratedMessage {
+  factory ApprovalStatusUpdate({
+    ApprovalStatus? status,
+    $core.String? sessionId,
+    $core.String? token,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (status != null) {
+      $result.status = status;
+    }
+    if (sessionId != null) {
+      $result.sessionId = sessionId;
+    }
+    if (token != null) {
+      $result.token = token;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
+  ApprovalStatusUpdate._() : super();
+  factory ApprovalStatusUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ApprovalStatusUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApprovalStatusUpdate', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
+    ..e<ApprovalStatus>(1, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: ApprovalStatus.PENDING, valueOf: ApprovalStatus.valueOf, enumValues: ApprovalStatus.values)
+    ..aOS(2, _omitFieldNames ? '' : 'sessionId')
+    ..aOS(3, _omitFieldNames ? '' : 'token')
+    ..aOS(4, _omitFieldNames ? '' : 'message')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ApprovalStatusUpdate clone() => ApprovalStatusUpdate()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ApprovalStatusUpdate copyWith(void Function(ApprovalStatusUpdate) updates) => super.copyWith((message) => updates(message as ApprovalStatusUpdate)) as ApprovalStatusUpdate;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ApprovalStatusUpdate create() => ApprovalStatusUpdate._();
+  ApprovalStatusUpdate createEmptyInstance() => create();
+  static $pb.PbList<ApprovalStatusUpdate> createRepeated() => $pb.PbList<ApprovalStatusUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static ApprovalStatusUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApprovalStatusUpdate>(create);
+  static ApprovalStatusUpdate? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ApprovalStatus get status => $_getN(0);
+  @$pb.TagNumber(1)
+  set status(ApprovalStatus v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatus() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatus() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get sessionId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set sessionId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSessionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSessionId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get token => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set token($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasToken() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearToken() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get message => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set message($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMessage() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMessage() => clearField(4);
 }
 
 /// Session Discovery Messages
@@ -1915,690 +2541,6 @@ class SessionInfo extends $pb.GeneratedMessage {
   $core.bool hasAcceptingConnections() => $_has(8);
   @$pb.TagNumber(9)
   void clearAcceptingConnections() => clearField(9);
-}
-
-/// Connection Request Messages
-class ConnectionRequest extends $pb.GeneratedMessage {
-  factory ConnectionRequest({
-    $core.String? sessionId,
-    $core.String? consumerId,
-    $core.String? consumerName,
-  }) {
-    final $result = create();
-    if (sessionId != null) {
-      $result.sessionId = sessionId;
-    }
-    if (consumerId != null) {
-      $result.consumerId = consumerId;
-    }
-    if (consumerName != null) {
-      $result.consumerName = consumerName;
-    }
-    return $result;
-  }
-  ConnectionRequest._() : super();
-  factory ConnectionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ConnectionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConnectionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
-    ..aOS(2, _omitFieldNames ? '' : 'consumerId')
-    ..aOS(3, _omitFieldNames ? '' : 'consumerName')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ConnectionRequest clone() => ConnectionRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ConnectionRequest copyWith(void Function(ConnectionRequest) updates) => super.copyWith((message) => updates(message as ConnectionRequest)) as ConnectionRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ConnectionRequest create() => ConnectionRequest._();
-  ConnectionRequest createEmptyInstance() => create();
-  static $pb.PbList<ConnectionRequest> createRepeated() => $pb.PbList<ConnectionRequest>();
-  @$core.pragma('dart2js:noInline')
-  static ConnectionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConnectionRequest>(create);
-  static ConnectionRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get sessionId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set sessionId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasSessionId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSessionId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get consumerId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set consumerId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasConsumerId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearConsumerId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get consumerName => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set consumerName($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasConsumerName() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearConsumerName() => clearField(3);
-}
-
-class ConnectionResponse extends $pb.GeneratedMessage {
-  factory ConnectionResponse({
-    $core.String? requestId,
-    $core.bool? success,
-    $core.String? message,
-  }) {
-    final $result = create();
-    if (requestId != null) {
-      $result.requestId = requestId;
-    }
-    if (success != null) {
-      $result.success = success;
-    }
-    if (message != null) {
-      $result.message = message;
-    }
-    return $result;
-  }
-  ConnectionResponse._() : super();
-  factory ConnectionResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ConnectionResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConnectionResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'requestId')
-    ..aOB(2, _omitFieldNames ? '' : 'success')
-    ..aOS(3, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ConnectionResponse clone() => ConnectionResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ConnectionResponse copyWith(void Function(ConnectionResponse) updates) => super.copyWith((message) => updates(message as ConnectionResponse)) as ConnectionResponse;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ConnectionResponse create() => ConnectionResponse._();
-  ConnectionResponse createEmptyInstance() => create();
-  static $pb.PbList<ConnectionResponse> createRepeated() => $pb.PbList<ConnectionResponse>();
-  @$core.pragma('dart2js:noInline')
-  static ConnectionResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConnectionResponse>(create);
-  static ConnectionResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get requestId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set requestId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRequestId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRequestId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.bool get success => $_getBF(1);
-  @$pb.TagNumber(2)
-  set success($core.bool v) { $_setBool(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSuccess() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSuccess() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get message => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set message($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasMessage() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearMessage() => clearField(3);
-}
-
-class WatchRequestsRequest extends $pb.GeneratedMessage {
-  factory WatchRequestsRequest({
-    $core.String? sessionId,
-  }) {
-    final $result = create();
-    if (sessionId != null) {
-      $result.sessionId = sessionId;
-    }
-    return $result;
-  }
-  WatchRequestsRequest._() : super();
-  factory WatchRequestsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory WatchRequestsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'WatchRequestsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'sessionId')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  WatchRequestsRequest clone() => WatchRequestsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  WatchRequestsRequest copyWith(void Function(WatchRequestsRequest) updates) => super.copyWith((message) => updates(message as WatchRequestsRequest)) as WatchRequestsRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static WatchRequestsRequest create() => WatchRequestsRequest._();
-  WatchRequestsRequest createEmptyInstance() => create();
-  static $pb.PbList<WatchRequestsRequest> createRepeated() => $pb.PbList<WatchRequestsRequest>();
-  @$core.pragma('dart2js:noInline')
-  static WatchRequestsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WatchRequestsRequest>(create);
-  static WatchRequestsRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get sessionId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set sessionId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasSessionId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSessionId() => clearField(1);
-}
-
-class ConnectionRequestNotification extends $pb.GeneratedMessage {
-  factory ConnectionRequestNotification({
-    $core.String? requestId,
-    $core.String? consumerId,
-    $core.String? consumerName,
-    $fixnum.Int64? requestedAt,
-  }) {
-    final $result = create();
-    if (requestId != null) {
-      $result.requestId = requestId;
-    }
-    if (consumerId != null) {
-      $result.consumerId = consumerId;
-    }
-    if (consumerName != null) {
-      $result.consumerName = consumerName;
-    }
-    if (requestedAt != null) {
-      $result.requestedAt = requestedAt;
-    }
-    return $result;
-  }
-  ConnectionRequestNotification._() : super();
-  factory ConnectionRequestNotification.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ConnectionRequestNotification.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ConnectionRequestNotification', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'requestId')
-    ..aOS(2, _omitFieldNames ? '' : 'consumerId')
-    ..aOS(3, _omitFieldNames ? '' : 'consumerName')
-    ..aInt64(4, _omitFieldNames ? '' : 'requestedAt')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ConnectionRequestNotification clone() => ConnectionRequestNotification()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ConnectionRequestNotification copyWith(void Function(ConnectionRequestNotification) updates) => super.copyWith((message) => updates(message as ConnectionRequestNotification)) as ConnectionRequestNotification;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ConnectionRequestNotification create() => ConnectionRequestNotification._();
-  ConnectionRequestNotification createEmptyInstance() => create();
-  static $pb.PbList<ConnectionRequestNotification> createRepeated() => $pb.PbList<ConnectionRequestNotification>();
-  @$core.pragma('dart2js:noInline')
-  static ConnectionRequestNotification getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ConnectionRequestNotification>(create);
-  static ConnectionRequestNotification? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get requestId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set requestId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRequestId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRequestId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get consumerId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set consumerId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasConsumerId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearConsumerId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get consumerName => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set consumerName($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasConsumerName() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearConsumerName() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $fixnum.Int64 get requestedAt => $_getI64(3);
-  @$pb.TagNumber(4)
-  set requestedAt($fixnum.Int64 v) { $_setInt64(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasRequestedAt() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearRequestedAt() => clearField(4);
-}
-
-/// Approval Messages
-class ApproveRequest extends $pb.GeneratedMessage {
-  factory ApproveRequest({
-    $core.String? requestId,
-  }) {
-    final $result = create();
-    if (requestId != null) {
-      $result.requestId = requestId;
-    }
-    return $result;
-  }
-  ApproveRequest._() : super();
-  factory ApproveRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ApproveRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'requestId')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ApproveRequest clone() => ApproveRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ApproveRequest copyWith(void Function(ApproveRequest) updates) => super.copyWith((message) => updates(message as ApproveRequest)) as ApproveRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ApproveRequest create() => ApproveRequest._();
-  ApproveRequest createEmptyInstance() => create();
-  static $pb.PbList<ApproveRequest> createRepeated() => $pb.PbList<ApproveRequest>();
-  @$core.pragma('dart2js:noInline')
-  static ApproveRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApproveRequest>(create);
-  static ApproveRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get requestId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set requestId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRequestId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRequestId() => clearField(1);
-}
-
-class ApproveResponse extends $pb.GeneratedMessage {
-  factory ApproveResponse({
-    $core.bool? success,
-    $core.String? sessionId,
-    $core.String? token,
-  }) {
-    final $result = create();
-    if (success != null) {
-      $result.success = success;
-    }
-    if (sessionId != null) {
-      $result.sessionId = sessionId;
-    }
-    if (token != null) {
-      $result.token = token;
-    }
-    return $result;
-  }
-  ApproveResponse._() : super();
-  factory ApproveResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ApproveResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..aOS(2, _omitFieldNames ? '' : 'sessionId')
-    ..aOS(3, _omitFieldNames ? '' : 'token')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ApproveResponse clone() => ApproveResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ApproveResponse copyWith(void Function(ApproveResponse) updates) => super.copyWith((message) => updates(message as ApproveResponse)) as ApproveResponse;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ApproveResponse create() => ApproveResponse._();
-  ApproveResponse createEmptyInstance() => create();
-  static $pb.PbList<ApproveResponse> createRepeated() => $pb.PbList<ApproveResponse>();
-  @$core.pragma('dart2js:noInline')
-  static ApproveResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApproveResponse>(create);
-  static ApproveResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.bool get success => $_getBF(0);
-  @$pb.TagNumber(1)
-  set success($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasSuccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSuccess() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get sessionId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set sessionId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSessionId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSessionId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get token => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set token($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasToken() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearToken() => clearField(3);
-}
-
-class DenyRequest extends $pb.GeneratedMessage {
-  factory DenyRequest({
-    $core.String? requestId,
-    $core.String? reason,
-  }) {
-    final $result = create();
-    if (requestId != null) {
-      $result.requestId = requestId;
-    }
-    if (reason != null) {
-      $result.reason = reason;
-    }
-    return $result;
-  }
-  DenyRequest._() : super();
-  factory DenyRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DenyRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DenyRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'requestId')
-    ..aOS(2, _omitFieldNames ? '' : 'reason')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  DenyRequest clone() => DenyRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  DenyRequest copyWith(void Function(DenyRequest) updates) => super.copyWith((message) => updates(message as DenyRequest)) as DenyRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static DenyRequest create() => DenyRequest._();
-  DenyRequest createEmptyInstance() => create();
-  static $pb.PbList<DenyRequest> createRepeated() => $pb.PbList<DenyRequest>();
-  @$core.pragma('dart2js:noInline')
-  static DenyRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DenyRequest>(create);
-  static DenyRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get requestId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set requestId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRequestId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRequestId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get reason => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set reason($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasReason() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearReason() => clearField(2);
-}
-
-class DenyResponse extends $pb.GeneratedMessage {
-  factory DenyResponse({
-    $core.bool? success,
-  }) {
-    final $result = create();
-    if (success != null) {
-      $result.success = success;
-    }
-    return $result;
-  }
-  DenyResponse._() : super();
-  factory DenyResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DenyResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DenyResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'success')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  DenyResponse clone() => DenyResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  DenyResponse copyWith(void Function(DenyResponse) updates) => super.copyWith((message) => updates(message as DenyResponse)) as DenyResponse;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static DenyResponse create() => DenyResponse._();
-  DenyResponse createEmptyInstance() => create();
-  static $pb.PbList<DenyResponse> createRepeated() => $pb.PbList<DenyResponse>();
-  @$core.pragma('dart2js:noInline')
-  static DenyResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DenyResponse>(create);
-  static DenyResponse? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.bool get success => $_getBF(0);
-  @$pb.TagNumber(1)
-  set success($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasSuccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearSuccess() => clearField(1);
-}
-
-class WatchApprovalRequest extends $pb.GeneratedMessage {
-  factory WatchApprovalRequest({
-    $core.String? requestId,
-  }) {
-    final $result = create();
-    if (requestId != null) {
-      $result.requestId = requestId;
-    }
-    return $result;
-  }
-  WatchApprovalRequest._() : super();
-  factory WatchApprovalRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory WatchApprovalRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'WatchApprovalRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'requestId')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  WatchApprovalRequest clone() => WatchApprovalRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  WatchApprovalRequest copyWith(void Function(WatchApprovalRequest) updates) => super.copyWith((message) => updates(message as WatchApprovalRequest)) as WatchApprovalRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static WatchApprovalRequest create() => WatchApprovalRequest._();
-  WatchApprovalRequest createEmptyInstance() => create();
-  static $pb.PbList<WatchApprovalRequest> createRepeated() => $pb.PbList<WatchApprovalRequest>();
-  @$core.pragma('dart2js:noInline')
-  static WatchApprovalRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WatchApprovalRequest>(create);
-  static WatchApprovalRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get requestId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set requestId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasRequestId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearRequestId() => clearField(1);
-}
-
-class ApprovalStatusUpdate extends $pb.GeneratedMessage {
-  factory ApprovalStatusUpdate({
-    ApprovalStatusUpdate_Status? status,
-    $core.String? sessionId,
-    $core.String? token,
-    $core.String? message,
-  }) {
-    final $result = create();
-    if (status != null) {
-      $result.status = status;
-    }
-    if (sessionId != null) {
-      $result.sessionId = sessionId;
-    }
-    if (token != null) {
-      $result.token = token;
-    }
-    if (message != null) {
-      $result.message = message;
-    }
-    return $result;
-  }
-  ApprovalStatusUpdate._() : super();
-  factory ApprovalStatusUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ApprovalStatusUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApprovalStatusUpdate', package: const $pb.PackageName(_omitMessageNames ? '' : 'inventory'), createEmptyInstance: create)
-    ..e<ApprovalStatusUpdate_Status>(1, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: ApprovalStatusUpdate_Status.PENDING, valueOf: ApprovalStatusUpdate_Status.valueOf, enumValues: ApprovalStatusUpdate_Status.values)
-    ..aOS(2, _omitFieldNames ? '' : 'sessionId')
-    ..aOS(3, _omitFieldNames ? '' : 'token')
-    ..aOS(4, _omitFieldNames ? '' : 'message')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ApprovalStatusUpdate clone() => ApprovalStatusUpdate()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ApprovalStatusUpdate copyWith(void Function(ApprovalStatusUpdate) updates) => super.copyWith((message) => updates(message as ApprovalStatusUpdate)) as ApprovalStatusUpdate;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ApprovalStatusUpdate create() => ApprovalStatusUpdate._();
-  ApprovalStatusUpdate createEmptyInstance() => create();
-  static $pb.PbList<ApprovalStatusUpdate> createRepeated() => $pb.PbList<ApprovalStatusUpdate>();
-  @$core.pragma('dart2js:noInline')
-  static ApprovalStatusUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ApprovalStatusUpdate>(create);
-  static ApprovalStatusUpdate? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  ApprovalStatusUpdate_Status get status => $_getN(0);
-  @$pb.TagNumber(1)
-  set status(ApprovalStatusUpdate_Status v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasStatus() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStatus() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get sessionId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set sessionId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSessionId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSessionId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get token => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set token($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasToken() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearToken() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get message => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set message($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasMessage() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearMessage() => clearField(4);
 }
 
 enum Command_CommandType {

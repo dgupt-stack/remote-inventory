@@ -21,19 +21,17 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	InventoryService_CreateSession_FullMethodName           = "/inventory.InventoryService/CreateSession"
 	InventoryService_ListSessions_FullMethodName            = "/inventory.InventoryService/ListSessions"
-	InventoryService_RequestConnection_FullMethodName       = "/inventory.InventoryService/RequestConnection"
-	InventoryService_WatchConnectionRequests_FullMethodName = "/inventory.InventoryService/WatchConnectionRequests"
-	InventoryService_ApproveConnection_FullMethodName       = "/inventory.InventoryService/ApproveConnection"
-	InventoryService_DenyConnection_FullMethodName          = "/inventory.InventoryService/DenyConnection"
-	InventoryService_WatchApprovalStatus_FullMethodName     = "/inventory.InventoryService/WatchApprovalStatus"
+	InventoryService_EndSession_FullMethodName              = "/inventory.InventoryService/EndSession"
 	InventoryService_SendWebRTCSignal_FullMethodName        = "/inventory.InventoryService/SendWebRTCSignal"
 	InventoryService_WatchWebRTCSignals_FullMethodName      = "/inventory.InventoryService/WatchWebRTCSignals"
-	InventoryService_StreamVideo_FullMethodName             = "/inventory.InventoryService/StreamVideo"
-	InventoryService_SendCommand_FullMethodName             = "/inventory.InventoryService/SendCommand"
-	InventoryService_EndSession_FullMethodName              = "/inventory.InventoryService/EndSession"
 	InventoryService_ProviderStream_FullMethodName          = "/inventory.InventoryService/ProviderStream"
 	InventoryService_ConsumerStream_FullMethodName          = "/inventory.InventoryService/ConsumerStream"
 	InventoryService_Heartbeat_FullMethodName               = "/inventory.InventoryService/Heartbeat"
+	InventoryService_RequestConnection_FullMethodName       = "/inventory.InventoryService/RequestConnection"
+	InventoryService_ApproveConnection_FullMethodName       = "/inventory.InventoryService/ApproveConnection"
+	InventoryService_DenyConnection_FullMethodName          = "/inventory.InventoryService/DenyConnection"
+	InventoryService_WatchConnectionRequests_FullMethodName = "/inventory.InventoryService/WatchConnectionRequests"
+	InventoryService_WatchApprovalStatus_FullMethodName     = "/inventory.InventoryService/WatchApprovalStatus"
 )
 
 // InventoryServiceClient is the client API for InventoryService service.
@@ -46,30 +44,23 @@ type InventoryServiceClient interface {
 	CreateSession(ctx context.Context, in *CreateSessionRequest, opts ...grpc.CallOption) (*SessionResponse, error)
 	// List all active sessions (for consumers to discover providers)
 	ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
-	// Consumer requests to connect to a provider session
-	RequestConnection(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (*ConnectionResponse, error)
-	// Provider watches for incoming connection requests
-	WatchConnectionRequests(ctx context.Context, in *WatchRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error)
-	// Provider approves a connection request
-	ApproveConnection(ctx context.Context, in *ApproveRequest, opts ...grpc.CallOption) (*ApproveResponse, error)
-	// Provider denies a connection request
-	DenyConnection(ctx context.Context, in *DenyRequest, opts ...grpc.CallOption) (*DenyResponse, error)
-	// Consumer watches for approval status
-	WatchApprovalStatus(ctx context.Context, in *WatchApprovalRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error)
-	// WebRTC Signaling (NEW)
+	// End a session
+	EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error)
+	// WebRTC Signaling
 	SendWebRTCSignal(ctx context.Context, in *WebRTCSignal, opts ...grpc.CallOption) (*SignalResponse, error)
 	WatchWebRTCSignals(ctx context.Context, in *WatchSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WebRTCSignal], error)
-	// Streaming video (existing)
-	StreamVideo(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[VideoFrame, VideoFrame], error)
-	// Send command to provider (existing)
-	SendCommand(ctx context.Context, in *Command, opts ...grpc.CallOption) (*CommandResponse, error)
-	EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error)
-	// Bidirectional streaming for Provider video upload and command reception
+	// Provider streams video to Backend
 	ProviderStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ProviderMessage, ProviderCommand], error)
 	// Consumer receives privacy-blurred video and sends commands
 	ConsumerStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ConsumerCommand, VideoFrame], error)
-	// Heartbeat to keep sessions alive
+	// Heartbeat to keep session alive
 	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
+	// Connection Request Flow (v1.3.0)
+	RequestConnection(ctx context.Context, in *RequestConnectionRequest, opts ...grpc.CallOption) (*RequestConnectionResponse, error)
+	ApproveConnection(ctx context.Context, in *ApproveConnectionRequest, opts ...grpc.CallOption) (*ApproveConnectionResponse, error)
+	DenyConnection(ctx context.Context, in *DenyConnectionRequest, opts ...grpc.CallOption) (*DenyConnectionResponse, error)
+	WatchConnectionRequests(ctx context.Context, in *WatchConnectionRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error)
+	WatchApprovalStatus(ctx context.Context, in *WatchApprovalStatusRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error)
 }
 
 type inventoryServiceClient struct {
@@ -100,73 +91,15 @@ func (c *inventoryServiceClient) ListSessions(ctx context.Context, in *ListSessi
 	return out, nil
 }
 
-func (c *inventoryServiceClient) RequestConnection(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (*ConnectionResponse, error) {
+func (c *inventoryServiceClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ConnectionResponse)
-	err := c.cc.Invoke(ctx, InventoryService_RequestConnection_FullMethodName, in, out, cOpts...)
+	out := new(EndSessionResponse)
+	err := c.cc.Invoke(ctx, InventoryService_EndSession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
-
-func (c *inventoryServiceClient) WatchConnectionRequests(ctx context.Context, in *WatchRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[0], InventoryService_WatchConnectionRequests_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[WatchRequestsRequest, ConnectionRequestNotification]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_WatchConnectionRequestsClient = grpc.ServerStreamingClient[ConnectionRequestNotification]
-
-func (c *inventoryServiceClient) ApproveConnection(ctx context.Context, in *ApproveRequest, opts ...grpc.CallOption) (*ApproveResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ApproveResponse)
-	err := c.cc.Invoke(ctx, InventoryService_ApproveConnection_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *inventoryServiceClient) DenyConnection(ctx context.Context, in *DenyRequest, opts ...grpc.CallOption) (*DenyResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DenyResponse)
-	err := c.cc.Invoke(ctx, InventoryService_DenyConnection_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *inventoryServiceClient) WatchApprovalStatus(ctx context.Context, in *WatchApprovalRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[1], InventoryService_WatchApprovalStatus_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[WatchApprovalRequest, ApprovalStatusUpdate]{ClientStream: stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_WatchApprovalStatusClient = grpc.ServerStreamingClient[ApprovalStatusUpdate]
 
 func (c *inventoryServiceClient) SendWebRTCSignal(ctx context.Context, in *WebRTCSignal, opts ...grpc.CallOption) (*SignalResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -180,7 +113,7 @@ func (c *inventoryServiceClient) SendWebRTCSignal(ctx context.Context, in *WebRT
 
 func (c *inventoryServiceClient) WatchWebRTCSignals(ctx context.Context, in *WatchSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WebRTCSignal], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[2], InventoryService_WatchWebRTCSignals_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[0], InventoryService_WatchWebRTCSignals_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -197,42 +130,9 @@ func (c *inventoryServiceClient) WatchWebRTCSignals(ctx context.Context, in *Wat
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type InventoryService_WatchWebRTCSignalsClient = grpc.ServerStreamingClient[WebRTCSignal]
 
-func (c *inventoryServiceClient) StreamVideo(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[VideoFrame, VideoFrame], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[3], InventoryService_StreamVideo_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[VideoFrame, VideoFrame]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_StreamVideoClient = grpc.BidiStreamingClient[VideoFrame, VideoFrame]
-
-func (c *inventoryServiceClient) SendCommand(ctx context.Context, in *Command, opts ...grpc.CallOption) (*CommandResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CommandResponse)
-	err := c.cc.Invoke(ctx, InventoryService_SendCommand_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *inventoryServiceClient) EndSession(ctx context.Context, in *EndSessionRequest, opts ...grpc.CallOption) (*EndSessionResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(EndSessionResponse)
-	err := c.cc.Invoke(ctx, InventoryService_EndSession_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *inventoryServiceClient) ProviderStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ProviderMessage, ProviderCommand], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[4], InventoryService_ProviderStream_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[1], InventoryService_ProviderStream_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +145,7 @@ type InventoryService_ProviderStreamClient = grpc.BidiStreamingClient[ProviderMe
 
 func (c *inventoryServiceClient) ConsumerStream(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ConsumerCommand, VideoFrame], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[5], InventoryService_ConsumerStream_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[2], InventoryService_ConsumerStream_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -266,6 +166,74 @@ func (c *inventoryServiceClient) Heartbeat(ctx context.Context, in *HeartbeatReq
 	return out, nil
 }
 
+func (c *inventoryServiceClient) RequestConnection(ctx context.Context, in *RequestConnectionRequest, opts ...grpc.CallOption) (*RequestConnectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RequestConnectionResponse)
+	err := c.cc.Invoke(ctx, InventoryService_RequestConnection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryServiceClient) ApproveConnection(ctx context.Context, in *ApproveConnectionRequest, opts ...grpc.CallOption) (*ApproveConnectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApproveConnectionResponse)
+	err := c.cc.Invoke(ctx, InventoryService_ApproveConnection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryServiceClient) DenyConnection(ctx context.Context, in *DenyConnectionRequest, opts ...grpc.CallOption) (*DenyConnectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DenyConnectionResponse)
+	err := c.cc.Invoke(ctx, InventoryService_DenyConnection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryServiceClient) WatchConnectionRequests(ctx context.Context, in *WatchConnectionRequestsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ConnectionRequestNotification], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[3], InventoryService_WatchConnectionRequests_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[WatchConnectionRequestsRequest, ConnectionRequestNotification]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type InventoryService_WatchConnectionRequestsClient = grpc.ServerStreamingClient[ConnectionRequestNotification]
+
+func (c *inventoryServiceClient) WatchApprovalStatus(ctx context.Context, in *WatchApprovalStatusRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ApprovalStatusUpdate], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &InventoryService_ServiceDesc.Streams[4], InventoryService_WatchApprovalStatus_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[WatchApprovalStatusRequest, ApprovalStatusUpdate]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type InventoryService_WatchApprovalStatusClient = grpc.ServerStreamingClient[ApprovalStatusUpdate]
+
 // InventoryServiceServer is the server API for InventoryService service.
 // All implementations must embed UnimplementedInventoryServiceServer
 // for forward compatibility.
@@ -276,30 +244,23 @@ type InventoryServiceServer interface {
 	CreateSession(context.Context, *CreateSessionRequest) (*SessionResponse, error)
 	// List all active sessions (for consumers to discover providers)
 	ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error)
-	// Consumer requests to connect to a provider session
-	RequestConnection(context.Context, *ConnectionRequest) (*ConnectionResponse, error)
-	// Provider watches for incoming connection requests
-	WatchConnectionRequests(*WatchRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error
-	// Provider approves a connection request
-	ApproveConnection(context.Context, *ApproveRequest) (*ApproveResponse, error)
-	// Provider denies a connection request
-	DenyConnection(context.Context, *DenyRequest) (*DenyResponse, error)
-	// Consumer watches for approval status
-	WatchApprovalStatus(*WatchApprovalRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error
-	// WebRTC Signaling (NEW)
+	// End a session
+	EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error)
+	// WebRTC Signaling
 	SendWebRTCSignal(context.Context, *WebRTCSignal) (*SignalResponse, error)
 	WatchWebRTCSignals(*WatchSignalsRequest, grpc.ServerStreamingServer[WebRTCSignal]) error
-	// Streaming video (existing)
-	StreamVideo(grpc.BidiStreamingServer[VideoFrame, VideoFrame]) error
-	// Send command to provider (existing)
-	SendCommand(context.Context, *Command) (*CommandResponse, error)
-	EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error)
-	// Bidirectional streaming for Provider video upload and command reception
+	// Provider streams video to Backend
 	ProviderStream(grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]) error
 	// Consumer receives privacy-blurred video and sends commands
 	ConsumerStream(grpc.BidiStreamingServer[ConsumerCommand, VideoFrame]) error
-	// Heartbeat to keep sessions alive
+	// Heartbeat to keep session alive
 	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
+	// Connection Request Flow (v1.3.0)
+	RequestConnection(context.Context, *RequestConnectionRequest) (*RequestConnectionResponse, error)
+	ApproveConnection(context.Context, *ApproveConnectionRequest) (*ApproveConnectionResponse, error)
+	DenyConnection(context.Context, *DenyConnectionRequest) (*DenyConnectionResponse, error)
+	WatchConnectionRequests(*WatchConnectionRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error
+	WatchApprovalStatus(*WatchApprovalStatusRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error
 	mustEmbedUnimplementedInventoryServiceServer()
 }
 
@@ -316,35 +277,14 @@ func (UnimplementedInventoryServiceServer) CreateSession(context.Context, *Creat
 func (UnimplementedInventoryServiceServer) ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSessions not implemented")
 }
-func (UnimplementedInventoryServiceServer) RequestConnection(context.Context, *ConnectionRequest) (*ConnectionResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method RequestConnection not implemented")
-}
-func (UnimplementedInventoryServiceServer) WatchConnectionRequests(*WatchRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error {
-	return status.Error(codes.Unimplemented, "method WatchConnectionRequests not implemented")
-}
-func (UnimplementedInventoryServiceServer) ApproveConnection(context.Context, *ApproveRequest) (*ApproveResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ApproveConnection not implemented")
-}
-func (UnimplementedInventoryServiceServer) DenyConnection(context.Context, *DenyRequest) (*DenyResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DenyConnection not implemented")
-}
-func (UnimplementedInventoryServiceServer) WatchApprovalStatus(*WatchApprovalRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error {
-	return status.Error(codes.Unimplemented, "method WatchApprovalStatus not implemented")
+func (UnimplementedInventoryServiceServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EndSession not implemented")
 }
 func (UnimplementedInventoryServiceServer) SendWebRTCSignal(context.Context, *WebRTCSignal) (*SignalResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendWebRTCSignal not implemented")
 }
 func (UnimplementedInventoryServiceServer) WatchWebRTCSignals(*WatchSignalsRequest, grpc.ServerStreamingServer[WebRTCSignal]) error {
 	return status.Error(codes.Unimplemented, "method WatchWebRTCSignals not implemented")
-}
-func (UnimplementedInventoryServiceServer) StreamVideo(grpc.BidiStreamingServer[VideoFrame, VideoFrame]) error {
-	return status.Error(codes.Unimplemented, "method StreamVideo not implemented")
-}
-func (UnimplementedInventoryServiceServer) SendCommand(context.Context, *Command) (*CommandResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method SendCommand not implemented")
-}
-func (UnimplementedInventoryServiceServer) EndSession(context.Context, *EndSessionRequest) (*EndSessionResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method EndSession not implemented")
 }
 func (UnimplementedInventoryServiceServer) ProviderStream(grpc.BidiStreamingServer[ProviderMessage, ProviderCommand]) error {
 	return status.Error(codes.Unimplemented, "method ProviderStream not implemented")
@@ -354,6 +294,21 @@ func (UnimplementedInventoryServiceServer) ConsumerStream(grpc.BidiStreamingServ
 }
 func (UnimplementedInventoryServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Heartbeat not implemented")
+}
+func (UnimplementedInventoryServiceServer) RequestConnection(context.Context, *RequestConnectionRequest) (*RequestConnectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RequestConnection not implemented")
+}
+func (UnimplementedInventoryServiceServer) ApproveConnection(context.Context, *ApproveConnectionRequest) (*ApproveConnectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApproveConnection not implemented")
+}
+func (UnimplementedInventoryServiceServer) DenyConnection(context.Context, *DenyConnectionRequest) (*DenyConnectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DenyConnection not implemented")
+}
+func (UnimplementedInventoryServiceServer) WatchConnectionRequests(*WatchConnectionRequestsRequest, grpc.ServerStreamingServer[ConnectionRequestNotification]) error {
+	return status.Error(codes.Unimplemented, "method WatchConnectionRequests not implemented")
+}
+func (UnimplementedInventoryServiceServer) WatchApprovalStatus(*WatchApprovalStatusRequest, grpc.ServerStreamingServer[ApprovalStatusUpdate]) error {
+	return status.Error(codes.Unimplemented, "method WatchApprovalStatus not implemented")
 }
 func (UnimplementedInventoryServiceServer) mustEmbedUnimplementedInventoryServiceServer() {}
 func (UnimplementedInventoryServiceServer) testEmbeddedByValue()                          {}
@@ -412,81 +367,23 @@ func _InventoryService_ListSessions_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _InventoryService_RequestConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ConnectionRequest)
+func _InventoryService_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EndSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).RequestConnection(ctx, in)
+		return srv.(InventoryServiceServer).EndSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: InventoryService_RequestConnection_FullMethodName,
+		FullMethod: InventoryService_EndSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).RequestConnection(ctx, req.(*ConnectionRequest))
+		return srv.(InventoryServiceServer).EndSession(ctx, req.(*EndSessionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
-
-func _InventoryService_WatchConnectionRequests_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(WatchRequestsRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(InventoryServiceServer).WatchConnectionRequests(m, &grpc.GenericServerStream[WatchRequestsRequest, ConnectionRequestNotification]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_WatchConnectionRequestsServer = grpc.ServerStreamingServer[ConnectionRequestNotification]
-
-func _InventoryService_ApproveConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApproveRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(InventoryServiceServer).ApproveConnection(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: InventoryService_ApproveConnection_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).ApproveConnection(ctx, req.(*ApproveRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _InventoryService_DenyConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DenyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(InventoryServiceServer).DenyConnection(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: InventoryService_DenyConnection_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).DenyConnection(ctx, req.(*DenyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _InventoryService_WatchApprovalStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(WatchApprovalRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(InventoryServiceServer).WatchApprovalStatus(m, &grpc.GenericServerStream[WatchApprovalRequest, ApprovalStatusUpdate]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_WatchApprovalStatusServer = grpc.ServerStreamingServer[ApprovalStatusUpdate]
 
 func _InventoryService_SendWebRTCSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebRTCSignal)
@@ -516,49 +413,6 @@ func _InventoryService_WatchWebRTCSignals_Handler(srv interface{}, stream grpc.S
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type InventoryService_WatchWebRTCSignalsServer = grpc.ServerStreamingServer[WebRTCSignal]
-
-func _InventoryService_StreamVideo_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(InventoryServiceServer).StreamVideo(&grpc.GenericServerStream[VideoFrame, VideoFrame]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type InventoryService_StreamVideoServer = grpc.BidiStreamingServer[VideoFrame, VideoFrame]
-
-func _InventoryService_SendCommand_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Command)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(InventoryServiceServer).SendCommand(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: InventoryService_SendCommand_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).SendCommand(ctx, req.(*Command))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _InventoryService_EndSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EndSessionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(InventoryServiceServer).EndSession(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: InventoryService_EndSession_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).EndSession(ctx, req.(*EndSessionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
 
 func _InventoryService_ProviderStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(InventoryServiceServer).ProviderStream(&grpc.GenericServerStream[ProviderMessage, ProviderCommand]{ServerStream: stream})
@@ -592,6 +446,82 @@ func _InventoryService_Heartbeat_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _InventoryService_RequestConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InventoryServiceServer).RequestConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InventoryService_RequestConnection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InventoryServiceServer).RequestConnection(ctx, req.(*RequestConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InventoryService_ApproveConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApproveConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InventoryServiceServer).ApproveConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InventoryService_ApproveConnection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InventoryServiceServer).ApproveConnection(ctx, req.(*ApproveConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InventoryService_DenyConnection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DenyConnectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InventoryServiceServer).DenyConnection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: InventoryService_DenyConnection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InventoryServiceServer).DenyConnection(ctx, req.(*DenyConnectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InventoryService_WatchConnectionRequests_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchConnectionRequestsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(InventoryServiceServer).WatchConnectionRequests(m, &grpc.GenericServerStream[WatchConnectionRequestsRequest, ConnectionRequestNotification]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type InventoryService_WatchConnectionRequestsServer = grpc.ServerStreamingServer[ConnectionRequestNotification]
+
+func _InventoryService_WatchApprovalStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WatchApprovalStatusRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(InventoryServiceServer).WatchApprovalStatus(m, &grpc.GenericServerStream[WatchApprovalStatusRequest, ApprovalStatusUpdate]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type InventoryService_WatchApprovalStatusServer = grpc.ServerStreamingServer[ApprovalStatusUpdate]
+
 // InventoryService_ServiceDesc is the grpc.ServiceDesc for InventoryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -608,6 +538,18 @@ var InventoryService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _InventoryService_ListSessions_Handler,
 		},
 		{
+			MethodName: "EndSession",
+			Handler:    _InventoryService_EndSession_Handler,
+		},
+		{
+			MethodName: "SendWebRTCSignal",
+			Handler:    _InventoryService_SendWebRTCSignal_Handler,
+		},
+		{
+			MethodName: "Heartbeat",
+			Handler:    _InventoryService_Heartbeat_Handler,
+		},
+		{
 			MethodName: "RequestConnection",
 			Handler:    _InventoryService_RequestConnection_Handler,
 		},
@@ -619,44 +561,12 @@ var InventoryService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DenyConnection",
 			Handler:    _InventoryService_DenyConnection_Handler,
 		},
-		{
-			MethodName: "SendWebRTCSignal",
-			Handler:    _InventoryService_SendWebRTCSignal_Handler,
-		},
-		{
-			MethodName: "SendCommand",
-			Handler:    _InventoryService_SendCommand_Handler,
-		},
-		{
-			MethodName: "EndSession",
-			Handler:    _InventoryService_EndSession_Handler,
-		},
-		{
-			MethodName: "Heartbeat",
-			Handler:    _InventoryService_Heartbeat_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "WatchConnectionRequests",
-			Handler:       _InventoryService_WatchConnectionRequests_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "WatchApprovalStatus",
-			Handler:       _InventoryService_WatchApprovalStatus_Handler,
-			ServerStreams: true,
-		},
 		{
 			StreamName:    "WatchWebRTCSignals",
 			Handler:       _InventoryService_WatchWebRTCSignals_Handler,
 			ServerStreams: true,
-		},
-		{
-			StreamName:    "StreamVideo",
-			Handler:       _InventoryService_StreamVideo_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
 		},
 		{
 			StreamName:    "ProviderStream",
@@ -669,6 +579,16 @@ var InventoryService_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _InventoryService_ConsumerStream_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
+		},
+		{
+			StreamName:    "WatchConnectionRequests",
+			Handler:       _InventoryService_WatchConnectionRequests_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "WatchApprovalStatus",
+			Handler:       _InventoryService_WatchApprovalStatus_Handler,
+			ServerStreams: true,
 		},
 	},
 	Metadata: "inventory_service.proto",

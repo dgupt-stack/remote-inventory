@@ -13,6 +13,23 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class ApprovalStatus extends $pb.ProtobufEnum {
+  static const ApprovalStatus PENDING = ApprovalStatus._(0, _omitEnumNames ? '' : 'PENDING');
+  static const ApprovalStatus APPROVED = ApprovalStatus._(1, _omitEnumNames ? '' : 'APPROVED');
+  static const ApprovalStatus DENIED = ApprovalStatus._(2, _omitEnumNames ? '' : 'DENIED');
+
+  static const $core.List<ApprovalStatus> values = <ApprovalStatus> [
+    PENDING,
+    APPROVED,
+    DENIED,
+  ];
+
+  static final $core.Map<$core.int, ApprovalStatus> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ApprovalStatus? valueOf($core.int value) => _byValue[value];
+
+  const ApprovalStatus._($core.int v, $core.String n) : super(v, n);
+}
+
 class NavigationCommand_Direction extends $pb.ProtobufEnum {
   static const NavigationCommand_Direction UNKNOWN = NavigationCommand_Direction._(0, _omitEnumNames ? '' : 'UNKNOWN');
   static const NavigationCommand_Direction LEFT = NavigationCommand_Direction._(1, _omitEnumNames ? '' : 'LEFT');
@@ -53,23 +70,6 @@ class ZoomCommand_ZoomType extends $pb.ProtobufEnum {
   static ZoomCommand_ZoomType? valueOf($core.int value) => _byValue[value];
 
   const ZoomCommand_ZoomType._($core.int v, $core.String n) : super(v, n);
-}
-
-class ApprovalStatusUpdate_Status extends $pb.ProtobufEnum {
-  static const ApprovalStatusUpdate_Status PENDING = ApprovalStatusUpdate_Status._(0, _omitEnumNames ? '' : 'PENDING');
-  static const ApprovalStatusUpdate_Status APPROVED = ApprovalStatusUpdate_Status._(1, _omitEnumNames ? '' : 'APPROVED');
-  static const ApprovalStatusUpdate_Status DENIED = ApprovalStatusUpdate_Status._(2, _omitEnumNames ? '' : 'DENIED');
-
-  static const $core.List<ApprovalStatusUpdate_Status> values = <ApprovalStatusUpdate_Status> [
-    PENDING,
-    APPROVED,
-    DENIED,
-  ];
-
-  static final $core.Map<$core.int, ApprovalStatusUpdate_Status> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static ApprovalStatusUpdate_Status? valueOf($core.int value) => _byValue[value];
-
-  const ApprovalStatusUpdate_Status._($core.int v, $core.String n) : super(v, n);
 }
 
 class WebRTCSignal_SignalType extends $pb.ProtobufEnum {

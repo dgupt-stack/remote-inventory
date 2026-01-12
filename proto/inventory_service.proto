@@ -24,57 +24,24 @@ service InventoryService {
     };
   }
 
-  // Consumer requests to connect to a provider session
-  rpc RequestConnection(ConnectionRequest) returns (ConnectionResponse) {
+  // End a session
+  rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
     option (google.api.http) = {
-      post: "/v1/sessions/{session_id}/request"
-      body: "*"
+      delete: "/v1/sessions/{session_id}"
     };
   }
 
-  // Provider watches for incoming connection requests
-  rpc WatchConnectionRequests(WatchRequestsRequest) returns (stream ConnectionRequestNotification) {}
-
-  // Provider approves a connection request
-  rpc ApproveConnection(ApproveRequest) returns (ApproveResponse) {
-    option (google.api.http) = {
-      post: "/v1/sessions/requests/{request_id}/approve"
-    };
-  }
-
-  // Provider denies a connection request
-  rpc DenyConnection(DenyRequest) returns (DenyResponse) {
-    option (google.api.http) = {
-      post: "/v1/sessions/requests/{request_id}/deny"
-      body: "*"
-    };
-  }
-
-  // Consumer watches for approval status
-  rpc WatchApprovalStatus(WatchApprovalRequest) returns (stream ApprovalStatusUpdate) {}
-  
-  // WebRTC Signaling (NEW)
+  // WebRTC Signaling
   rpc SendWebRTCSignal(WebRTCSignal) returns (SignalResponse) {
     option (google.api.http) = {
       post: "/v1/webrtc/signal"
       body: "*"
     };
   }
-  rpc WatchWebRTCSignals(WatchSignalsRequest) returns (stream WebRTCSignal);
 
-  // Streaming video (existing)
-  rpc StreamVideo(stream VideoFrame) returns (stream VideoFrame) {}
+  rpc WatchWebRTCSignals(WatchSignalsRequest) returns (stream WebRTCSignal) {}
 
-  // Send command to provider (existing)
-  rpc SendCommand(Command) returns (CommandResponse) {
-  }
-
-  rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
-    option (google.api.http) = {
-      delete: "/v1/sessions/{session_id}"
-    };
-  }
-  // Bidirectional streaming for Provider video upload and command reception
+  // Provider streams video to Backend
   rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
   
   // Consumer receives privacy-blurred video and sends commands
@@ -343,66 +310,6 @@ message SessionInfo {
   bool in_active_call = 7;  // True if provider is currently in a call
   int64 created_at = 8;
   bool accepting_connections = 9;
-}
-
-// Connection Request Messages
-message ConnectionRequest {
-  string session_id = 1;
-  string consumer_id = 2;
-  string consumer_name = 3;
-}
-
-message ConnectionResponse {
-  string request_id = 1;
-  bool success = 2;
-  string message = 3;
-}
-
-message WatchRequestsRequest {
-  string session_id = 1;
-}
-
-message ConnectionRequestNotification {
-  string request_id = 1;
-  string consumer_id = 2;
-  string consumer_name = 3;
-  int64 requested_at = 4;
-}
-
-// Approval Messages
-message ApproveRequest {
-  string request_id = 1;
-}
-
-message ApproveResponse {
-  bool success = 1;
-  string session_id = 2;
-  string token = 3;
-}
-
-message DenyRequest {
-  string request_id = 1;
-  string reason = 2;
-}
-
-message DenyResponse {
-  bool success = 1;
-}
-
-message WatchApprovalRequest {
-  string request_id = 1;
-}
-
-message ApprovalStatusUpdate {
-  enum Status {
-    PENDING = 0;
-    APPROVED = 1;
-    DENIED = 2;
-  }
-  Status status = 1;
-  string session_id = 2;
-  string token = 3;
-  string message = 4;
 }
 
 // Command Messages

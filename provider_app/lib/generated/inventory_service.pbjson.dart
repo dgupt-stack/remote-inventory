@@ -13,6 +13,21 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use approvalStatusDescriptor instead')
+const ApprovalStatus$json = {
+  '1': 'ApprovalStatus',
+  '2': [
+    {'1': 'PENDING', '2': 0},
+    {'1': 'APPROVED', '2': 1},
+    {'1': 'DENIED', '2': 2},
+  ],
+};
+
+/// Descriptor for `ApprovalStatus`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List approvalStatusDescriptor = $convert.base64Decode(
+    'Cg5BcHByb3ZhbFN0YXR1cxILCgdQRU5ESU5HEAASDAoIQVBQUk9WRUQQARIKCgZERU5JRUQQAg'
+    '==');
+
 @$core.Deprecated('Use createSessionRequestDescriptor instead')
 const CreateSessionRequest$json = {
   '1': 'CreateSessionRequest',
@@ -347,15 +362,155 @@ final $typed_data.Uint8List heartbeatRequestDescriptor = $convert.base64Decode(
 const HeartbeatResponse$json = {
   '1': 'HeartbeatResponse',
   '2': [
-    {'1': 'active', '3': 1, '4': 1, '5': 8, '10': 'active'},
-    {'1': 'session_duration_ms', '3': 2, '4': 1, '5': 3, '10': 'sessionDurationMs'},
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
   ],
 };
 
 /// Descriptor for `HeartbeatResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List heartbeatResponseDescriptor = $convert.base64Decode(
-    'ChFIZWFydGJlYXRSZXNwb25zZRIWCgZhY3RpdmUYASABKAhSBmFjdGl2ZRIuChNzZXNzaW9uX2'
-    'R1cmF0aW9uX21zGAIgASgDUhFzZXNzaW9uRHVyYXRpb25Ncw==');
+    'ChFIZWFydGJlYXRSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNz');
+
+@$core.Deprecated('Use requestConnectionRequestDescriptor instead')
+const RequestConnectionRequest$json = {
+  '1': 'RequestConnectionRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
+    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
+  ],
+};
+
+/// Descriptor for `RequestConnectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List requestConnectionRequestDescriptor = $convert.base64Decode(
+    'ChhSZXF1ZXN0Q29ubmVjdGlvblJlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbk'
+    'lkEh8KC2NvbnN1bWVyX2lkGAIgASgJUgpjb25zdW1lcklkEiMKDWNvbnN1bWVyX25hbWUYAyAB'
+    'KAlSDGNvbnN1bWVyTmFtZQ==');
+
+@$core.Deprecated('Use requestConnectionResponseDescriptor instead')
+const RequestConnectionResponse$json = {
+  '1': 'RequestConnectionResponse',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `RequestConnectionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List requestConnectionResponseDescriptor = $convert.base64Decode(
+    'ChlSZXF1ZXN0Q29ubmVjdGlvblJlc3BvbnNlEh0KCnJlcXVlc3RfaWQYASABKAlSCXJlcXVlc3'
+    'RJZA==');
+
+@$core.Deprecated('Use approveConnectionRequestDescriptor instead')
+const ApproveConnectionRequest$json = {
+  '1': 'ApproveConnectionRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `ApproveConnectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approveConnectionRequestDescriptor = $convert.base64Decode(
+    'ChhBcHByb3ZlQ29ubmVjdGlvblJlcXVlc3QSHQoKcmVxdWVzdF9pZBgBIAEoCVIJcmVxdWVzdE'
+    'lk');
+
+@$core.Deprecated('Use approveConnectionResponseDescriptor instead')
+const ApproveConnectionResponse$json = {
+  '1': 'ApproveConnectionResponse',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'token', '3': 2, '4': 1, '5': 9, '10': 'token'},
+  ],
+};
+
+/// Descriptor for `ApproveConnectionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approveConnectionResponseDescriptor = $convert.base64Decode(
+    'ChlBcHByb3ZlQ29ubmVjdGlvblJlc3BvbnNlEh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb2'
+    '5JZBIUCgV0b2tlbhgCIAEoCVIFdG9rZW4=');
+
+@$core.Deprecated('Use denyConnectionRequestDescriptor instead')
+const DenyConnectionRequest$json = {
+  '1': 'DenyConnectionRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'reason', '3': 2, '4': 1, '5': 9, '10': 'reason'},
+  ],
+};
+
+/// Descriptor for `DenyConnectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List denyConnectionRequestDescriptor = $convert.base64Decode(
+    'ChVEZW55Q29ubmVjdGlvblJlcXVlc3QSHQoKcmVxdWVzdF9pZBgBIAEoCVIJcmVxdWVzdElkEh'
+    'YKBnJlYXNvbhgCIAEoCVIGcmVhc29u');
+
+@$core.Deprecated('Use denyConnectionResponseDescriptor instead')
+const DenyConnectionResponse$json = {
+  '1': 'DenyConnectionResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `DenyConnectionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List denyConnectionResponseDescriptor = $convert.base64Decode(
+    'ChZEZW55Q29ubmVjdGlvblJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
+
+@$core.Deprecated('Use watchConnectionRequestsRequestDescriptor instead')
+const WatchConnectionRequestsRequest$json = {
+  '1': 'WatchConnectionRequestsRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+  ],
+};
+
+/// Descriptor for `WatchConnectionRequestsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchConnectionRequestsRequestDescriptor = $convert.base64Decode(
+    'Ch5XYXRjaENvbm5lY3Rpb25SZXF1ZXN0c1JlcXVlc3QSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2'
+    'Vzc2lvbklk');
+
+@$core.Deprecated('Use connectionRequestNotificationDescriptor instead')
+const ConnectionRequestNotification$json = {
+  '1': 'ConnectionRequestNotification',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
+    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
+    {'1': 'timestamp', '3': 4, '4': 1, '5': 3, '10': 'timestamp'},
+  ],
+};
+
+/// Descriptor for `ConnectionRequestNotification`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectionRequestNotificationDescriptor = $convert.base64Decode(
+    'Ch1Db25uZWN0aW9uUmVxdWVzdE5vdGlmaWNhdGlvbhIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZX'
+    'F1ZXN0SWQSHwoLY29uc3VtZXJfaWQYAiABKAlSCmNvbnN1bWVySWQSIwoNY29uc3VtZXJfbmFt'
+    'ZRgDIAEoCVIMY29uc3VtZXJOYW1lEhwKCXRpbWVzdGFtcBgEIAEoA1IJdGltZXN0YW1w');
+
+@$core.Deprecated('Use watchApprovalStatusRequestDescriptor instead')
+const WatchApprovalStatusRequest$json = {
+  '1': 'WatchApprovalStatusRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `WatchApprovalStatusRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchApprovalStatusRequestDescriptor = $convert.base64Decode(
+    'ChpXYXRjaEFwcHJvdmFsU3RhdHVzUmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZX'
+    'N0SWQ=');
+
+@$core.Deprecated('Use approvalStatusUpdateDescriptor instead')
+const ApprovalStatusUpdate$json = {
+  '1': 'ApprovalStatusUpdate',
+  '2': [
+    {'1': 'status', '3': 1, '4': 1, '5': 14, '6': '.inventory.ApprovalStatus', '10': 'status'},
+    {'1': 'session_id', '3': 2, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'token', '3': 3, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'message', '3': 4, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `ApprovalStatusUpdate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approvalStatusUpdateDescriptor = $convert.base64Decode(
+    'ChRBcHByb3ZhbFN0YXR1c1VwZGF0ZRIxCgZzdGF0dXMYASABKA4yGS5pbnZlbnRvcnkuQXBwcm'
+    '92YWxTdGF0dXNSBnN0YXR1cxIdCgpzZXNzaW9uX2lkGAIgASgJUglzZXNzaW9uSWQSFAoFdG9r'
+    'ZW4YAyABKAlSBXRva2VuEhgKB21lc3NhZ2UYBCABKAlSB21lc3NhZ2U=');
 
 @$core.Deprecated('Use listSessionsRequestDescriptor instead')
 const ListSessionsRequest$json = {
@@ -408,161 +563,6 @@ final $typed_data.Uint8List sessionInfoDescriptor = $convert.base64Decode(
     'aXZlX2NhbGwYByABKAhSDGluQWN0aXZlQ2FsbBIdCgpjcmVhdGVkX2F0GAggASgDUgljcmVhdG'
     'VkQXQSMwoVYWNjZXB0aW5nX2Nvbm5lY3Rpb25zGAkgASgIUhRhY2NlcHRpbmdDb25uZWN0aW9u'
     'cw==');
-
-@$core.Deprecated('Use connectionRequestDescriptor instead')
-const ConnectionRequest$json = {
-  '1': 'ConnectionRequest',
-  '2': [
-    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
-    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
-    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
-  ],
-};
-
-/// Descriptor for `ConnectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List connectionRequestDescriptor = $convert.base64Decode(
-    'ChFDb25uZWN0aW9uUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSHwoLY2'
-    '9uc3VtZXJfaWQYAiABKAlSCmNvbnN1bWVySWQSIwoNY29uc3VtZXJfbmFtZRgDIAEoCVIMY29u'
-    'c3VtZXJOYW1l');
-
-@$core.Deprecated('Use connectionResponseDescriptor instead')
-const ConnectionResponse$json = {
-  '1': 'ConnectionResponse',
-  '2': [
-    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
-    {'1': 'success', '3': 2, '4': 1, '5': 8, '10': 'success'},
-    {'1': 'message', '3': 3, '4': 1, '5': 9, '10': 'message'},
-  ],
-};
-
-/// Descriptor for `ConnectionResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List connectionResponseDescriptor = $convert.base64Decode(
-    'ChJDb25uZWN0aW9uUmVzcG9uc2USHQoKcmVxdWVzdF9pZBgBIAEoCVIJcmVxdWVzdElkEhgKB3'
-    'N1Y2Nlc3MYAiABKAhSB3N1Y2Nlc3MSGAoHbWVzc2FnZRgDIAEoCVIHbWVzc2FnZQ==');
-
-@$core.Deprecated('Use watchRequestsRequestDescriptor instead')
-const WatchRequestsRequest$json = {
-  '1': 'WatchRequestsRequest',
-  '2': [
-    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
-  ],
-};
-
-/// Descriptor for `WatchRequestsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List watchRequestsRequestDescriptor = $convert.base64Decode(
-    'ChRXYXRjaFJlcXVlc3RzUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQ=');
-
-@$core.Deprecated('Use connectionRequestNotificationDescriptor instead')
-const ConnectionRequestNotification$json = {
-  '1': 'ConnectionRequestNotification',
-  '2': [
-    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
-    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
-    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
-    {'1': 'requested_at', '3': 4, '4': 1, '5': 3, '10': 'requestedAt'},
-  ],
-};
-
-/// Descriptor for `ConnectionRequestNotification`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List connectionRequestNotificationDescriptor = $convert.base64Decode(
-    'Ch1Db25uZWN0aW9uUmVxdWVzdE5vdGlmaWNhdGlvbhIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZX'
-    'F1ZXN0SWQSHwoLY29uc3VtZXJfaWQYAiABKAlSCmNvbnN1bWVySWQSIwoNY29uc3VtZXJfbmFt'
-    'ZRgDIAEoCVIMY29uc3VtZXJOYW1lEiEKDHJlcXVlc3RlZF9hdBgEIAEoA1ILcmVxdWVzdGVkQX'
-    'Q=');
-
-@$core.Deprecated('Use approveRequestDescriptor instead')
-const ApproveRequest$json = {
-  '1': 'ApproveRequest',
-  '2': [
-    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
-  ],
-};
-
-/// Descriptor for `ApproveRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List approveRequestDescriptor = $convert.base64Decode(
-    'Cg5BcHByb3ZlUmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQ=');
-
-@$core.Deprecated('Use approveResponseDescriptor instead')
-const ApproveResponse$json = {
-  '1': 'ApproveResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-    {'1': 'session_id', '3': 2, '4': 1, '5': 9, '10': 'sessionId'},
-    {'1': 'token', '3': 3, '4': 1, '5': 9, '10': 'token'},
-  ],
-};
-
-/// Descriptor for `ApproveResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List approveResponseDescriptor = $convert.base64Decode(
-    'Cg9BcHByb3ZlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIdCgpzZXNzaW9uX2'
-    'lkGAIgASgJUglzZXNzaW9uSWQSFAoFdG9rZW4YAyABKAlSBXRva2Vu');
-
-@$core.Deprecated('Use denyRequestDescriptor instead')
-const DenyRequest$json = {
-  '1': 'DenyRequest',
-  '2': [
-    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
-    {'1': 'reason', '3': 2, '4': 1, '5': 9, '10': 'reason'},
-  ],
-};
-
-/// Descriptor for `DenyRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List denyRequestDescriptor = $convert.base64Decode(
-    'CgtEZW55UmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQSFgoGcmVhc29uGA'
-    'IgASgJUgZyZWFzb24=');
-
-@$core.Deprecated('Use denyResponseDescriptor instead')
-const DenyResponse$json = {
-  '1': 'DenyResponse',
-  '2': [
-    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
-  ],
-};
-
-/// Descriptor for `DenyResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List denyResponseDescriptor = $convert.base64Decode(
-    'CgxEZW55UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
-
-@$core.Deprecated('Use watchApprovalRequestDescriptor instead')
-const WatchApprovalRequest$json = {
-  '1': 'WatchApprovalRequest',
-  '2': [
-    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
-  ],
-};
-
-/// Descriptor for `WatchApprovalRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List watchApprovalRequestDescriptor = $convert.base64Decode(
-    'ChRXYXRjaEFwcHJvdmFsUmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQ=');
-
-@$core.Deprecated('Use approvalStatusUpdateDescriptor instead')
-const ApprovalStatusUpdate$json = {
-  '1': 'ApprovalStatusUpdate',
-  '2': [
-    {'1': 'status', '3': 1, '4': 1, '5': 14, '6': '.inventory.ApprovalStatusUpdate.Status', '10': 'status'},
-    {'1': 'session_id', '3': 2, '4': 1, '5': 9, '10': 'sessionId'},
-    {'1': 'token', '3': 3, '4': 1, '5': 9, '10': 'token'},
-    {'1': 'message', '3': 4, '4': 1, '5': 9, '10': 'message'},
-  ],
-  '4': [ApprovalStatusUpdate_Status$json],
-};
-
-@$core.Deprecated('Use approvalStatusUpdateDescriptor instead')
-const ApprovalStatusUpdate_Status$json = {
-  '1': 'Status',
-  '2': [
-    {'1': 'PENDING', '2': 0},
-    {'1': 'APPROVED', '2': 1},
-    {'1': 'DENIED', '2': 2},
-  ],
-};
-
-/// Descriptor for `ApprovalStatusUpdate`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List approvalStatusUpdateDescriptor = $convert.base64Decode(
-    'ChRBcHByb3ZhbFN0YXR1c1VwZGF0ZRI+CgZzdGF0dXMYASABKA4yJi5pbnZlbnRvcnkuQXBwcm'
-    '92YWxTdGF0dXNVcGRhdGUuU3RhdHVzUgZzdGF0dXMSHQoKc2Vzc2lvbl9pZBgCIAEoCVIJc2Vz'
-    'c2lvbklkEhQKBXRva2VuGAMgASgJUgV0b2tlbhIYCgdtZXNzYWdlGAQgASgJUgdtZXNzYWdlIi'
-    '8KBlN0YXR1cxILCgdQRU5ESU5HEAASDAoIQVBQUk9WRUQQARIKCgZERU5JRUQQAg==');
 
 @$core.Deprecated('Use commandDescriptor instead')
 const Command$json = {

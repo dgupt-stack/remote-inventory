@@ -22,6 +22,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ApprovalStatus int32
+
+const (
+	ApprovalStatus_PENDING  ApprovalStatus = 0
+	ApprovalStatus_APPROVED ApprovalStatus = 1
+	ApprovalStatus_DENIED   ApprovalStatus = 2
+)
+
+// Enum value maps for ApprovalStatus.
+var (
+	ApprovalStatus_name = map[int32]string{
+		0: "PENDING",
+		1: "APPROVED",
+		2: "DENIED",
+	}
+	ApprovalStatus_value = map[string]int32{
+		"PENDING":  0,
+		"APPROVED": 1,
+		"DENIED":   2,
+	}
+)
+
+func (x ApprovalStatus) Enum() *ApprovalStatus {
+	p := new(ApprovalStatus)
+	*p = x
+	return p
+}
+
+func (x ApprovalStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ApprovalStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_inventory_service_proto_enumTypes[0].Descriptor()
+}
+
+func (ApprovalStatus) Type() protoreflect.EnumType {
+	return &file_inventory_service_proto_enumTypes[0]
+}
+
+func (x ApprovalStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ApprovalStatus.Descriptor instead.
+func (ApprovalStatus) EnumDescriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{0}
+}
+
 type NavigationCommand_Direction int32
 
 const (
@@ -67,11 +116,11 @@ func (x NavigationCommand_Direction) String() string {
 }
 
 func (NavigationCommand_Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_inventory_service_proto_enumTypes[0].Descriptor()
+	return file_inventory_service_proto_enumTypes[1].Descriptor()
 }
 
 func (NavigationCommand_Direction) Type() protoreflect.EnumType {
-	return &file_inventory_service_proto_enumTypes[0]
+	return &file_inventory_service_proto_enumTypes[1]
 }
 
 func (x NavigationCommand_Direction) Number() protoreflect.EnumNumber {
@@ -116,11 +165,11 @@ func (x ZoomCommand_ZoomType) String() string {
 }
 
 func (ZoomCommand_ZoomType) Descriptor() protoreflect.EnumDescriptor {
-	return file_inventory_service_proto_enumTypes[1].Descriptor()
+	return file_inventory_service_proto_enumTypes[2].Descriptor()
 }
 
 func (ZoomCommand_ZoomType) Type() protoreflect.EnumType {
-	return &file_inventory_service_proto_enumTypes[1]
+	return &file_inventory_service_proto_enumTypes[2]
 }
 
 func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
@@ -130,55 +179,6 @@ func (x ZoomCommand_ZoomType) Number() protoreflect.EnumNumber {
 // Deprecated: Use ZoomCommand_ZoomType.Descriptor instead.
 func (ZoomCommand_ZoomType) EnumDescriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{13, 0}
-}
-
-type ApprovalStatusUpdate_Status int32
-
-const (
-	ApprovalStatusUpdate_PENDING  ApprovalStatusUpdate_Status = 0
-	ApprovalStatusUpdate_APPROVED ApprovalStatusUpdate_Status = 1
-	ApprovalStatusUpdate_DENIED   ApprovalStatusUpdate_Status = 2
-)
-
-// Enum value maps for ApprovalStatusUpdate_Status.
-var (
-	ApprovalStatusUpdate_Status_name = map[int32]string{
-		0: "PENDING",
-		1: "APPROVED",
-		2: "DENIED",
-	}
-	ApprovalStatusUpdate_Status_value = map[string]int32{
-		"PENDING":  0,
-		"APPROVED": 1,
-		"DENIED":   2,
-	}
-)
-
-func (x ApprovalStatusUpdate_Status) Enum() *ApprovalStatusUpdate_Status {
-	p := new(ApprovalStatusUpdate_Status)
-	*p = x
-	return p
-}
-
-func (x ApprovalStatusUpdate_Status) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ApprovalStatusUpdate_Status) Descriptor() protoreflect.EnumDescriptor {
-	return file_inventory_service_proto_enumTypes[2].Descriptor()
-}
-
-func (ApprovalStatusUpdate_Status) Type() protoreflect.EnumType {
-	return &file_inventory_service_proto_enumTypes[2]
-}
-
-func (x ApprovalStatusUpdate_Status) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ApprovalStatusUpdate_Status.Descriptor instead.
-func (ApprovalStatusUpdate_Status) EnumDescriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{31, 0}
 }
 
 type WebRTCSignal_SignalType int32
@@ -1510,11 +1510,10 @@ func (x *HeartbeatRequest) GetRole() string {
 }
 
 type HeartbeatResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Active            bool                   `protobuf:"varint,1,opt,name=active,proto3" json:"active,omitempty"`
-	SessionDurationMs int64                  `protobuf:"varint,2,opt,name=session_duration_ms,json=sessionDurationMs,proto3" json:"session_duration_ms,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *HeartbeatResponse) Reset() {
@@ -1547,18 +1546,531 @@ func (*HeartbeatResponse) Descriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *HeartbeatResponse) GetActive() bool {
+func (x *HeartbeatResponse) GetSuccess() bool {
 	if x != nil {
-		return x.Active
+		return x.Success
 	}
 	return false
 }
 
-func (x *HeartbeatResponse) GetSessionDurationMs() int64 {
+type RequestConnectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
+	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestConnectionRequest) Reset() {
+	*x = RequestConnectionRequest{}
+	mi := &file_inventory_service_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestConnectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestConnectionRequest) ProtoMessage() {}
+
+func (x *RequestConnectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[19]
 	if x != nil {
-		return x.SessionDurationMs
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestConnectionRequest.ProtoReflect.Descriptor instead.
+func (*RequestConnectionRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *RequestConnectionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *RequestConnectionRequest) GetConsumerId() string {
+	if x != nil {
+		return x.ConsumerId
+	}
+	return ""
+}
+
+func (x *RequestConnectionRequest) GetConsumerName() string {
+	if x != nil {
+		return x.ConsumerName
+	}
+	return ""
+}
+
+type RequestConnectionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RequestConnectionResponse) Reset() {
+	*x = RequestConnectionResponse{}
+	mi := &file_inventory_service_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RequestConnectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RequestConnectionResponse) ProtoMessage() {}
+
+func (x *RequestConnectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RequestConnectionResponse.ProtoReflect.Descriptor instead.
+func (*RequestConnectionResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *RequestConnectionResponse) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type ApproveConnectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveConnectionRequest) Reset() {
+	*x = ApproveConnectionRequest{}
+	mi := &file_inventory_service_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveConnectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveConnectionRequest) ProtoMessage() {}
+
+func (x *ApproveConnectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveConnectionRequest.ProtoReflect.Descriptor instead.
+func (*ApproveConnectionRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ApproveConnectionRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type ApproveConnectionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"` // WebRTC signaling token
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveConnectionResponse) Reset() {
+	*x = ApproveConnectionResponse{}
+	mi := &file_inventory_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveConnectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveConnectionResponse) ProtoMessage() {}
+
+func (x *ApproveConnectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveConnectionResponse.ProtoReflect.Descriptor instead.
+func (*ApproveConnectionResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ApproveConnectionResponse) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ApproveConnectionResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type DenyConnectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DenyConnectionRequest) Reset() {
+	*x = DenyConnectionRequest{}
+	mi := &file_inventory_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DenyConnectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DenyConnectionRequest) ProtoMessage() {}
+
+func (x *DenyConnectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DenyConnectionRequest.ProtoReflect.Descriptor instead.
+func (*DenyConnectionRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *DenyConnectionRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *DenyConnectionRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type DenyConnectionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DenyConnectionResponse) Reset() {
+	*x = DenyConnectionResponse{}
+	mi := &file_inventory_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DenyConnectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DenyConnectionResponse) ProtoMessage() {}
+
+func (x *DenyConnectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DenyConnectionResponse.ProtoReflect.Descriptor instead.
+func (*DenyConnectionResponse) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *DenyConnectionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+type WatchConnectionRequestsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchConnectionRequestsRequest) Reset() {
+	*x = WatchConnectionRequestsRequest{}
+	mi := &file_inventory_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchConnectionRequestsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchConnectionRequestsRequest) ProtoMessage() {}
+
+func (x *WatchConnectionRequestsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchConnectionRequestsRequest.ProtoReflect.Descriptor instead.
+func (*WatchConnectionRequestsRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *WatchConnectionRequestsRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type ConnectionRequestNotification struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
+	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
+	Timestamp     int64                  `protobuf:"varint,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConnectionRequestNotification) Reset() {
+	*x = ConnectionRequestNotification{}
+	mi := &file_inventory_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectionRequestNotification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectionRequestNotification) ProtoMessage() {}
+
+func (x *ConnectionRequestNotification) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectionRequestNotification.ProtoReflect.Descriptor instead.
+func (*ConnectionRequestNotification) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ConnectionRequestNotification) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetConsumerId() string {
+	if x != nil {
+		return x.ConsumerId
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetConsumerName() string {
+	if x != nil {
+		return x.ConsumerName
+	}
+	return ""
+}
+
+func (x *ConnectionRequestNotification) GetTimestamp() int64 {
+	if x != nil {
+		return x.Timestamp
 	}
 	return 0
+}
+
+type WatchApprovalStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WatchApprovalStatusRequest) Reset() {
+	*x = WatchApprovalStatusRequest{}
+	mi := &file_inventory_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WatchApprovalStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WatchApprovalStatusRequest) ProtoMessage() {}
+
+func (x *WatchApprovalStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WatchApprovalStatusRequest.ProtoReflect.Descriptor instead.
+func (*WatchApprovalStatusRequest) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *WatchApprovalStatusRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
+type ApprovalStatusUpdate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        ApprovalStatus         `protobuf:"varint,1,opt,name=status,proto3,enum=inventory.ApprovalStatus" json:"status,omitempty"`
+	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	Message       string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApprovalStatusUpdate) Reset() {
+	*x = ApprovalStatusUpdate{}
+	mi := &file_inventory_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApprovalStatusUpdate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApprovalStatusUpdate) ProtoMessage() {}
+
+func (x *ApprovalStatusUpdate) ProtoReflect() protoreflect.Message {
+	mi := &file_inventory_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApprovalStatusUpdate.ProtoReflect.Descriptor instead.
+func (*ApprovalStatusUpdate) Descriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *ApprovalStatusUpdate) GetStatus() ApprovalStatus {
+	if x != nil {
+		return x.Status
+	}
+	return ApprovalStatus_PENDING
+}
+
+func (x *ApprovalStatusUpdate) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *ApprovalStatusUpdate) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ApprovalStatusUpdate) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
 }
 
 // Session Discovery Messages
@@ -1571,7 +2083,7 @@ type ListSessionsRequest struct {
 
 func (x *ListSessionsRequest) Reset() {
 	*x = ListSessionsRequest{}
-	mi := &file_inventory_service_proto_msgTypes[19]
+	mi := &file_inventory_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1583,7 +2095,7 @@ func (x *ListSessionsRequest) String() string {
 func (*ListSessionsRequest) ProtoMessage() {}
 
 func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[19]
+	mi := &file_inventory_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1596,7 +2108,7 @@ func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
 func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{19}
+	return file_inventory_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ListSessionsRequest) GetSearchQuery() string {
@@ -1615,7 +2127,7 @@ type ListSessionsResponse struct {
 
 func (x *ListSessionsResponse) Reset() {
 	*x = ListSessionsResponse{}
-	mi := &file_inventory_service_proto_msgTypes[20]
+	mi := &file_inventory_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1627,7 +2139,7 @@ func (x *ListSessionsResponse) String() string {
 func (*ListSessionsResponse) ProtoMessage() {}
 
 func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[20]
+	mi := &file_inventory_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1640,7 +2152,7 @@ func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{20}
+	return file_inventory_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListSessionsResponse) GetSessions() []*SessionInfo {
@@ -1667,7 +2179,7 @@ type SessionInfo struct {
 
 func (x *SessionInfo) Reset() {
 	*x = SessionInfo{}
-	mi := &file_inventory_service_proto_msgTypes[21]
+	mi := &file_inventory_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1679,7 +2191,7 @@ func (x *SessionInfo) String() string {
 func (*SessionInfo) ProtoMessage() {}
 
 func (x *SessionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[21]
+	mi := &file_inventory_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1692,7 +2204,7 @@ func (x *SessionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionInfo.ProtoReflect.Descriptor instead.
 func (*SessionInfo) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{21}
+	return file_inventory_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *SessionInfo) GetSessionId() string {
@@ -1756,552 +2268,6 @@ func (x *SessionInfo) GetAcceptingConnections() bool {
 		return x.AcceptingConnections
 	}
 	return false
-}
-
-// Connection Request Messages
-type ConnectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
-	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ConnectionRequest) Reset() {
-	*x = ConnectionRequest{}
-	mi := &file_inventory_service_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ConnectionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ConnectionRequest) ProtoMessage() {}
-
-func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ConnectionRequest.ProtoReflect.Descriptor instead.
-func (*ConnectionRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *ConnectionRequest) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *ConnectionRequest) GetConsumerId() string {
-	if x != nil {
-		return x.ConsumerId
-	}
-	return ""
-}
-
-func (x *ConnectionRequest) GetConsumerName() string {
-	if x != nil {
-		return x.ConsumerName
-	}
-	return ""
-}
-
-type ConnectionResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Success       bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ConnectionResponse) Reset() {
-	*x = ConnectionResponse{}
-	mi := &file_inventory_service_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ConnectionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ConnectionResponse) ProtoMessage() {}
-
-func (x *ConnectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ConnectionResponse.ProtoReflect.Descriptor instead.
-func (*ConnectionResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *ConnectionResponse) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-func (x *ConnectionResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *ConnectionResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-type WatchRequestsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *WatchRequestsRequest) Reset() {
-	*x = WatchRequestsRequest{}
-	mi := &file_inventory_service_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *WatchRequestsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*WatchRequestsRequest) ProtoMessage() {}
-
-func (x *WatchRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use WatchRequestsRequest.ProtoReflect.Descriptor instead.
-func (*WatchRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *WatchRequestsRequest) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-type ConnectionRequestNotification struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	ConsumerId    string                 `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
-	ConsumerName  string                 `protobuf:"bytes,3,opt,name=consumer_name,json=consumerName,proto3" json:"consumer_name,omitempty"`
-	RequestedAt   int64                  `protobuf:"varint,4,opt,name=requested_at,json=requestedAt,proto3" json:"requested_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ConnectionRequestNotification) Reset() {
-	*x = ConnectionRequestNotification{}
-	mi := &file_inventory_service_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ConnectionRequestNotification) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ConnectionRequestNotification) ProtoMessage() {}
-
-func (x *ConnectionRequestNotification) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ConnectionRequestNotification.ProtoReflect.Descriptor instead.
-func (*ConnectionRequestNotification) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *ConnectionRequestNotification) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-func (x *ConnectionRequestNotification) GetConsumerId() string {
-	if x != nil {
-		return x.ConsumerId
-	}
-	return ""
-}
-
-func (x *ConnectionRequestNotification) GetConsumerName() string {
-	if x != nil {
-		return x.ConsumerName
-	}
-	return ""
-}
-
-func (x *ConnectionRequestNotification) GetRequestedAt() int64 {
-	if x != nil {
-		return x.RequestedAt
-	}
-	return 0
-}
-
-// Approval Messages
-type ApproveRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveRequest) Reset() {
-	*x = ApproveRequest{}
-	mi := &file_inventory_service_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveRequest) ProtoMessage() {}
-
-func (x *ApproveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveRequest.ProtoReflect.Descriptor instead.
-func (*ApproveRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *ApproveRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type ApproveResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveResponse) Reset() {
-	*x = ApproveResponse{}
-	mi := &file_inventory_service_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveResponse) ProtoMessage() {}
-
-func (x *ApproveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveResponse.ProtoReflect.Descriptor instead.
-func (*ApproveResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{27}
-}
-
-func (x *ApproveResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *ApproveResponse) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *ApproveResponse) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
-}
-
-type DenyRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DenyRequest) Reset() {
-	*x = DenyRequest{}
-	mi := &file_inventory_service_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DenyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DenyRequest) ProtoMessage() {}
-
-func (x *DenyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DenyRequest.ProtoReflect.Descriptor instead.
-func (*DenyRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{28}
-}
-
-func (x *DenyRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-func (x *DenyRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-type DenyResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DenyResponse) Reset() {
-	*x = DenyResponse{}
-	mi := &file_inventory_service_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DenyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DenyResponse) ProtoMessage() {}
-
-func (x *DenyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DenyResponse.ProtoReflect.Descriptor instead.
-func (*DenyResponse) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{29}
-}
-
-func (x *DenyResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type WatchApprovalRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *WatchApprovalRequest) Reset() {
-	*x = WatchApprovalRequest{}
-	mi := &file_inventory_service_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *WatchApprovalRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*WatchApprovalRequest) ProtoMessage() {}
-
-func (x *WatchApprovalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use WatchApprovalRequest.ProtoReflect.Descriptor instead.
-func (*WatchApprovalRequest) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{30}
-}
-
-func (x *WatchApprovalRequest) GetRequestId() string {
-	if x != nil {
-		return x.RequestId
-	}
-	return ""
-}
-
-type ApprovalStatusUpdate struct {
-	state         protoimpl.MessageState      `protogen:"open.v1"`
-	Status        ApprovalStatusUpdate_Status `protobuf:"varint,1,opt,name=status,proto3,enum=inventory.ApprovalStatusUpdate_Status" json:"status,omitempty"`
-	SessionId     string                      `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Token         string                      `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
-	Message       string                      `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApprovalStatusUpdate) Reset() {
-	*x = ApprovalStatusUpdate{}
-	mi := &file_inventory_service_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApprovalStatusUpdate) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApprovalStatusUpdate) ProtoMessage() {}
-
-func (x *ApprovalStatusUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_inventory_service_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApprovalStatusUpdate.ProtoReflect.Descriptor instead.
-func (*ApprovalStatusUpdate) Descriptor() ([]byte, []int) {
-	return file_inventory_service_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *ApprovalStatusUpdate) GetStatus() ApprovalStatusUpdate_Status {
-	if x != nil {
-		return x.Status
-	}
-	return ApprovalStatusUpdate_PENDING
-}
-
-func (x *ApprovalStatusUpdate) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *ApprovalStatusUpdate) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
-}
-
-func (x *ApprovalStatusUpdate) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
 }
 
 // Command Messages
@@ -2811,10 +2777,50 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x14\n" +
 	"\x05token\x18\x02 \x01(\tR\x05token\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\"[\n" +
-	"\x11HeartbeatResponse\x12\x16\n" +
-	"\x06active\x18\x01 \x01(\bR\x06active\x12.\n" +
-	"\x13session_duration_ms\x18\x02 \x01(\x03R\x11sessionDurationMs\"8\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\"-\n" +
+	"\x11HeartbeatResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x7f\n" +
+	"\x18RequestConnectionRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
+	"\vconsumer_id\x18\x02 \x01(\tR\n" +
+	"consumerId\x12#\n" +
+	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\":\n" +
+	"\x19RequestConnectionResponse\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"9\n" +
+	"\x18ApproveConnectionRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"P\n" +
+	"\x19ApproveConnectionResponse\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\"N\n" +
+	"\x15DenyConnectionRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\"2\n" +
+	"\x16DenyConnectionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"?\n" +
+	"\x1eWatchConnectionRequestsRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"\xa2\x01\n" +
+	"\x1dConnectionRequestNotification\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x1f\n" +
+	"\vconsumer_id\x18\x02 \x01(\tR\n" +
+	"consumerId\x12#\n" +
+	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\x12\x1c\n" +
+	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\";\n" +
+	"\x1aWatchApprovalStatusRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"\x98\x01\n" +
+	"\x14ApprovalStatusUpdate\x121\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x19.inventory.ApprovalStatusR\x06status\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x02 \x01(\tR\tsessionId\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage\"8\n" +
 	"\x13ListSessionsRequest\x12!\n" +
 	"\fsearch_query\x18\x01 \x01(\tR\vsearchQuery\"J\n" +
 	"\x14ListSessionsResponse\x122\n" +
@@ -2830,56 +2836,7 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x0ein_active_call\x18\a \x01(\bR\finActiveCall\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\b \x01(\x03R\tcreatedAt\x123\n" +
-	"\x15accepting_connections\x18\t \x01(\bR\x14acceptingConnections\"x\n" +
-	"\x11ConnectionRequest\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
-	"\vconsumer_id\x18\x02 \x01(\tR\n" +
-	"consumerId\x12#\n" +
-	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\"g\n" +
-	"\x12ConnectionResponse\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12\x18\n" +
-	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\"5\n" +
-	"\x14WatchRequestsRequest\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"\xa7\x01\n" +
-	"\x1dConnectionRequestNotification\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12\x1f\n" +
-	"\vconsumer_id\x18\x02 \x01(\tR\n" +
-	"consumerId\x12#\n" +
-	"\rconsumer_name\x18\x03 \x01(\tR\fconsumerName\x12!\n" +
-	"\frequested_at\x18\x04 \x01(\x03R\vrequestedAt\"/\n" +
-	"\x0eApproveRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\"`\n" +
-	"\x0fApproveResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"D\n" +
-	"\vDenyRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\"(\n" +
-	"\fDenyResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"5\n" +
-	"\x14WatchApprovalRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\"\xd6\x01\n" +
-	"\x14ApprovalStatusUpdate\x12>\n" +
-	"\x06status\x18\x01 \x01(\x0e2&.inventory.ApprovalStatusUpdate.StatusR\x06status\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\x12\x18\n" +
-	"\amessage\x18\x04 \x01(\tR\amessage\"/\n" +
-	"\x06Status\x12\v\n" +
-	"\aPENDING\x10\x00\x12\f\n" +
-	"\bAPPROVED\x10\x01\x12\n" +
-	"\n" +
-	"\x06DENIED\x10\x02\"\xe4\x02\n" +
+	"\x15accepting_connections\x18\t \x01(\bR\x14acceptingConnections\"\xe4\x02\n" +
 	"\aCommand\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12>\n" +
@@ -2915,24 +2872,27 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x13WatchSignalsRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1b\n" +
-	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xd6\v\n" +
+	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId*7\n" +
+	"\x0eApprovalStatus\x12\v\n" +
+	"\aPENDING\x10\x00\x12\f\n" +
+	"\bAPPROVED\x10\x01\x12\n" +
+	"\n" +
+	"\x06DENIED\x10\x022\xe8\v\n" +
 	"\x10InventoryService\x12e\n" +
 	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/sessions\x12e\n" +
-	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/sessions\x12~\n" +
-	"\x11RequestConnection\x12\x1c.inventory.ConnectionRequest\x1a\x1d.inventory.ConnectionResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/sessions/{session_id}/request\x12h\n" +
-	"\x17WatchConnectionRequests\x12\x1f.inventory.WatchRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"\x000\x01\x12~\n" +
-	"\x11ApproveConnection\x12\x19.inventory.ApproveRequest\x1a\x1a.inventory.ApproveResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/sessions/requests/{request_id}/approve\x12u\n" +
-	"\x0eDenyConnection\x12\x16.inventory.DenyRequest\x1a\x17.inventory.DenyResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\"'/v1/sessions/requests/{request_id}/deny\x12[\n" +
-	"\x13WatchApprovalStatus\x12\x1f.inventory.WatchApprovalRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"\x000\x01\x12d\n" +
-	"\x10SendWebRTCSignal\x12\x17.inventory.WebRTCSignal\x1a\x19.inventory.SignalResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/webrtc/signal\x12O\n" +
-	"\x12WatchWebRTCSignals\x12\x1e.inventory.WatchSignalsRequest\x1a\x17.inventory.WebRTCSignal0\x01\x12A\n" +
-	"\vStreamVideo\x12\x15.inventory.VideoFrame\x1a\x15.inventory.VideoFrame\"\x00(\x010\x01\x12?\n" +
-	"\vSendCommand\x12\x12.inventory.Command\x1a\x1a.inventory.CommandResponse\"\x00\x12l\n" +
+	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/sessions\x12l\n" +
 	"\n" +
-	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/v1/sessions/{session_id}\x12L\n" +
+	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/v1/sessions/{session_id}\x12d\n" +
+	"\x10SendWebRTCSignal\x12\x17.inventory.WebRTCSignal\x1a\x19.inventory.SignalResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/webrtc/signal\x12Q\n" +
+	"\x12WatchWebRTCSignals\x12\x1e.inventory.WatchSignalsRequest\x1a\x17.inventory.WebRTCSignal\"\x000\x01\x12L\n" +
 	"\x0eProviderStream\x12\x1a.inventory.ProviderMessage\x1a\x1a.inventory.ProviderCommand(\x010\x01\x12G\n" +
 	"\x0eConsumerStream\x12\x1a.inventory.ConsumerCommand\x1a\x15.inventory.VideoFrame(\x010\x01\x12v\n" +
-	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/sessions/{session_id}/heartbeatB$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
+	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/sessions/{session_id}/heartbeat\x12\x8c\x01\n" +
+	"\x11RequestConnection\x12#.inventory.RequestConnectionRequest\x1a$.inventory.RequestConnectionResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/sessions/{session_id}/connect\x12\x8c\x01\n" +
+	"\x11ApproveConnection\x12#.inventory.ApproveConnectionRequest\x1a$.inventory.ApproveConnectionResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/requests/{request_id}/approve\x12\x80\x01\n" +
+	"\x0eDenyConnection\x12 .inventory.DenyConnectionRequest\x1a!.inventory.DenyConnectionResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/v1/requests/{request_id}/deny\x12\xa2\x01\n" +
+	"\x17WatchConnectionRequests\x12).inventory.WatchConnectionRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"0\x82\xd3\xe4\x93\x02*\x12(/v1/sessions/{session_id}/requests/watch0\x01\x12\x89\x01\n" +
+	"\x13WatchApprovalStatus\x12%.inventory.WatchApprovalStatusRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/requests/{request_id}/status0\x01B$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
 
 var (
 	file_inventory_service_proto_rawDescOnce sync.Once
@@ -2949,47 +2909,47 @@ func file_inventory_service_proto_rawDescGZIP() []byte {
 var file_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_inventory_service_proto_goTypes = []any{
-	(NavigationCommand_Direction)(0),      // 0: inventory.NavigationCommand.Direction
-	(ZoomCommand_ZoomType)(0),             // 1: inventory.ZoomCommand.ZoomType
-	(ApprovalStatusUpdate_Status)(0),      // 2: inventory.ApprovalStatusUpdate.Status
-	(WebRTCSignal_SignalType)(0),          // 3: inventory.WebRTCSignal.SignalType
-	(*CreateSessionRequest)(nil),          // 4: inventory.CreateSessionRequest
-	(*JoinSessionRequest)(nil),            // 5: inventory.JoinSessionRequest
-	(*SessionResponse)(nil),               // 6: inventory.SessionResponse
-	(*EndSessionRequest)(nil),             // 7: inventory.EndSessionRequest
-	(*EndSessionResponse)(nil),            // 8: inventory.EndSessionResponse
-	(*ProviderMessage)(nil),               // 9: inventory.ProviderMessage
-	(*VideoFrame)(nil),                    // 10: inventory.VideoFrame
-	(*SensorData)(nil),                    // 11: inventory.SensorData
-	(*ProviderStatus)(nil),                // 12: inventory.ProviderStatus
-	(*ProviderCommand)(nil),               // 13: inventory.ProviderCommand
-	(*NavigationCommand)(nil),             // 14: inventory.NavigationCommand
-	(*LaserCommand)(nil),                  // 15: inventory.LaserCommand
-	(*StopCommand)(nil),                   // 16: inventory.StopCommand
-	(*ZoomCommand)(nil),                   // 17: inventory.ZoomCommand
-	(*ConsumerCommand)(nil),               // 18: inventory.ConsumerCommand
-	(*VoiceCommand)(nil),                  // 19: inventory.VoiceCommand
-	(*TextCommand)(nil),                   // 20: inventory.TextCommand
-	(*HeartbeatRequest)(nil),              // 21: inventory.HeartbeatRequest
-	(*HeartbeatResponse)(nil),             // 22: inventory.HeartbeatResponse
-	(*ListSessionsRequest)(nil),           // 23: inventory.ListSessionsRequest
-	(*ListSessionsResponse)(nil),          // 24: inventory.ListSessionsResponse
-	(*SessionInfo)(nil),                   // 25: inventory.SessionInfo
-	(*ConnectionRequest)(nil),             // 26: inventory.ConnectionRequest
-	(*ConnectionResponse)(nil),            // 27: inventory.ConnectionResponse
-	(*WatchRequestsRequest)(nil),          // 28: inventory.WatchRequestsRequest
-	(*ConnectionRequestNotification)(nil), // 29: inventory.ConnectionRequestNotification
-	(*ApproveRequest)(nil),                // 30: inventory.ApproveRequest
-	(*ApproveResponse)(nil),               // 31: inventory.ApproveResponse
-	(*DenyRequest)(nil),                   // 32: inventory.DenyRequest
-	(*DenyResponse)(nil),                  // 33: inventory.DenyResponse
-	(*WatchApprovalRequest)(nil),          // 34: inventory.WatchApprovalRequest
-	(*ApprovalStatusUpdate)(nil),          // 35: inventory.ApprovalStatusUpdate
-	(*Command)(nil),                       // 36: inventory.Command
-	(*CommandResponse)(nil),               // 37: inventory.CommandResponse
-	(*WebRTCSignal)(nil),                  // 38: inventory.WebRTCSignal
-	(*SignalResponse)(nil),                // 39: inventory.SignalResponse
-	(*WatchSignalsRequest)(nil),           // 40: inventory.WatchSignalsRequest
+	(ApprovalStatus)(0),                    // 0: inventory.ApprovalStatus
+	(NavigationCommand_Direction)(0),       // 1: inventory.NavigationCommand.Direction
+	(ZoomCommand_ZoomType)(0),              // 2: inventory.ZoomCommand.ZoomType
+	(WebRTCSignal_SignalType)(0),           // 3: inventory.WebRTCSignal.SignalType
+	(*CreateSessionRequest)(nil),           // 4: inventory.CreateSessionRequest
+	(*JoinSessionRequest)(nil),             // 5: inventory.JoinSessionRequest
+	(*SessionResponse)(nil),                // 6: inventory.SessionResponse
+	(*EndSessionRequest)(nil),              // 7: inventory.EndSessionRequest
+	(*EndSessionResponse)(nil),             // 8: inventory.EndSessionResponse
+	(*ProviderMessage)(nil),                // 9: inventory.ProviderMessage
+	(*VideoFrame)(nil),                     // 10: inventory.VideoFrame
+	(*SensorData)(nil),                     // 11: inventory.SensorData
+	(*ProviderStatus)(nil),                 // 12: inventory.ProviderStatus
+	(*ProviderCommand)(nil),                // 13: inventory.ProviderCommand
+	(*NavigationCommand)(nil),              // 14: inventory.NavigationCommand
+	(*LaserCommand)(nil),                   // 15: inventory.LaserCommand
+	(*StopCommand)(nil),                    // 16: inventory.StopCommand
+	(*ZoomCommand)(nil),                    // 17: inventory.ZoomCommand
+	(*ConsumerCommand)(nil),                // 18: inventory.ConsumerCommand
+	(*VoiceCommand)(nil),                   // 19: inventory.VoiceCommand
+	(*TextCommand)(nil),                    // 20: inventory.TextCommand
+	(*HeartbeatRequest)(nil),               // 21: inventory.HeartbeatRequest
+	(*HeartbeatResponse)(nil),              // 22: inventory.HeartbeatResponse
+	(*RequestConnectionRequest)(nil),       // 23: inventory.RequestConnectionRequest
+	(*RequestConnectionResponse)(nil),      // 24: inventory.RequestConnectionResponse
+	(*ApproveConnectionRequest)(nil),       // 25: inventory.ApproveConnectionRequest
+	(*ApproveConnectionResponse)(nil),      // 26: inventory.ApproveConnectionResponse
+	(*DenyConnectionRequest)(nil),          // 27: inventory.DenyConnectionRequest
+	(*DenyConnectionResponse)(nil),         // 28: inventory.DenyConnectionResponse
+	(*WatchConnectionRequestsRequest)(nil), // 29: inventory.WatchConnectionRequestsRequest
+	(*ConnectionRequestNotification)(nil),  // 30: inventory.ConnectionRequestNotification
+	(*WatchApprovalStatusRequest)(nil),     // 31: inventory.WatchApprovalStatusRequest
+	(*ApprovalStatusUpdate)(nil),           // 32: inventory.ApprovalStatusUpdate
+	(*ListSessionsRequest)(nil),            // 33: inventory.ListSessionsRequest
+	(*ListSessionsResponse)(nil),           // 34: inventory.ListSessionsResponse
+	(*SessionInfo)(nil),                    // 35: inventory.SessionInfo
+	(*Command)(nil),                        // 36: inventory.Command
+	(*CommandResponse)(nil),                // 37: inventory.CommandResponse
+	(*WebRTCSignal)(nil),                   // 38: inventory.WebRTCSignal
+	(*SignalResponse)(nil),                 // 39: inventory.SignalResponse
+	(*WatchSignalsRequest)(nil),            // 40: inventory.WatchSignalsRequest
 }
 var file_inventory_service_proto_depIdxs = []int32{
 	10, // 0: inventory.ProviderMessage.video_frame:type_name -> inventory.VideoFrame
@@ -2999,16 +2959,16 @@ var file_inventory_service_proto_depIdxs = []int32{
 	15, // 4: inventory.ProviderCommand.laser:type_name -> inventory.LaserCommand
 	16, // 5: inventory.ProviderCommand.stop:type_name -> inventory.StopCommand
 	17, // 6: inventory.ProviderCommand.zoom:type_name -> inventory.ZoomCommand
-	0,  // 7: inventory.NavigationCommand.direction:type_name -> inventory.NavigationCommand.Direction
-	1,  // 8: inventory.ZoomCommand.type:type_name -> inventory.ZoomCommand.ZoomType
+	1,  // 7: inventory.NavigationCommand.direction:type_name -> inventory.NavigationCommand.Direction
+	2,  // 8: inventory.ZoomCommand.type:type_name -> inventory.ZoomCommand.ZoomType
 	14, // 9: inventory.ConsumerCommand.navigation:type_name -> inventory.NavigationCommand
 	15, // 10: inventory.ConsumerCommand.laser:type_name -> inventory.LaserCommand
 	16, // 11: inventory.ConsumerCommand.stop:type_name -> inventory.StopCommand
 	17, // 12: inventory.ConsumerCommand.zoom:type_name -> inventory.ZoomCommand
 	19, // 13: inventory.ConsumerCommand.voice:type_name -> inventory.VoiceCommand
 	20, // 14: inventory.ConsumerCommand.text:type_name -> inventory.TextCommand
-	25, // 15: inventory.ListSessionsResponse.sessions:type_name -> inventory.SessionInfo
-	2,  // 16: inventory.ApprovalStatusUpdate.status:type_name -> inventory.ApprovalStatusUpdate.Status
+	0,  // 15: inventory.ApprovalStatusUpdate.status:type_name -> inventory.ApprovalStatus
+	35, // 16: inventory.ListSessionsResponse.sessions:type_name -> inventory.SessionInfo
 	14, // 17: inventory.Command.navigation:type_name -> inventory.NavigationCommand
 	15, // 18: inventory.Command.laser:type_name -> inventory.LaserCommand
 	16, // 19: inventory.Command.stop:type_name -> inventory.StopCommand
@@ -3017,37 +2977,33 @@ var file_inventory_service_proto_depIdxs = []int32{
 	20, // 22: inventory.Command.text:type_name -> inventory.TextCommand
 	3,  // 23: inventory.WebRTCSignal.type:type_name -> inventory.WebRTCSignal.SignalType
 	4,  // 24: inventory.InventoryService.CreateSession:input_type -> inventory.CreateSessionRequest
-	23, // 25: inventory.InventoryService.ListSessions:input_type -> inventory.ListSessionsRequest
-	26, // 26: inventory.InventoryService.RequestConnection:input_type -> inventory.ConnectionRequest
-	28, // 27: inventory.InventoryService.WatchConnectionRequests:input_type -> inventory.WatchRequestsRequest
-	30, // 28: inventory.InventoryService.ApproveConnection:input_type -> inventory.ApproveRequest
-	32, // 29: inventory.InventoryService.DenyConnection:input_type -> inventory.DenyRequest
-	34, // 30: inventory.InventoryService.WatchApprovalStatus:input_type -> inventory.WatchApprovalRequest
-	38, // 31: inventory.InventoryService.SendWebRTCSignal:input_type -> inventory.WebRTCSignal
-	40, // 32: inventory.InventoryService.WatchWebRTCSignals:input_type -> inventory.WatchSignalsRequest
-	10, // 33: inventory.InventoryService.StreamVideo:input_type -> inventory.VideoFrame
-	36, // 34: inventory.InventoryService.SendCommand:input_type -> inventory.Command
-	7,  // 35: inventory.InventoryService.EndSession:input_type -> inventory.EndSessionRequest
-	9,  // 36: inventory.InventoryService.ProviderStream:input_type -> inventory.ProviderMessage
-	18, // 37: inventory.InventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
-	21, // 38: inventory.InventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
-	6,  // 39: inventory.InventoryService.CreateSession:output_type -> inventory.SessionResponse
-	24, // 40: inventory.InventoryService.ListSessions:output_type -> inventory.ListSessionsResponse
-	27, // 41: inventory.InventoryService.RequestConnection:output_type -> inventory.ConnectionResponse
-	29, // 42: inventory.InventoryService.WatchConnectionRequests:output_type -> inventory.ConnectionRequestNotification
-	31, // 43: inventory.InventoryService.ApproveConnection:output_type -> inventory.ApproveResponse
-	33, // 44: inventory.InventoryService.DenyConnection:output_type -> inventory.DenyResponse
-	35, // 45: inventory.InventoryService.WatchApprovalStatus:output_type -> inventory.ApprovalStatusUpdate
-	39, // 46: inventory.InventoryService.SendWebRTCSignal:output_type -> inventory.SignalResponse
-	38, // 47: inventory.InventoryService.WatchWebRTCSignals:output_type -> inventory.WebRTCSignal
-	10, // 48: inventory.InventoryService.StreamVideo:output_type -> inventory.VideoFrame
-	37, // 49: inventory.InventoryService.SendCommand:output_type -> inventory.CommandResponse
-	8,  // 50: inventory.InventoryService.EndSession:output_type -> inventory.EndSessionResponse
-	13, // 51: inventory.InventoryService.ProviderStream:output_type -> inventory.ProviderCommand
-	10, // 52: inventory.InventoryService.ConsumerStream:output_type -> inventory.VideoFrame
-	22, // 53: inventory.InventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
-	39, // [39:54] is the sub-list for method output_type
-	24, // [24:39] is the sub-list for method input_type
+	33, // 25: inventory.InventoryService.ListSessions:input_type -> inventory.ListSessionsRequest
+	7,  // 26: inventory.InventoryService.EndSession:input_type -> inventory.EndSessionRequest
+	38, // 27: inventory.InventoryService.SendWebRTCSignal:input_type -> inventory.WebRTCSignal
+	40, // 28: inventory.InventoryService.WatchWebRTCSignals:input_type -> inventory.WatchSignalsRequest
+	9,  // 29: inventory.InventoryService.ProviderStream:input_type -> inventory.ProviderMessage
+	18, // 30: inventory.InventoryService.ConsumerStream:input_type -> inventory.ConsumerCommand
+	21, // 31: inventory.InventoryService.Heartbeat:input_type -> inventory.HeartbeatRequest
+	23, // 32: inventory.InventoryService.RequestConnection:input_type -> inventory.RequestConnectionRequest
+	25, // 33: inventory.InventoryService.ApproveConnection:input_type -> inventory.ApproveConnectionRequest
+	27, // 34: inventory.InventoryService.DenyConnection:input_type -> inventory.DenyConnectionRequest
+	29, // 35: inventory.InventoryService.WatchConnectionRequests:input_type -> inventory.WatchConnectionRequestsRequest
+	31, // 36: inventory.InventoryService.WatchApprovalStatus:input_type -> inventory.WatchApprovalStatusRequest
+	6,  // 37: inventory.InventoryService.CreateSession:output_type -> inventory.SessionResponse
+	34, // 38: inventory.InventoryService.ListSessions:output_type -> inventory.ListSessionsResponse
+	8,  // 39: inventory.InventoryService.EndSession:output_type -> inventory.EndSessionResponse
+	39, // 40: inventory.InventoryService.SendWebRTCSignal:output_type -> inventory.SignalResponse
+	38, // 41: inventory.InventoryService.WatchWebRTCSignals:output_type -> inventory.WebRTCSignal
+	13, // 42: inventory.InventoryService.ProviderStream:output_type -> inventory.ProviderCommand
+	10, // 43: inventory.InventoryService.ConsumerStream:output_type -> inventory.VideoFrame
+	22, // 44: inventory.InventoryService.Heartbeat:output_type -> inventory.HeartbeatResponse
+	24, // 45: inventory.InventoryService.RequestConnection:output_type -> inventory.RequestConnectionResponse
+	26, // 46: inventory.InventoryService.ApproveConnection:output_type -> inventory.ApproveConnectionResponse
+	28, // 47: inventory.InventoryService.DenyConnection:output_type -> inventory.DenyConnectionResponse
+	30, // 48: inventory.InventoryService.WatchConnectionRequests:output_type -> inventory.ConnectionRequestNotification
+	32, // 49: inventory.InventoryService.WatchApprovalStatus:output_type -> inventory.ApprovalStatusUpdate
+	37, // [37:50] is the sub-list for method output_type
+	24, // [24:37] is the sub-list for method input_type
 	24, // [24:24] is the sub-list for extension type_name
 	24, // [24:24] is the sub-list for extension extendee
 	0,  // [0:24] is the sub-list for field type_name
