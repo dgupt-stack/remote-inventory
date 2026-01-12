@@ -19,13 +19,18 @@ const CreateSessionRequest$json = {
   '2': [
     {'1': 'provider_id', '3': 1, '4': 1, '5': 9, '10': 'providerId'},
     {'1': 'provider_name', '3': 2, '4': 1, '5': 9, '10': 'providerName'},
+    {'1': 'location', '3': 3, '4': 1, '5': 9, '10': 'location'},
+    {'1': 'latitude', '3': 4, '4': 1, '5': 1, '10': 'latitude'},
+    {'1': 'longitude', '3': 5, '4': 1, '5': 1, '10': 'longitude'},
   ],
 };
 
 /// Descriptor for `CreateSessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createSessionRequestDescriptor = $convert.base64Decode(
     'ChRDcmVhdGVTZXNzaW9uUmVxdWVzdBIfCgtwcm92aWRlcl9pZBgBIAEoCVIKcHJvdmlkZXJJZB'
-    'IjCg1wcm92aWRlcl9uYW1lGAIgASgJUgxwcm92aWRlck5hbWU=');
+    'IjCg1wcm92aWRlcl9uYW1lGAIgASgJUgxwcm92aWRlck5hbWUSGgoIbG9jYXRpb24YAyABKAlS'
+    'CGxvY2F0aW9uEhoKCGxhdGl0dWRlGAQgASgBUghsYXRpdHVkZRIcCglsb25naXR1ZGUYBSABKA'
+    'FSCWxvbmdpdHVkZQ==');
 
 @$core.Deprecated('Use joinSessionRequestDescriptor instead')
 const JoinSessionRequest$json = {
@@ -351,4 +356,311 @@ const HeartbeatResponse$json = {
 final $typed_data.Uint8List heartbeatResponseDescriptor = $convert.base64Decode(
     'ChFIZWFydGJlYXRSZXNwb25zZRIWCgZhY3RpdmUYASABKAhSBmFjdGl2ZRIuChNzZXNzaW9uX2'
     'R1cmF0aW9uX21zGAIgASgDUhFzZXNzaW9uRHVyYXRpb25Ncw==');
+
+@$core.Deprecated('Use listSessionsRequestDescriptor instead')
+const ListSessionsRequest$json = {
+  '1': 'ListSessionsRequest',
+  '2': [
+    {'1': 'search_query', '3': 1, '4': 1, '5': 9, '10': 'searchQuery'},
+  ],
+};
+
+/// Descriptor for `ListSessionsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listSessionsRequestDescriptor = $convert.base64Decode(
+    'ChNMaXN0U2Vzc2lvbnNSZXF1ZXN0EiEKDHNlYXJjaF9xdWVyeRgBIAEoCVILc2VhcmNoUXVlcn'
+    'k=');
+
+@$core.Deprecated('Use listSessionsResponseDescriptor instead')
+const ListSessionsResponse$json = {
+  '1': 'ListSessionsResponse',
+  '2': [
+    {'1': 'sessions', '3': 1, '4': 3, '5': 11, '6': '.inventory.SessionInfo', '10': 'sessions'},
+  ],
+};
+
+/// Descriptor for `ListSessionsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List listSessionsResponseDescriptor = $convert.base64Decode(
+    'ChRMaXN0U2Vzc2lvbnNSZXNwb25zZRIyCghzZXNzaW9ucxgBIAMoCzIWLmludmVudG9yeS5TZX'
+    'NzaW9uSW5mb1IIc2Vzc2lvbnM=');
+
+@$core.Deprecated('Use sessionInfoDescriptor instead')
+const SessionInfo$json = {
+  '1': 'SessionInfo',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'provider_name', '3': 2, '4': 1, '5': 9, '10': 'providerName'},
+    {'1': 'location', '3': 3, '4': 1, '5': 9, '10': 'location'},
+    {'1': 'formatted_address', '3': 4, '4': 1, '5': 9, '10': 'formattedAddress'},
+    {'1': 'latitude', '3': 5, '4': 1, '5': 1, '10': 'latitude'},
+    {'1': 'longitude', '3': 6, '4': 1, '5': 1, '10': 'longitude'},
+    {'1': 'in_active_call', '3': 7, '4': 1, '5': 8, '10': 'inActiveCall'},
+    {'1': 'created_at', '3': 8, '4': 1, '5': 3, '10': 'createdAt'},
+    {'1': 'accepting_connections', '3': 9, '4': 1, '5': 8, '10': 'acceptingConnections'},
+  ],
+};
+
+/// Descriptor for `SessionInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sessionInfoDescriptor = $convert.base64Decode(
+    'CgtTZXNzaW9uSW5mbxIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSIwoNcHJvdmlkZX'
+    'JfbmFtZRgCIAEoCVIMcHJvdmlkZXJOYW1lEhoKCGxvY2F0aW9uGAMgASgJUghsb2NhdGlvbhIr'
+    'ChFmb3JtYXR0ZWRfYWRkcmVzcxgEIAEoCVIQZm9ybWF0dGVkQWRkcmVzcxIaCghsYXRpdHVkZR'
+    'gFIAEoAVIIbGF0aXR1ZGUSHAoJbG9uZ2l0dWRlGAYgASgBUglsb25naXR1ZGUSJAoOaW5fYWN0'
+    'aXZlX2NhbGwYByABKAhSDGluQWN0aXZlQ2FsbBIdCgpjcmVhdGVkX2F0GAggASgDUgljcmVhdG'
+    'VkQXQSMwoVYWNjZXB0aW5nX2Nvbm5lY3Rpb25zGAkgASgIUhRhY2NlcHRpbmdDb25uZWN0aW9u'
+    'cw==');
+
+@$core.Deprecated('Use connectionRequestDescriptor instead')
+const ConnectionRequest$json = {
+  '1': 'ConnectionRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
+    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
+  ],
+};
+
+/// Descriptor for `ConnectionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectionRequestDescriptor = $convert.base64Decode(
+    'ChFDb25uZWN0aW9uUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQSHwoLY2'
+    '9uc3VtZXJfaWQYAiABKAlSCmNvbnN1bWVySWQSIwoNY29uc3VtZXJfbmFtZRgDIAEoCVIMY29u'
+    'c3VtZXJOYW1l');
+
+@$core.Deprecated('Use connectionResponseDescriptor instead')
+const ConnectionResponse$json = {
+  '1': 'ConnectionResponse',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'success', '3': 2, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 3, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `ConnectionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectionResponseDescriptor = $convert.base64Decode(
+    'ChJDb25uZWN0aW9uUmVzcG9uc2USHQoKcmVxdWVzdF9pZBgBIAEoCVIJcmVxdWVzdElkEhgKB3'
+    'N1Y2Nlc3MYAiABKAhSB3N1Y2Nlc3MSGAoHbWVzc2FnZRgDIAEoCVIHbWVzc2FnZQ==');
+
+@$core.Deprecated('Use watchRequestsRequestDescriptor instead')
+const WatchRequestsRequest$json = {
+  '1': 'WatchRequestsRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+  ],
+};
+
+/// Descriptor for `WatchRequestsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchRequestsRequestDescriptor = $convert.base64Decode(
+    'ChRXYXRjaFJlcXVlc3RzUmVxdWVzdBIdCgpzZXNzaW9uX2lkGAEgASgJUglzZXNzaW9uSWQ=');
+
+@$core.Deprecated('Use connectionRequestNotificationDescriptor instead')
+const ConnectionRequestNotification$json = {
+  '1': 'ConnectionRequestNotification',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'consumer_id', '3': 2, '4': 1, '5': 9, '10': 'consumerId'},
+    {'1': 'consumer_name', '3': 3, '4': 1, '5': 9, '10': 'consumerName'},
+    {'1': 'requested_at', '3': 4, '4': 1, '5': 3, '10': 'requestedAt'},
+  ],
+};
+
+/// Descriptor for `ConnectionRequestNotification`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List connectionRequestNotificationDescriptor = $convert.base64Decode(
+    'Ch1Db25uZWN0aW9uUmVxdWVzdE5vdGlmaWNhdGlvbhIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZX'
+    'F1ZXN0SWQSHwoLY29uc3VtZXJfaWQYAiABKAlSCmNvbnN1bWVySWQSIwoNY29uc3VtZXJfbmFt'
+    'ZRgDIAEoCVIMY29uc3VtZXJOYW1lEiEKDHJlcXVlc3RlZF9hdBgEIAEoA1ILcmVxdWVzdGVkQX'
+    'Q=');
+
+@$core.Deprecated('Use approveRequestDescriptor instead')
+const ApproveRequest$json = {
+  '1': 'ApproveRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `ApproveRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approveRequestDescriptor = $convert.base64Decode(
+    'Cg5BcHByb3ZlUmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQ=');
+
+@$core.Deprecated('Use approveResponseDescriptor instead')
+const ApproveResponse$json = {
+  '1': 'ApproveResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'session_id', '3': 2, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'token', '3': 3, '4': 1, '5': 9, '10': 'token'},
+  ],
+};
+
+/// Descriptor for `ApproveResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approveResponseDescriptor = $convert.base64Decode(
+    'Cg9BcHByb3ZlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIdCgpzZXNzaW9uX2'
+    'lkGAIgASgJUglzZXNzaW9uSWQSFAoFdG9rZW4YAyABKAlSBXRva2Vu');
+
+@$core.Deprecated('Use denyRequestDescriptor instead')
+const DenyRequest$json = {
+  '1': 'DenyRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+    {'1': 'reason', '3': 2, '4': 1, '5': 9, '10': 'reason'},
+  ],
+};
+
+/// Descriptor for `DenyRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List denyRequestDescriptor = $convert.base64Decode(
+    'CgtEZW55UmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQSFgoGcmVhc29uGA'
+    'IgASgJUgZyZWFzb24=');
+
+@$core.Deprecated('Use denyResponseDescriptor instead')
+const DenyResponse$json = {
+  '1': 'DenyResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
+};
+
+/// Descriptor for `DenyResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List denyResponseDescriptor = $convert.base64Decode(
+    'CgxEZW55UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2Vzcw==');
+
+@$core.Deprecated('Use watchApprovalRequestDescriptor instead')
+const WatchApprovalRequest$json = {
+  '1': 'WatchApprovalRequest',
+  '2': [
+    {'1': 'request_id', '3': 1, '4': 1, '5': 9, '10': 'requestId'},
+  ],
+};
+
+/// Descriptor for `WatchApprovalRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchApprovalRequestDescriptor = $convert.base64Decode(
+    'ChRXYXRjaEFwcHJvdmFsUmVxdWVzdBIdCgpyZXF1ZXN0X2lkGAEgASgJUglyZXF1ZXN0SWQ=');
+
+@$core.Deprecated('Use approvalStatusUpdateDescriptor instead')
+const ApprovalStatusUpdate$json = {
+  '1': 'ApprovalStatusUpdate',
+  '2': [
+    {'1': 'status', '3': 1, '4': 1, '5': 14, '6': '.inventory.ApprovalStatusUpdate.Status', '10': 'status'},
+    {'1': 'session_id', '3': 2, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'token', '3': 3, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'message', '3': 4, '4': 1, '5': 9, '10': 'message'},
+  ],
+  '4': [ApprovalStatusUpdate_Status$json],
+};
+
+@$core.Deprecated('Use approvalStatusUpdateDescriptor instead')
+const ApprovalStatusUpdate_Status$json = {
+  '1': 'Status',
+  '2': [
+    {'1': 'PENDING', '2': 0},
+    {'1': 'APPROVED', '2': 1},
+    {'1': 'DENIED', '2': 2},
+  ],
+};
+
+/// Descriptor for `ApprovalStatusUpdate`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List approvalStatusUpdateDescriptor = $convert.base64Decode(
+    'ChRBcHByb3ZhbFN0YXR1c1VwZGF0ZRI+CgZzdGF0dXMYASABKA4yJi5pbnZlbnRvcnkuQXBwcm'
+    '92YWxTdGF0dXNVcGRhdGUuU3RhdHVzUgZzdGF0dXMSHQoKc2Vzc2lvbl9pZBgCIAEoCVIJc2Vz'
+    'c2lvbklkEhQKBXRva2VuGAMgASgJUgV0b2tlbhIYCgdtZXNzYWdlGAQgASgJUgdtZXNzYWdlIi'
+    '8KBlN0YXR1cxILCgdQRU5ESU5HEAASDAoIQVBQUk9WRUQQARIKCgZERU5JRUQQAg==');
+
+@$core.Deprecated('Use commandDescriptor instead')
+const Command$json = {
+  '1': 'Command',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'navigation', '3': 2, '4': 1, '5': 11, '6': '.inventory.NavigationCommand', '9': 0, '10': 'navigation'},
+    {'1': 'laser', '3': 3, '4': 1, '5': 11, '6': '.inventory.LaserCommand', '9': 0, '10': 'laser'},
+    {'1': 'stop', '3': 4, '4': 1, '5': 11, '6': '.inventory.StopCommand', '9': 0, '10': 'stop'},
+    {'1': 'zoom', '3': 5, '4': 1, '5': 11, '6': '.inventory.ZoomCommand', '9': 0, '10': 'zoom'},
+    {'1': 'voice', '3': 6, '4': 1, '5': 11, '6': '.inventory.VoiceCommand', '9': 0, '10': 'voice'},
+    {'1': 'text', '3': 7, '4': 1, '5': 11, '6': '.inventory.TextCommand', '9': 0, '10': 'text'},
+  ],
+  '8': [
+    {'1': 'command_type'},
+  ],
+};
+
+/// Descriptor for `Command`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List commandDescriptor = $convert.base64Decode(
+    'CgdDb21tYW5kEh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBI+CgpuYXZpZ2F0aW9uGA'
+    'IgASgLMhwuaW52ZW50b3J5Lk5hdmlnYXRpb25Db21tYW5kSABSCm5hdmlnYXRpb24SLwoFbGFz'
+    'ZXIYAyABKAsyFy5pbnZlbnRvcnkuTGFzZXJDb21tYW5kSABSBWxhc2VyEiwKBHN0b3AYBCABKA'
+    'syFi5pbnZlbnRvcnkuU3RvcENvbW1hbmRIAFIEc3RvcBIsCgR6b29tGAUgASgLMhYuaW52ZW50'
+    'b3J5Llpvb21Db21tYW5kSABSBHpvb20SLwoFdm9pY2UYBiABKAsyFy5pbnZlbnRvcnkuVm9pY2'
+    'VDb21tYW5kSABSBXZvaWNlEiwKBHRleHQYByABKAsyFi5pbnZlbnRvcnkuVGV4dENvbW1hbmRI'
+    'AFIEdGV4dEIOCgxjb21tYW5kX3R5cGU=');
+
+@$core.Deprecated('Use commandResponseDescriptor instead')
+const CommandResponse$json = {
+  '1': 'CommandResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `CommandResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List commandResponseDescriptor = $convert.base64Decode(
+    'Cg9Db21tYW5kUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIYCgdtZXNzYWdlGA'
+    'IgASgJUgdtZXNzYWdl');
+
+@$core.Deprecated('Use webRTCSignalDescriptor instead')
+const WebRTCSignal$json = {
+  '1': 'WebRTCSignal',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'from_device_id', '3': 2, '4': 1, '5': 9, '10': 'fromDeviceId'},
+    {'1': 'to_device_id', '3': 3, '4': 1, '5': 9, '10': 'toDeviceId'},
+    {'1': 'type', '3': 4, '4': 1, '5': 14, '6': '.inventory.WebRTCSignal.SignalType', '10': 'type'},
+    {'1': 'payload', '3': 5, '4': 1, '5': 9, '10': 'payload'},
+  ],
+  '4': [WebRTCSignal_SignalType$json],
+};
+
+@$core.Deprecated('Use webRTCSignalDescriptor instead')
+const WebRTCSignal_SignalType$json = {
+  '1': 'SignalType',
+  '2': [
+    {'1': 'OFFER', '2': 0},
+    {'1': 'ANSWER', '2': 1},
+    {'1': 'ICE_CANDIDATE', '2': 2},
+  ],
+};
+
+/// Descriptor for `WebRTCSignal`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List webRTCSignalDescriptor = $convert.base64Decode(
+    'CgxXZWJSVENTaWduYWwSHQoKc2Vzc2lvbl9pZBgBIAEoCVIJc2Vzc2lvbklkEiQKDmZyb21fZG'
+    'V2aWNlX2lkGAIgASgJUgxmcm9tRGV2aWNlSWQSIAoMdG9fZGV2aWNlX2lkGAMgASgJUgp0b0Rl'
+    'dmljZUlkEjYKBHR5cGUYBCABKA4yIi5pbnZlbnRvcnkuV2ViUlRDU2lnbmFsLlNpZ25hbFR5cG'
+    'VSBHR5cGUSGAoHcGF5bG9hZBgFIAEoCVIHcGF5bG9hZCI2CgpTaWduYWxUeXBlEgkKBU9GRkVS'
+    'EAASCgoGQU5TV0VSEAESEQoNSUNFX0NBTkRJREFURRAC');
+
+@$core.Deprecated('Use signalResponseDescriptor instead')
+const SignalResponse$json = {
+  '1': 'SignalResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
+  ],
+};
+
+/// Descriptor for `SignalResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List signalResponseDescriptor = $convert.base64Decode(
+    'Cg5TaWduYWxSZXNwb25zZRIYCgdzdWNjZXNzGAEgASgIUgdzdWNjZXNzEhgKB21lc3NhZ2UYAi'
+    'ABKAlSB21lc3NhZ2U=');
+
+@$core.Deprecated('Use watchSignalsRequestDescriptor instead')
+const WatchSignalsRequest$json = {
+  '1': 'WatchSignalsRequest',
+  '2': [
+    {'1': 'session_id', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+    {'1': 'device_id', '3': 2, '4': 1, '5': 9, '10': 'deviceId'},
+  ],
+};
+
+/// Descriptor for `WatchSignalsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List watchSignalsRequestDescriptor = $convert.base64Decode(
+    'ChNXYXRjaFNpZ25hbHNSZXF1ZXN0Eh0KCnNlc3Npb25faWQYASABKAlSCXNlc3Npb25JZBIbCg'
+    'lkZXZpY2VfaWQYAiABKAlSCGRldmljZUlk');
 

@@ -46,48 +46,34 @@ class SessionService {
     _initializeClient();
   }
 
-  // For now, return empty list until backend supports ListSessions
   Future<List<SessionInfo>> listSessions({String searchQuery = ''}) async {
     try {
-      // TODO: Backend doesn't have ListSessions endpoint yet
-      // Once backend is updated with the new proto, replace this with:
-      // final request = ListSessionsRequest()..searchQuery = searchQuery;
-      // final response = await _client.listSessions(request);
+      final request = ListSessionsRequest();
+      final response = await _client.listSessions(request);
 
-      // Return empty for now - will show "No providers available" message
-      await Future.delayed(
-          Duration(milliseconds: 500)); // Simulate network delay
-      return [];
-
-      /* OLD MOCK DATA - Removed
-      final mockSessions = [
-        SessionInfo(
-          sessionId: 'session_123',
-          providerId: 'provider_1',
-          providerName: 'Test Provider 1',
-          location: '123 Main Street, San Francisco, CA',
-          createdAt: DateTime.now().subtract(Duration(minutes: 5)),
-        ),
-        SessionInfo(
-          sessionId: 'session_456',
-          providerId: 'provider_2',
-          providerName: 'Test Provider 2',
-          location: '456 Oak Avenue, Palo Alto, CA',
-          createdAt: DateTime.now().subtract(Duration(minutes: 10)),
-        ),
-      ];
+      final sessions = response.sessions.map((s) {
+        return SessionInfo(
+          sessionId: s.sessionId,
+          providerId: s.sessionId,
+          providerName: s.providerName,
+          // Use geocoded address if available, fallback to location
+          location: s.formattedAddress.isNotEmpty
+              ? s.formattedAddress
+              : (s.location.isNotEmpty ? s.location : 'Unknown'),
+          createdAt: DateTime.fromMillisecondsSinceEpoch(s.createdAt.toInt() * 1000),
+        );
+      }).toList();
 
       // Filter by search query if provided
       if (searchQuery.isNotEmpty) {
-        return mockSessions.where((s) {
-          final query = searchQuery.toLowerCase();
-          return (s.providerName.toLowerCase().contains(query)) ||
+        final query = searchQuery.toLowerCase();
+        return sessions.where((s) {
+          return s.providerName.toLowerCase().contains(query) ||
               (s.location?.toLowerCase().contains(query) ?? false);
         }).toList();
       }
 
-      return mockSessions;
-      */
+      return sessions;
     } catch (e) {
       print('Error listing sessions: $e');
       return [];
@@ -98,25 +84,31 @@ class SessionService {
     required String providerId,
     required String providerName,
     String? location,
+    double? latitude,
+    double? longitude,
   }) async {
     try {
       final request = CreateSessionRequest()
         ..providerId = providerId
         ..providerName = providerName;
-      // Note: location not supported in current proto, will be added later
+
+      // Add location fields if available
+      if (location != null && location.isNotEmpty) {
+        request.location = location;
+      }
+      if (latitude != null && longitude != null) {
+        request.latitude = latitude;
+        request.longitude = longitude;
+      }
 
       final response = await _client.createSession(request);
-
-      // Assuming the new proto doesn't have a 'success' field for CreateSessionResponse
-      // and that a successful response implies creation.
 
       return SessionInfo(
         sessionId: response.sessionId,
         providerId: providerId,
         providerName: providerName,
-        location: location, // Store locally, not sent to backend yet
-        createdAt: DateTime
-            .now(), // Assuming createdAt is not returned by the proto yet
+        location: location,
+        createdAt: DateTime.now(),
       );
     } catch (e) {
       print('Error creating session: $e');

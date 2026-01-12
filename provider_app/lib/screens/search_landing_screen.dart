@@ -5,6 +5,7 @@ import '../services/location_service.dart';
 import '../shared/theme/jarvis_theme.dart';
 import '../config/app_config.dart';
 import 'camera_screen.dart';
+import 'provider_waiting_screen.dart';
 import 'package:camera/camera.dart';
 
 class SearchLandingScreen extends StatefulWidget {
@@ -71,10 +72,9 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
         _isLoading = true;
       });
 
-      // Get location
-      final address = await _locationService.getCurrentAddress();
-
-      if (address == null) {
+      // Get GPS position
+      final position = await _locationService.getCurrentPosition();
+      if (position == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Column(
@@ -87,21 +87,13 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Please enable GPS and grant location permission in Settings → App Permissions',
+                  'Please enable GPS and grant location permission',
                   style: TextStyle(fontSize: 12),
                 ),
               ],
             ),
             backgroundColor: JarvisTheme.warningRed,
             duration: Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'Settings',
-              textColor: Colors.white,
-              onPressed: () {
-                // In a real app, would open app settings
-                // For now, just show a message
-              },
-            ),
           ),
         );
         setState(() {
@@ -110,12 +102,17 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
         return;
       }
 
-      // Create session
+      // Get address for display
+      final address = await _locationService.getCurrentAddress();
+
+      // Create session with GPS coordinates
       try {
         final session = await _sessionService.createSession(
           providerId: 'provider_${DateTime.now().millisecondsSinceEpoch}',
-          providerName: 'Test Provider',
-          location: address,
+          providerName: 'JARVIS Provider',
+          location: address ?? 'Unknown location',
+          latitude: position.latitude,
+          longitude: position.longitude,
         );
 
         setState(() {
@@ -127,17 +124,18 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
 
         HapticFeedback.mediumImpact();
 
-        // Navigate to camera screen
+        // Navigate to WAITING screen (not camera!)
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CameraScreen(
-              camera: widget.cameras.first,
-              providerName: 'Test Provider',
+            builder: (context) => ProviderWaitingScreen(
+              sessionId: session.sessionId,
+              providerName: 'JARVIS Provider',
+              location: address ?? 'Unknown location',
             ),
           ),
         ).then((_) {
-          // When returning from camera, disable provider mode
+          // When returning from waiting, disable provider mode
           setState(() {
             _isProviderMode = false;
             _providerAddress = null;
