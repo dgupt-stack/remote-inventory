@@ -1,167 +1,139 @@
-# Firebase App Distribution Setup
+# Firebase App Distribution - Complete Setup Guide
+
+## Current Status
+✅ Firebase CLI installed and authenticated as dgupt@360world.com  
+⏳ Need to create Android app in Firebase  
+⏳ Then upload APK via CLI  
+
+---
+
+## Step-by-Step Setup (5 minutes)
+
+### Step 1: Create Android App in Firebase Console
+
+1. **Open this link** (will auto-select correct project):
+   ```
+   https://console.firebase.google.com/project/remote-vision-6f76a/settings/general
+   ```
+
+2. **Add Android App**:
+   - Scroll to "Your apps" section
+   - Click "Add app" → Select Android icon (🤖)
+   
+3. **Register App**:
+   - Package name: `com.example.provider_app`
+   - App nickname (optional): `JARVIS Remote Inventory`
+   - Click "Register app"
+
+4. **Download google-services.json**:
+   - Download the file
+   - Place it here:
+     ```bash
+     cp ~/Downloads/google-services.json provider_app/android/app/
+     ```
+
+5. **Copy App ID**:
+   - From the Firebase Console, copy the "App ID"
+   - It looks like: `1:344355586136:android:xxxxxxxxxxxxx`
+   - Or extract from google-services.json:
+     ```bash
+     grep mobilesdk_app_id provider_app/android/app/google-services.json
+     ```
+
+### Step 2: Deploy to Firebase App Distribution
+
+Once you have the App ID:
+
+```bash
+# Set the App ID
+export FIREBASE_APP_ID='1:344355586136:android:xxxxxxxxxxxxx'
+
+# Run deployment
+./deploy-firebase.sh
+```
+
+Done! Testers will get an email from Firebase with a download link.
+
+---
+
+## Alternative: Manual Upload (If CLI fails)
+
+1. **Build APK** (if not already built):
+   ```bash
+   cd provider_app
+   flutter build apk --release
+   cd ..
+   ```
+
+2. **Go to App Distribution Console**:
+   ```
+   https://console.firebase.google.com/project/remote-vision-6f76a/appdistribution
+   ```
+
+3. **Upload APK**:
+   - Click "Get started" (if first time)
+   - Click "New release"
+   - Upload: `provider_app/build/app/outputs/flutter-apk/app-release.apk`
+   - Add testers: `dgupt@360world.com, provider@360world.com`
+   - Release notes: "Unified Provider + Consumer App"
+   - Click "Distribute"
+
+---
+
+## After Setup: Future Deployments
+
+Once set up, future deployments are one command:
+
+```bash
+./deploy-firebase.sh
+```
+
+This will:
+1. Build the APK
+2. Upload to Firebase
+3. Notify all testers automatically
+
+---
 
 ## Why Firebase App Distribution?
 
-✅ **Purpose-built** for mobile app testing  
-✅ **Won't get blocked** - Google's official distribution service  
-✅ **Automatic notifications** - Testers get emails automatically  
-✅ **Easy installation** - One-click install from email  
-✅ **Version tracking** - See all builds in Firebase Console  
-✅ **Tester management** - Add/remove testers easily  
+✅ **Testers get automatic emails** from Firebase  
+✅ **One-click installation** via Firebase App Distribution app  
+✅ **Version tracking** - see all builds in console  
+✅ **Never gets blocked** - it's Google's official service  
+✅ **Tester management** - add/remove easily  
+✅ **Release notes** - include what's new  
 
 ---
 
-## Quick Setup (5 minutes)
-
-### 1. Install Firebase CLI
+## Quick Commands Reference
 
 ```bash
-npm install -g firebase-tools
-```
+# Check if logged in
+firebase projects:list
 
-### 2. Login to Firebase
+# List apps
+firebase apps:list --project remote-vision-6f76a
 
-```bash
-firebase login
-```
-
-### 3. Get Firebase App ID
-
-**Option A: From Firebase Console**
-1. Go to [Firebase Console](https://console.firebase.google.com)
-2. Select your project (events-360world)
-3. Click ⚙️ Settings → Project settings
-4. Under "Your apps" → Android app
-5. Copy the App ID (format: `1:xxxx:android:xxxx`)
-
-**Option B: From google-services.json**
-```bash
-# If you have google-services.json in provider_app/android/app/
-grep mobilesdk_app_id provider_app/android/app/google-services.json
-```
-
-### 4. Set App ID
-
-```bash
-export FIREBASE_APP_ID='1:xxxxx:android:xxxxx'
-
-# Or add to ~/.zshrc for persistence
-echo 'export FIREBASE_APP_ID="your-app-id"' >> ~/.zshrc
-```
-
-### 5. Deploy
-
-```bash
+# Deploy (after setup)
 ./deploy-firebase.sh
+
+# Or manually
+firebase appdistribution:distribute \
+  provider_app/build/app/outputs/flutter-apk/app-release.apk \
+  --app $FIREBASE_APP_ID \
+  --testers "dgupt@360world.com,provider@360world.com" \
+  --release-notes "New build"
 ```
 
-Done! Testers will get email from Firebase with download link.
-
 ---
 
-## How It Works
+## Current Workaround
 
-1. **Script builds** APK
-2. **Uploads to Firebase** App Distribution
-3. **Firebase sends** email to testers automatically
-4. **Testers download** via:
-   - Direct link in email
-   - Firebase App Distribution app (recommended)
-   - Web browser
-
----
-
-## Adding/Removing Testers
-
-### Via Script
-Edit `deploy-firebase.sh`:
-```bash
-TESTER_EMAILS="dgupt@360world.com,provider@360world.com,new@email.com"
-```
-
-### Via Firebase Console
-1. Go to [App Distribution](https://console.firebase.google.com/project/_/appdistribution)
-2. Click "Testers & Groups"
-3. Add email addresses
-4. Create groups (e.g., "testers", "beta", "internal")
-
----
-
-## Testers: How to Install
-
-### First Time Setup
-
-1. **Receive email** from Firebase App Distribution
-2. **Click link** in email
-3. **Install Firebase App Distribution app** (if prompted)
-4. **Download and install** the APK
-
-### Future Updates
-
-1. **Get notification** in Firebase app when new build available
-2. **One-click update** to latest version
-
----
-
-## View All Builds
+Until Firebase App Distribution is set up, use the simple GCS script:
 
 ```bash
-# Open Firebase Console
-open https://console.firebase.google.com/project/_/appdistribution
+./deploy-simple.sh
 ```
 
-Or via CLI:
-```bash
-firebase appdistribution:releases:list --app ${FIREBASE_APP_ID}
-```
-
----
-
-## Troubleshooting
-
-### "App ID not found"
-
-Check your Firebase App ID:
-```bash
-echo $FIREBASE_APP_ID
-```
-
-Get it from Console or google-services.json.
-
-### "Permission denied"
-
-```bash
-# Re-login
-firebase login --reauth
-```
-
-### "Testers not receiving emails"
-
-1. Check spam folder
-2. Verify email addresses in Firebase Console
-3. Ensure testers are in "testers" group
-
----
-
-## Comparison to Previous Method
-
-| Feature | GCS + Email | Firebase App Distribution |
-|---------|-------------|---------------------------|
-| Email delivery | ⚠️ Often blocked | ✅ Reliable |
-| Installation | Manual APK install | ✅ One-click |
-| Version tracking | Manual | ✅ Automatic |
-| Tester management | Manual | ✅ Built-in |
-| Notifications | Manual | ✅ Automatic |
-| Download blocks | ⚠️ Possible | ✅ Never blocked |
-
----
-
-## Going Forward
-
-Use this as your standard deployment:
-
-```bash
-./deploy-firebase.sh
-```
-
-Testers get automatic emails and one-click updates. No more blocked downloads!
+This uploads to GCS and copies the download link to your clipboard for easy sharing.
