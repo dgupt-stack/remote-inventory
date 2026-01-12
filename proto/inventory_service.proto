@@ -87,6 +87,40 @@ service InventoryService {
       body: "*"
     };
   }
+
+  // Connection Request Flow
+  rpc RequestConnection(RequestConnectionRequest) returns (RequestConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/connect"
+      body: "*"
+    };
+  }
+
+  rpc ApproveConnection(ApproveConnectionRequest) returns (ApproveConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/approve"
+      body: "*"
+    };
+  }
+
+  rpc DenyConnection(DenyConnectionRequest) returns (DenyConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/requests/{request_id}/deny"
+      body: "*"
+    };
+  }
+
+  rpc WatchConnectionRequests(WatchConnectionRequestsRequest) returns (stream ConnectionRequestNotification) {
+    option (google.api.http) = {
+      get: "/v1/sessions/{session_id}/requests/watch"
+    };
+  }
+
+  rpc WatchApprovalStatus(WatchApprovalStatusRequest) returns (stream ApprovalStatusUpdate) {
+    option (google.api.http) = {
+      get: "/v1/requests/{request_id}/status"
+    };
+  }
 }
 
 // Session messages
@@ -231,6 +265,64 @@ message HeartbeatRequest {
 message HeartbeatResponse {
   bool active = 1;
   int64 session_duration_ms = 2;
+}
+
+// Connection Request Messages
+
+message RequestConnectionRequest {
+  string session_id = 1;
+  string consumer_id = 2;
+  string consumer_name = 3;
+}
+
+message RequestConnectionResponse {
+  string request_id = 1;
+}
+
+message ApproveConnectionRequest {
+  string request_id = 1;
+}
+
+message ApproveConnectionResponse {
+  string session_id = 1;
+  string token = 2; // WebRTC signaling token
+}
+
+message DenyConnectionRequest {
+  string request_id = 1;
+  string reason = 2;
+}
+
+message DenyConnectionResponse {
+  bool success = 1;
+}
+
+message WatchConnectionRequestsRequest {
+  string session_id = 1;
+}
+
+message ConnectionRequestNotification {
+  string request_id = 1;
+  string consumer_id = 2;
+  string consumer_name = 3;
+  int64 timestamp = 4;
+}
+
+message WatchApprovalStatusRequest {
+  string request_id = 1;
+}
+
+enum ApprovalStatus {
+  PENDING = 0;
+  APPROVED = 1;
+  DENIED = 2;
+}
+
+message ApprovalStatusUpdate {
+  ApprovalStatus status = 1;
+  string session_id = 2;
+  string token = 3;
+  string message = 4;
 }
 
 // Session Discovery Messages
