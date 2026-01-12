@@ -73,17 +73,18 @@ remote-inventory/
 │   ├── privacy/          # ML privacy processing
 │   ├── proto/            # Generated protobuf code
 │   └── Dockerfile        # Cloud Run deployment
-├── provider_app/         # Flutter Provider app
+├── provider_app/         # Flutter App (Merged Provider + Consumer)
 │   └── lib/
-│       ├── screens/      # Camera screen
-│       ├── widgets/      # Guidance overlay
-│       └── main.dart
-├── consumer_app/         # Flutter Consumer app
-│   └── lib/
-│       ├── screens/      # Controller screen
-│       ├── widgets/      # Touch controller
-│       ├── services/     # Voice service
-│       └── main.dart
+│       ├── screens/      # All screens (provider & consumer modes)
+│       │   ├── camera_screen.dart
+│       │   ├── consumer_mode_screen.dart
+│       │   ├── provider_mode_screen.dart  
+│       │   ├── controller_screen.dart
+│       │   ├── search_landing_screen.dart
+│       │   └── auth/     # Authentication screens
+│       ├── widgets/      # Guidance overlay, touch controller
+│       ├── services/     # GRPC, WebRTC, auth services
+│       └── main.dart     # Entry point
 ├── proto/                # Protobuf definitions
 │   └── inventory_service.proto
 └── shared/               # Shared theme
@@ -98,11 +99,21 @@ remote-inventory/
 - **Flutter**: 3.1.0 or higher
 - **Go**: 1.21 or higher
 - **Docker**: For backend deployment
+
+### Backend Setup
+
+```bash
+cd backend
+make run
+```
+
+### App Setup (Unified Provider + Consumer)
+
+```bash
+cd provider_app
+
 # Install dependencies
 flutter pub get
-
-# Copy shared theme
-cp -r ../shared lib/
 
 # Run on device
 flutter run
@@ -179,7 +190,6 @@ go test ./...
 **Flutter Tests**:
 ```bash
 cd provider_app && flutter test
-cd consumer_app && flutter test
 ```
 
 **Privacy Layer Test**:
@@ -199,9 +209,8 @@ go test -v ./privacy -run TestPrivacyGuarantee
 
 ## 🔧 Configuration
 
-Update backend endpoint in both apps:
-- Provider: `lib/services/grpc_client.dart`
-- Consumer: `lib/screens/controller_screen.dart`
+Update backend endpoint in the app:
+- File: `provider_app/lib/services/grpc_client.dart`
 
 Default: `localhost:8080` (development)
 
