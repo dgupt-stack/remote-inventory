@@ -7,6 +7,7 @@
 package remote_inventory
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -2646,7 +2647,7 @@ var File_inventory_service_proto protoreflect.FileDescriptor
 
 const file_inventory_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17inventory_service.proto\x12\tinventory\"x\n" +
+	"\x17inventory_service.proto\x12\tinventory\x1a\x1cgoogle/api/annotations.proto\"x\n" +
 	"\x14CreateSessionRequest\x12\x1f\n" +
 	"\vprovider_id\x18\x01 \x01(\tR\n" +
 	"providerId\x12#\n" +
@@ -2860,24 +2861,24 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x13WatchSignalsRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1b\n" +
-	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xae\t\n" +
-	"\x10InventoryService\x12N\n" +
-	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x00\x12Q\n" +
-	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x00\x12R\n" +
-	"\x11RequestConnection\x12\x1c.inventory.ConnectionRequest\x1a\x1d.inventory.ConnectionResponse\"\x00\x12h\n" +
-	"\x17WatchConnectionRequests\x12\x1f.inventory.WatchRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"\x000\x01\x12L\n" +
-	"\x11ApproveConnection\x12\x19.inventory.ApproveRequest\x1a\x1a.inventory.ApproveResponse\"\x00\x12C\n" +
-	"\x0eDenyConnection\x12\x16.inventory.DenyRequest\x1a\x17.inventory.DenyResponse\"\x00\x12[\n" +
-	"\x13WatchApprovalStatus\x12\x1f.inventory.WatchApprovalRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"\x000\x01\x12F\n" +
-	"\x10SendWebRTCSignal\x12\x17.inventory.WebRTCSignal\x1a\x19.inventory.SignalResponse\x12O\n" +
+	"\tdevice_id\x18\x02 \x01(\tR\bdeviceId2\xd6\v\n" +
+	"\x10InventoryService\x12e\n" +
+	"\rCreateSession\x12\x1f.inventory.CreateSessionRequest\x1a\x1a.inventory.SessionResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/sessions\x12e\n" +
+	"\fListSessions\x12\x1e.inventory.ListSessionsRequest\x1a\x1f.inventory.ListSessionsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/sessions\x12~\n" +
+	"\x11RequestConnection\x12\x1c.inventory.ConnectionRequest\x1a\x1d.inventory.ConnectionResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/sessions/{session_id}/request\x12h\n" +
+	"\x17WatchConnectionRequests\x12\x1f.inventory.WatchRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"\x000\x01\x12~\n" +
+	"\x11ApproveConnection\x12\x19.inventory.ApproveRequest\x1a\x1a.inventory.ApproveResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/sessions/requests/{request_id}/approve\x12u\n" +
+	"\x0eDenyConnection\x12\x16.inventory.DenyRequest\x1a\x17.inventory.DenyResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\"'/v1/sessions/requests/{request_id}/deny\x12[\n" +
+	"\x13WatchApprovalStatus\x12\x1f.inventory.WatchApprovalRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"\x000\x01\x12d\n" +
+	"\x10SendWebRTCSignal\x12\x17.inventory.WebRTCSignal\x1a\x19.inventory.SignalResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/webrtc/signal\x12O\n" +
 	"\x12WatchWebRTCSignals\x12\x1e.inventory.WatchSignalsRequest\x1a\x17.inventory.WebRTCSignal0\x01\x12A\n" +
 	"\vStreamVideo\x12\x15.inventory.VideoFrame\x1a\x15.inventory.VideoFrame\"\x00(\x010\x01\x12?\n" +
-	"\vSendCommand\x12\x12.inventory.Command\x1a\x1a.inventory.CommandResponse\"\x00\x12K\n" +
+	"\vSendCommand\x12\x12.inventory.Command\x1a\x1a.inventory.CommandResponse\"\x00\x12l\n" +
 	"\n" +
-	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"\x00\x12L\n" +
+	"EndSession\x12\x1c.inventory.EndSessionRequest\x1a\x1d.inventory.EndSessionResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/v1/sessions/{session_id}\x12L\n" +
 	"\x0eProviderStream\x12\x1a.inventory.ProviderMessage\x1a\x1a.inventory.ProviderCommand(\x010\x01\x12G\n" +
-	"\x0eConsumerStream\x12\x1a.inventory.ConsumerCommand\x1a\x15.inventory.VideoFrame(\x010\x01\x12H\n" +
-	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\"\x00B$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
+	"\x0eConsumerStream\x12\x1a.inventory.ConsumerCommand\x1a\x15.inventory.VideoFrame(\x010\x01\x12v\n" +
+	"\tHeartbeat\x12\x1b.inventory.HeartbeatRequest\x1a\x1c.inventory.HeartbeatResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/sessions/{session_id}/heartbeatB$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
 
 var (
 	file_inventory_service_proto_rawDescOnce sync.Once

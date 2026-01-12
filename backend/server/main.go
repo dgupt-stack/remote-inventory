@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
@@ -14,10 +15,15 @@ import (
 )
 
 func main() {
-	// Get port from environment or use default
+	// Get ports from environment or use defaults
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
 		grpcPort = "8080"
+	}
+
+	httpPort := os.Getenv("HTTP_PORT")
+	if httpPort == "" {
+		httpPort = "8081"
 	}
 
 	// Create listener for gRPC
@@ -40,6 +46,20 @@ func main() {
 	// Enable reflection for debugging
 	reflection.Register(grpcServer)
 
+	// Start gRPC-Gateway for REST API
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	grpcAddr := "localhost:" + grpcPort
+	httpAddr := ":" + httpPort
+
+	go func() {
+		log.Printf("HTTP/REST gateway starting on port %s", httpPort)
+		if err := StartGateway(ctx, grpcAddr, httpAddr); err != nil {
+			log.Printf("Gateway error: %v", err)
+		}
+	}()
+
 	// Handle graceful shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
@@ -47,6 +67,7 @@ func main() {
 	go func() {
 		<-sigChan
 		log.Println("Shutting down gracefully...")
+		cancel()
 		grpcServer.GracefulStop()
 		os.Exit(0)
 	}()

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package inventory;
 
+import "google/api/annotations.proto";
+
 option go_package = "github.com/djgupt/remote-inventory";
 
 
@@ -9,14 +11,25 @@ option go_package = "github.com/djgupt/remote-inventory";
 service InventoryService {
   // Create a new session for a provider
   rpc CreateSession(CreateSessionRequest) returns (SessionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions"
+      body: "*"
+    };
   }
 
   // List all active sessions (for consumers to discover providers)
   rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/sessions"
+    };
   }
 
   // Consumer requests to connect to a provider session
   rpc RequestConnection(ConnectionRequest) returns (ConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/request"
+      body: "*"
+    };
   }
 
   // Provider watches for incoming connection requests
@@ -24,17 +37,29 @@ service InventoryService {
 
   // Provider approves a connection request
   rpc ApproveConnection(ApproveRequest) returns (ApproveResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/requests/{request_id}/approve"
+    };
   }
 
   // Provider denies a connection request
   rpc DenyConnection(DenyRequest) returns (DenyResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/requests/{request_id}/deny"
+      body: "*"
+    };
   }
 
   // Consumer watches for approval status
   rpc WatchApprovalStatus(WatchApprovalRequest) returns (stream ApprovalStatusUpdate) {}
   
   // WebRTC Signaling (NEW)
-  rpc SendWebRTCSignal(WebRTCSignal) returns (SignalResponse);
+  rpc SendWebRTCSignal(WebRTCSignal) returns (SignalResponse) {
+    option (google.api.http) = {
+      post: "/v1/webrtc/signal"
+      body: "*"
+    };
+  }
   rpc WatchWebRTCSignals(WatchSignalsRequest) returns (stream WebRTCSignal);
 
   // Streaming video (existing)
@@ -45,6 +70,9 @@ service InventoryService {
   }
 
   rpc EndSession(EndSessionRequest) returns (EndSessionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/sessions/{session_id}"
+    };
   }
   // Bidirectional streaming for Provider video upload and command reception
   rpc ProviderStream(stream ProviderMessage) returns (stream ProviderCommand);
@@ -54,6 +82,10 @@ service InventoryService {
   
   // Heartbeat to keep sessions alive
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse) {
+    option (google.api.http) = {
+      post: "/v1/sessions/{session_id}/heartbeat"
+      body: "*"
+    };
   }
 }
 
