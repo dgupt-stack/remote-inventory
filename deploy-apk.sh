@@ -92,9 +92,53 @@ echo -e "${GREEN}✓ Metadata uploaded${NC}"
 echo ""
 echo -e "${YELLOW}Step 4/4: Sending email notifications...${NC}"
 
-# Create HTML email content
-EMAIL_SUBJECT="${APP_NAME} - New Build Available (${VERSION})"
-EMAIL_BODY=$(cat <<EOF
+# Call Python email sender
+python3 send-email.py "${DOWNLOAD_URL}" "${VERSION}" "${APK_SIZE}"
+EMAIL_STATUS=$?
+
+if [ $EMAIL_STATUS -eq 0 ]; then
+    echo -e "${GREEN}✓ Email sent to recipients${NC}"
+else
+    echo -e "${YELLOW}⚠ Automated email failed. Saving to file...${NC}"
+    # Save email template for manual sending
+    cat > email-notification.html <<EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%); color: #00D9FF; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f4f4f4; padding: 30px; border-radius: 0 0 10px 10px; }
+        .button { display: inline-block; background: #00D9FF; color: #0A0E27; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }
+        .details { background: white; padding: 15px; border-left: 4px solid #00D9FF; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⭐ J.A.R.V.I.S ⭐</h1>
+            <h2>Remote Inventory - New Build Available</h2>
+        </div>
+        <div class="content">
+            <p>A new build is ready for testing.</p>
+            <div class="details">
+                <strong>Build Details:</strong><br>
+                📱 Version: ${VERSION}<br>
+                📅 Build Date: $(date)<br>
+                📦 Size: ${APK_SIZE}<br>
+            </div>
+            <center>
+                <a href="${DOWNLOAD_URL}" class="button">📥 Download APK</a>
+            </center>
+        </div>
+    </div>
+</body>
+</html>
+EOF
+    echo "   Email template saved to: email-notification.html"
+    echo "   Please send manually to: ${RECIPIENTS}"
+fi
 <!DOCTYPE html>
 <html>
 <head>
