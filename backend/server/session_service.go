@@ -25,10 +25,10 @@ type InventoryServer struct {
 	// Real-time WebRTC signal streams
 	signalStreams map[string]chan *pb.WebRTCSignal
 	// Cache signals for late joiners
-	signalCache map[string][]*pb.WebRTCSignal
+	signalCache sync.Map // Need sync.Map for concurrent access
 	// Geocoding service
 	geocoder *GeocodingService
-	mu       sync.Mutex
+	mu       sync.RWMutex
 }
 
 // NewInventoryServer creates a new inventory server
@@ -38,7 +38,6 @@ func NewInventoryServer() *InventoryServer {
 		connectionStreams: make(map[string]chan *pb.ConnectionRequestNotification),
 		approvalStreams:   make(map[string]chan *pb.ApprovalStatusUpdate),
 		signalStreams:     make(map[string]chan *pb.WebRTCSignal),
-		signalCache:       make(map[string][]*pb.WebRTCSignal),
 		geocoder:          NewGeocodingService(),
 	}
 }
@@ -129,7 +128,7 @@ func (s *InventoryServer) RequestConnection(ctx context.Context, req *pb.Connect
 	}
 
 	// Notify provider if they're watching
-	if stream, ok := s.requestStreams[req.SessionId]; ok {
+	if stream, ok := s.connectionStreams[req.SessionId]; ok {
 		notification := &pb.ConnectionRequestNotification{
 			RequestId:    requestID,
 			ConsumerId:   req.ConsumerId,
@@ -154,8 +153,8 @@ func (s *InventoryServer) RequestConnection(ctx context.Context, req *pb.Connect
 func (s *InventoryServer) WatchConnectionRequests(req *pb.WatchRequestsRequest, stream pb.InventoryService_WatchConnectionRequestsServer) error {
 	// Create channel for this session
 	reqChan := make(chan *pb.ConnectionRequestNotification, 10)
-	s.requestStreams[req.SessionId] = reqChan
-	defer delete(s.requestStreams, req.SessionId)
+	s.connectionStreams[req.SessionId] = reqChan
+	defer delete(s.connectionStreams, req.SessionId)
 
 	// Send any pending requests first
 	pending := s.sessionCache.GetPendingRequests(req.SessionId)
@@ -302,7 +301,7 @@ func (s *InventoryServer) WatchApprovalStatus(req *pb.WatchApprovalRequest, stre
 // EndSession ends a provider session
 func (s *InventoryServer) EndSession(ctx context.Context, req *pb.EndSessionRequest) (*pb.EndSessionResponse, error) {
 	s.sessionCache.DeleteSession(req.SessionId)
-	delete(s.requestStreams, req.SessionId)
+	delete(s.connectionStreams, req.SessionId)
 
 	return &pb.EndSessionResponse{
 		Success: true,
