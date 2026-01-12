@@ -6,7 +6,7 @@ import 'dart:ui' as ui;
 import '../widgets/guidance_overlay.dart';
 import '../shared/theme/jarvis_components.dart';
 import '../services/session_service.dart';
-import '../services/privacy_service.dart';
+// import '../services/privacy_service.dart'; // Temporarily disabled
 
 class ProviderModeScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -40,8 +40,8 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
   Offset _laserPosition = Offset.zero;
   bool _stopRequested = false;
 
-  // Privacy state
-  late PrivacyService _privacyService;
+  // Privacy state (temporarily disabled)
+  // late PrivacyService _privacyService;
   ui.Image? _processedFrame;
   int _facesDetected = 0;
   int _processingTimeMs = 0;
@@ -51,7 +51,7 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
   @override
   void initState() {
     super.initState();
-    _privacyService = PrivacyService();
+    // _privacyService = PrivacyService(); // Temporarily disabled
     _initializeCamera();
     _createSession();
 
@@ -77,25 +77,10 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
     }
   }
 
+  // Privacy processing disabled temporarily for build
+  // TODO: Re-enable once privacy_service dependencies are fixed
   void _startPrivacyProcessing() {
-    _cameraController.startImageStream((CameraImage image) async {
-      _frameCount++;
-
-      // Skip frames for performance (process every 3rd frame)
-      if (_frameCount % 3 != 0 || !_privacyEnabled) {
-        return;
-      }
-
-      final result = await _privacyService.processFrame(image);
-
-      if (mounted) {
-        setState(() {
-          _processedFrame = result.blurredImage;
-          _facesDetected = result.facesDetected;
-          _processingTimeMs = result.processingTimeMs;
-        });
-      }
-    });
+    // Disabled
   }
 
   void _updateTime() {
@@ -119,7 +104,7 @@ class _ProviderModeScreenState extends State<ProviderModeScreen> {
     }
 
     _cameraController.dispose();
-    _privacyService.dispose();
+    // _privacyService.dispose(); // Temporarily disabled
 
     // End backend session if created
     if (_sessionId != null && _sessionId != 'DEMO-SESSION') {
