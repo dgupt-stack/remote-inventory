@@ -235,7 +235,9 @@ type CreateSessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
 	ProviderName  string                 `protobuf:"bytes,2,opt,name=provider_name,json=providerName,proto3" json:"provider_name,omitempty"`
-	Location      string                 `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"` // Provider location/address
+	Location      string                 `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`     // Provider location/address (deprecated)
+	Latitude      float64                `protobuf:"fixed64,4,opt,name=latitude,proto3" json:"latitude,omitempty"`   // GPS latitude for geocoding
+	Longitude     float64                `protobuf:"fixed64,5,opt,name=longitude,proto3" json:"longitude,omitempty"` // GPS longitude for geocoding
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -289,6 +291,20 @@ func (x *CreateSessionRequest) GetLocation() string {
 		return x.Location
 	}
 	return ""
+}
+
+func (x *CreateSessionRequest) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *CreateSessionRequest) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
 }
 
 type JoinSessionRequest struct {
@@ -1638,9 +1654,13 @@ type SessionInfo struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	SessionId            string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	ProviderName         string                 `protobuf:"bytes,2,opt,name=provider_name,json=providerName,proto3" json:"provider_name,omitempty"`
-	ProviderLocation     string                 `protobuf:"bytes,3,opt,name=provider_location,json=providerLocation,proto3" json:"provider_location,omitempty"`
-	CreatedAt            int64                  `protobuf:"varint,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	AcceptingConnections bool                   `protobuf:"varint,5,opt,name=accepting_connections,json=acceptingConnections,proto3" json:"accepting_connections,omitempty"`
+	Location             string                 `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`                                         // Deprecated, use formatted_address
+	FormattedAddress     string                 `protobuf:"bytes,4,opt,name=formatted_address,json=formattedAddress,proto3" json:"formatted_address,omitempty"` // Geocoded address (e.g., "San Francisco, CA")
+	Latitude             float64                `protobuf:"fixed64,5,opt,name=latitude,proto3" json:"latitude,omitempty"`                                       // GPS latitude
+	Longitude            float64                `protobuf:"fixed64,6,opt,name=longitude,proto3" json:"longitude,omitempty"`                                     // GPS longitude
+	InActiveCall         bool                   `protobuf:"varint,7,opt,name=in_active_call,json=inActiveCall,proto3" json:"in_active_call,omitempty"`          // True if provider is currently in a call
+	CreatedAt            int64                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	AcceptingConnections bool                   `protobuf:"varint,9,opt,name=accepting_connections,json=acceptingConnections,proto3" json:"accepting_connections,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -1689,11 +1709,39 @@ func (x *SessionInfo) GetProviderName() string {
 	return ""
 }
 
-func (x *SessionInfo) GetProviderLocation() string {
+func (x *SessionInfo) GetLocation() string {
 	if x != nil {
-		return x.ProviderLocation
+		return x.Location
 	}
 	return ""
+}
+
+func (x *SessionInfo) GetFormattedAddress() string {
+	if x != nil {
+		return x.FormattedAddress
+	}
+	return ""
+}
+
+func (x *SessionInfo) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *SessionInfo) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
+func (x *SessionInfo) GetInActiveCall() bool {
+	if x != nil {
+		return x.InActiveCall
+	}
+	return false
 }
 
 func (x *SessionInfo) GetCreatedAt() int64 {
@@ -2647,12 +2695,14 @@ var File_inventory_service_proto protoreflect.FileDescriptor
 
 const file_inventory_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17inventory_service.proto\x12\tinventory\x1a\x1cgoogle/api/annotations.proto\"x\n" +
+	"\x17inventory_service.proto\x12\tinventory\x1a\x1cgoogle/api/annotations.proto\"\xb2\x01\n" +
 	"\x14CreateSessionRequest\x12\x1f\n" +
 	"\vprovider_id\x18\x01 \x01(\tR\n" +
 	"providerId\x12#\n" +
 	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\x12\x1a\n" +
-	"\blocation\x18\x03 \x01(\tR\blocation\"y\n" +
+	"\blocation\x18\x03 \x01(\tR\blocation\x12\x1a\n" +
+	"\blatitude\x18\x04 \x01(\x01R\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\x05 \x01(\x01R\tlongitude\"y\n" +
 	"\x12JoinSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +
@@ -2768,15 +2818,19 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x13ListSessionsRequest\x12!\n" +
 	"\fsearch_query\x18\x01 \x01(\tR\vsearchQuery\"J\n" +
 	"\x14ListSessionsResponse\x122\n" +
-	"\bsessions\x18\x01 \x03(\v2\x16.inventory.SessionInfoR\bsessions\"\xd2\x01\n" +
+	"\bsessions\x18\x01 \x03(\v2\x16.inventory.SessionInfoR\bsessions\"\xce\x02\n" +
 	"\vSessionInfo\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12#\n" +
-	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\x12+\n" +
-	"\x11provider_location\x18\x03 \x01(\tR\x10providerLocation\x12\x1d\n" +
+	"\rprovider_name\x18\x02 \x01(\tR\fproviderName\x12\x1a\n" +
+	"\blocation\x18\x03 \x01(\tR\blocation\x12+\n" +
+	"\x11formatted_address\x18\x04 \x01(\tR\x10formattedAddress\x12\x1a\n" +
+	"\blatitude\x18\x05 \x01(\x01R\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\x06 \x01(\x01R\tlongitude\x12$\n" +
+	"\x0ein_active_call\x18\a \x01(\bR\finActiveCall\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x04 \x01(\x03R\tcreatedAt\x123\n" +
-	"\x15accepting_connections\x18\x05 \x01(\bR\x14acceptingConnections\"x\n" +
+	"created_at\x18\b \x01(\x03R\tcreatedAt\x123\n" +
+	"\x15accepting_connections\x18\t \x01(\bR\x14acceptingConnections\"x\n" +
 	"\x11ConnectionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1f\n" +

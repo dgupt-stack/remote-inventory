@@ -10,9 +10,14 @@ import (
 type SessionInfo struct {
 	SessionID            string
 	ProviderName         string
-	ProviderLocation     string
+	ProviderLocation     string  // Original location string (deprecated)
+	FormattedAddress     string  // Geocoded address (e.g., "San Francisco, CA")
+	Latitude             float64 // GPS latitude
+	Longitude            float64 // GPS longitude
 	CreatedAt            time.Time
 	AcceptingConnections bool
+	InActiveCall         bool   // True if provider is in a call
+	ConnectedConsumerID  string // ID of connected consumer
 }
 
 // ConnectionRequest represents a consumer's request to join a session
@@ -45,12 +50,13 @@ func (c *SessionCache) CreateSession(info SessionInfo) error {
 	return nil
 }
 
-// ListActiveSessions returns all available provider sessions
+// ListActiveSessions returns all available provider sessions (not in calls)
 func (c *SessionCache) ListActiveSessions() []SessionInfo {
 	var sessions []SessionInfo
 	c.sessions.Range(func(key, value interface{}) bool {
 		if session, ok := value.(SessionInfo); ok {
-			if session.AcceptingConnections {
+			// Only show providers that are accepting AND not in active call
+			if session.AcceptingConnections && !session.InActiveCall {
 				sessions = append(sessions, session)
 			}
 		}
@@ -97,7 +103,7 @@ func (c *SessionCache) GetPendingRequests(sessionID string) []ConnectionRequest 
 	return requests
 }
 
-// ApproveConnection marks a connection request as approved
+// ApproveConnection marks a connection request as approved and updates provider status
 func (c *SessionCache) ApproveConnection(requestID string) error {
 	value, ok := c.requests.Load(requestID)
 	if !ok {
@@ -107,6 +113,16 @@ func (c *SessionCache) ApproveConnection(requestID string) error {
 	req := value.(ConnectionRequest)
 	req.Status = "approved"
 	c.requests.Store(requestID, req)
+
+	// Mark provider as in active call
+	sessionValue, ok := c.sessions.Load(req.ProviderSessionID)
+	if ok {
+		session := sessionValue.(SessionInfo)
+		session.InActiveCall = true
+		session.ConnectedConsumerID = req.ConsumerID
+		c.sessions.Store(req.ProviderSessionID, session)
+	}
+
 	return nil
 }
 
@@ -157,6 +173,20 @@ func (c *SessionCache) UpdateSession(sessionID string, acceptingConnections bool
 
 	session := value.(SessionInfo)
 	session.AcceptingConnections = acceptingConnections
+	c.sessions.Store(sessionID, session)
+	return nil
+}
+
+// EndActiveCall marks a provider as no longer in a call
+func (c *SessionCache) EndActiveCall(sessionID string) error {
+	value, ok := c.sessions.Load(sessionID)
+	if !ok {
+		return fmt.Errorf("session not found: %s", sessionID)
+	}
+
+	session := value.(SessionInfo)
+	session.InActiveCall = false
+	session.ConnectedConsumerID = ""
 	c.sessions.Store(sessionID, session)
 	return nil
 }

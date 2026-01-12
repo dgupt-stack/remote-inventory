@@ -93,7 +93,9 @@ service InventoryService {
 message CreateSessionRequest {
   string provider_id = 1;
   string provider_name = 2;
-  string location = 3;  // Provider location/address
+  string location = 3;  // Provider location/address (deprecated)
+  double latitude = 4;  // GPS latitude for geocoding
+  double longitude = 5; // GPS longitude for geocoding
 }
 
 message JoinSessionRequest {
@@ -243,9 +245,13 @@ message ListSessionsResponse {
 message SessionInfo {
   string session_id = 1;
   string provider_name = 2;
-  string provider_location = 3;
-  int64 created_at = 4;
-  bool accepting_connections = 5;
+  string location = 3;  // Deprecated, use formatted_address
+  string formatted_address = 4; // Geocoded address (e.g., "San Francisco, CA")
+  double latitude = 5;   // GPS latitude
+  double longitude = 6;  // GPS longitude
+  bool in_active_call = 7;  // True if provider is currently in a call
+  int64 created_at = 8;
+  bool accepting_connections = 9;
 }
 
 // Connection Request Messages

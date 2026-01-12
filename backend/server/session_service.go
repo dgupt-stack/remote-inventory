@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -13,44 +14,67 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// InventoryServer implements the InventoryService
+// InventoryServer implements the InventoryService gRPC server
 type InventoryServer struct {
 	pb.UnimplementedInventoryServiceServer
-	sessionCache    *cache.SessionCache
-	requestStreams  map[string]chan *pb.ConnectionRequestNotification
+	sessionCache *cache.SessionCache
+	// Channels for streaming connection requests to providers
+	connectionStreams map[string]chan *pb.ConnectionRequestNotification
+	// Channels for streaming approval notifications to consumers
 	approvalStreams map[string]chan *pb.ApprovalStatusUpdate
-	signalStreams   map[string]chan *pb.WebRTCSignal // sessionID:deviceID -> signal channel
-	signalCache     sync.Map                         // Cache recent signals for late joiners
-	mu              sync.RWMutex
+	// Real-time WebRTC signal streams
+	signalStreams map[string]chan *pb.WebRTCSignal
+	// Cache signals for late joiners
+	signalCache map[string][]*pb.WebRTCSignal
+	// Geocoding service
+	geocoder *GeocodingService
+	mu       sync.Mutex
 }
 
 // NewInventoryServer creates a new inventory server
 func NewInventoryServer() *InventoryServer {
 	return &InventoryServer{
-		sessionCache:    cache.NewSessionCache(),
-		requestStreams:  make(map[string]chan *pb.ConnectionRequestNotification),
-		approvalStreams: make(map[string]chan *pb.ApprovalStatusUpdate),
-		signalStreams:   make(map[string]chan *pb.WebRTCSignal),
+		sessionCache:      cache.NewSessionCache(),
+		connectionStreams: make(map[string]chan *pb.ConnectionRequestNotification),
+		approvalStreams:   make(map[string]chan *pb.ApprovalStatusUpdate),
+		signalStreams:     make(map[string]chan *pb.WebRTCSignal),
+		signalCache:       make(map[string][]*pb.WebRTCSignal),
+		geocoder:          NewGeocodingService(),
 	}
 }
 
-// CreateSession creates a new provider session
+// CreateSession creates a new provider session with geocoding
 func (s *InventoryServer) CreateSession(ctx context.Context, req *pb.CreateSessionRequest) (*pb.SessionResponse, error) {
 	sessionID := uuid.New().String()
 	token := uuid.New().String()
 
-	session := cache.SessionInfo{
-		SessionID:            sessionID,
-		ProviderName:         req.ProviderName,
-		ProviderLocation:     req.Location, // Use the location from request
-		CreatedAt:            time.Now(),
-		AcceptingConnections: true,
+	// Geocode the location if lat/lng provided
+	formattedAddress := req.Location // Fallback to provided location
+	if req.Latitude != 0 && req.Longitude != 0 {
+		addr, err := s.geocoder.ReverseGeocode(ctx, req.Latitude, req.Longitude)
+		if err != nil {
+			// Log error but don't fail - use provided location as fallback
+			log.Printf("Geocoding failed for lat=%.6f,  lng=%.6f: %v", req.Latitude, req.Longitude, err)
+		} else {
+			formattedAddress = addr
+		}
 	}
 
-	err := s.sessionCache.CreateSession(session)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create session: %v", err)
+	sessionInfo := cache.SessionInfo{
+		SessionID:        sessionID,
+		ProviderName:     req.ProviderName,
+		ProviderLocation: req.Location, // Keep for backward compatibility
+		FormattedAddress: formattedAddress,
+		Latitude:         req.Latitude,
+		Longitude:        req.Longitude,
 	}
+
+	err := s.sessionCache.CreateSession(sessionInfo)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "Failed to create session: %v", err)
+	}
+
+	log.Printf("Provider '%s' created session %s (location: %s)", req.ProviderName, sessionID, formattedAddress)
 
 	return &pb.SessionResponse{
 		SessionId: sessionID,
@@ -60,23 +84,29 @@ func (s *InventoryServer) CreateSession(ctx context.Context, req *pb.CreateSessi
 	}, nil
 }
 
-// ListSessions returns all active sessions
+// ListSessions returns all available provider sessions (not in active calls)
 func (s *InventoryServer) ListSessions(ctx context.Context, req *pb.ListSessionsRequest) (*pb.ListSessionsResponse, error) {
-	sessions := s.sessionCache.ListActiveSessions()
+	activeSessions := s.sessionCache.ListActiveSessions()
 
-	var pbSessions []*pb.SessionInfo
-	for _, session := range sessions {
-		pbSessions = append(pbSessions, &pb.SessionInfo{
+	sessions := make([]*pb.SessionInfo, len(activeSessions))
+	for i, session := range activeSessions {
+		sessions[i] = &pb.SessionInfo{
 			SessionId:            session.SessionID,
 			ProviderName:         session.ProviderName,
-			ProviderLocation:     session.ProviderLocation,
+			Location:             session.ProviderLocation, // Deprecated field
+			FormattedAddress:     session.FormattedAddress, // NEW: Geocoded address
+			Latitude:             session.Latitude,
+			Longitude:            session.Longitude,
+			InActiveCall:         session.InActiveCall, // NEW: Call status
 			CreatedAt:            session.CreatedAt.Unix(),
 			AcceptingConnections: session.AcceptingConnections,
-		})
+		}
 	}
 
+	log.Printf("Listing %d available sessions", len(sessions))
+
 	return &pb.ListSessionsResponse{
-		Sessions: pbSessions,
+		Sessions: sessions,
 	}, nil
 }
 
