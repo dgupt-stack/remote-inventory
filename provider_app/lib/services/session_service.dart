@@ -60,7 +60,8 @@ class SessionService {
           location: s.formattedAddress.isNotEmpty
               ? s.formattedAddress
               : (s.location.isNotEmpty ? s.location : 'Unknown'),
-          createdAt: DateTime.fromMillisecondsSinceEpoch(s.createdAt.toInt() * 1000),
+          createdAt:
+              DateTime.fromMillisecondsSinceEpoch(s.createdAt.toInt() * 1000),
         );
       }).toList();
 
@@ -119,17 +120,137 @@ class SessionService {
   Future<bool> endSession(String sessionId) async {
     try {
       final request = EndSessionRequest()..sessionId = sessionId;
-      await _client.endSession(request); // Await the call
+      await _client.endSession(request);
 
       print('✅ Session ended: $sessionId');
-      return true; // EndSessionResponse doesn't have success field, assume success if no error
+      return true;
     } catch (e) {
       print('Error ending session: $e');
       return false;
     }
   }
 
+  // Connection Request Methods (v1.3.0)
+
+  /// Send connection request from consumer to provider
+  Future<String> requestConnection({
+    required String sessionId,
+    required String consumerId,
+    required String consumerName,
+  }) async {
+    try {
+      final request = RequestConnectionRequest()
+        ..sessionId = sessionId
+        ..consumerId = consumerId
+        ..consumerName = consumerName;
+
+      final response = await _client.requestConnection(request);
+      print('✅ Connection request sent: ${response.requestId}');
+      return response.requestId;
+    } catch (e) {
+      print('❌ Error requesting connection: $e');
+      rethrow;
+    }
+  }
+
+  /// Provider approves a connection request
+  Future<void> approveConnection(String requestId) async {
+    try {
+      final request = ApproveConnectionRequest()..requestId = requestId;
+      await _client.approveConnection(request);
+      print('✅ Connection approved: $requestId');
+    } catch (e) {
+      print('❌ Error approving connection: $e');
+      rethrow;
+    }
+  }
+
+  /// Provider denies a connection request
+  Future<void> denyConnection(String requestId, {String? reason}) async {
+    try {
+      final request = DenyConnectionRequest()
+        ..requestId = requestId
+        ..reason = reason ?? 'Provider declined';
+      await _client.denyConnection(request);
+      print('✅ Connection denied: $requestId');
+    } catch (e) {
+      print('❌ Error denying connection: $e');
+      rethrow;
+    }
+  }
+
+  /// Provider watches for incoming connection requests (streaming)
+  Stream<ConnectionRequestInfo> watchConnectionRequests(String sessionId) {
+    try {
+      final request = WatchConnectionRequestsRequest()..sessionId = sessionId;
+      final stream = _client.watchConnectionRequests(request);
+
+      return stream.map((notification) {
+        return ConnectionRequestInfo(
+          requestId: notification.requestId,
+          consumerId: notification.consumerId,
+          consumerName: notification.consumerName,
+          timestamp: DateTime.fromMillisecondsSinceEpoch(
+            notification.timestamp.toInt() * 1000,
+          ),
+        );
+      });
+    } catch (e) {
+      print('❌ Error watching connection requests: $e');
+      return Stream.error(e);
+    }
+  }
+
+  /// Consumer watches for approval status (streaming)
+  Stream<ApprovalStatus> watchApprovalStatus(String requestId) {
+    try {
+      final request = WatchApprovalStatusRequest()..requestId = requestId;
+      final stream = _client.watchApprovalStatus(request);
+
+      return stream.map((update) {
+        return ApprovalStatus(
+          approved: update.status == ApprovalStatusUpdate_Status.APPROVED,
+          denied: update.status == ApprovalStatusUpdate_Status.DENIED,
+          message: update.message,
+        );
+      });
+    } catch (e) {
+      print('❌ Error watching approval status: $e');
+      return Stream.error(e);
+    }
+  }
+
   void dispose() {
     _channel.shutdown();
   }
+}
+
+// Helper models for connection requests (v1.3.0)
+
+class ConnectionRequestInfo {
+  final String requestId;
+  final String consumerId;
+  final String consumerName;
+  final DateTime timestamp;
+
+  ConnectionRequestInfo({
+    required this.requestId,
+    required this.consumerId,
+    required this.consumerName,
+    required this.timestamp,
+  });
+}
+
+class ApprovalStatus {
+  final bool approved;
+  final bool denied;
+  final String message;
+
+  ApprovalStatus({
+    required this.approved,
+    required this.denied,
+    required this.message,
+  });
+
+  bool get isPending => !approved && !denied;
 }
