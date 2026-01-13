@@ -475,13 +475,100 @@ class _SearchLandingScreenState extends State<SearchLandingScreen> {
   }
 
   Future<void> _connectToProvider(SessionInfo provider) async {
-    // TODO: Implement connection logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Connecting to ${provider.providerName}...'),
-        backgroundColor: JarvisTheme.primaryCyan,
-      ),
-    );
+    try {
+      // Generate consumer ID
+      final consumerId = 'consumer_${DateTime.now().millisecondsSinceEpoch}';
+
+      // Send connection request
+      print('📞 Sending connection request to ${provider.providerName}');
+      final requestId = await _sessionService.requestConnection(
+        sessionId: provider.sessionId,
+        consumerId: consumerId,
+        consumerName: 'JARVIS Consumer',
+      );
+
+      if (!mounted) return;
+
+      // Show waiting dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: JarvisTheme.surfaceColor,
+          title: Row(
+            children: const [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+              SizedBox(width: 12),
+              Text('Waiting for approval...'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Provider: ${provider.providerName}'),
+              Text('Location: ${provider.location ?? "Unknown"}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
+
+      // Watch for approval
+      _sessionService.watchApprovalStatus(requestId).listen(
+        (status) {
+          if (!mounted) return;
+
+          Navigator.pop(context); // Close waiting dialog
+
+          if (status.approved) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('✅ Connected to ${provider.providerName}'),
+                backgroundColor: JarvisTheme.successGreen,
+              ),
+            );
+            // TODO: Navigate to video viewer
+          } else if (status.denied) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('❌ ${status.message}'),
+                backgroundColor: JarvisTheme.warningRed,
+              ),
+            );
+          }
+        },
+        onError: (error) {
+          if (!mounted) return;
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Connection error: $error'),
+              backgroundColor: JarvisTheme.warningRed,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      print('❌ Error connecting: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to connect: $e'),
+            backgroundColor: JarvisTheme.warningRed,
+          ),
+        );
+      }
+    }
   }
 
   void _showDebugMenu() {

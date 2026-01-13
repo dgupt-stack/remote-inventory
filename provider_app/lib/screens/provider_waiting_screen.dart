@@ -22,51 +22,51 @@ class ProviderWaitingScreen extends StatefulWidget {
 
 class _ProviderWaitingScreenState extends State<ProviderWaitingScreen> {
   int _requestCount = 0;
-  // TODO: Uncomment when WatchConnectionRequests RPC is implemented
-  // StreamSubscription<ConnectionRequestNotification>? _requestSubscription;
+  StreamSubscription<ConnectionRequestInfo>? _requestSubscription;
+  final _sessionService = SessionService();
 
   @override
   void initState() {
     super.initState();
-    // TODO: Enable when backend RPC is ready
-    // _listenForRequests();
+    _listenForRequests();
   }
 
   @override
   void dispose() {
-    // TODO: Uncomment when listening is active
-    // _requestSubscription?.cancel();
-    // End session when leaving
-    SessionService().endSession(widget.sessionId);
+    _requestSubscription?.cancel();
+    _sessionService.endSession(widget.sessionId);
     super.dispose();
   }
 
-  // TODO: Implement when WatchConnectionRequests RPC is ready in backend
-  /*
   void _listenForRequests() {
-    print(
-        '👂 Listening for connection requests on session: ${widget.sessionId}');
+    print('👂 Listening for requests on session: ${widget.sessionId}');
 
     _requestSubscription =
-        SessionService().watchConnectionRequests(widget.sessionId).listen(
+        _sessionService.watchConnectionRequests(widget.sessionId).listen(
       (notification) {
-        print('🔔 Request received: ${notification.consumerName}');
+        print('🔔 Request from: ${notification.consumerName}');
         setState(() {
           _requestCount++;
         });
 
-        // Show approval dialog
         _showRequestDialog(
           notification.consumerName,
           notification.requestId,
         );
       },
       onError: (error) {
-        print('❌ Error listening for requests: $error');
+        print('❌ Error watching requests: $error');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Connection error: $error'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
     );
   }
-  */
 
   Future<void> _showRequestDialog(String consumerName, String requestId) async {
     final result = await showDialog<bool>(
@@ -121,36 +121,61 @@ class _ProviderWaitingScreenState extends State<ProviderWaitingScreen> {
   }
 
   Future<void> _handleApproval(String requestId) async {
-    // TODO: Call ApproveConnection RPC
-    print('✅ Approved connection: $requestId');
+    try {
+      print('✅ Approving request: $requestId');
+      await _sessionService.approveConnection(requestId);
 
-    // Get camera and navigate to provider mode
-    final cameras = await availableCameras();
-    if (cameras.isNotEmpty && mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProviderModeScreen(
-            camera: cameras.first,
-            providerName: widget.providerName,
-            sessionId: widget.sessionId,
+      // Navigate to camera
+      final cameras = await availableCameras();
+      if (cameras.isNotEmpty && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProviderModeScreen(
+              camera: cameras.first,
+              providerName: widget.providerName,
+              sessionId: widget.sessionId,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      print('❌ Error approving: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to approve: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
   Future<void> _handleRejection(String requestId) async {
-    // TODO: Call DenyConnection RPC
-    print('❌ Rejected connection: $requestId');
+    try {
+      print('❌ Denying request: $requestId');
+      await _sessionService.denyConnection(requestId,
+          reason: 'Provider declined');
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Connection request rejected'),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connection request denied'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } catch (e) {
+      print('❌ Error denying: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to deny: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

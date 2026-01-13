@@ -177,12 +177,6 @@ func (s *InventoryServer) WatchConnectionRequests(req *pb.WatchRequestsRequest, 
 			if err := stream.Send(notification); err != nil {
 				return err
 			}
-		case <-stream.Context().Done():
-			return nil
-		}
-	}
-}
-
 // ApproveConnection approves a consumer's connection request
 func (s *InventoryServer) ApproveConnection(ctx context.Context, req *pb.ApproveRequest) (*pb.ApproveResponse, error) {
 	err := s.sessionCache.ApproveConnection(req.RequestId)
