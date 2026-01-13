@@ -177,67 +177,6 @@ func (s *InventoryServer) WatchConnectionRequests(req *pb.WatchRequestsRequest, 
 			if err := stream.Send(notification); err != nil {
 				return err
 			}
-// ApproveConnection approves a consumer's connection request
-func (s *InventoryServer) ApproveConnection(ctx context.Context, req *pb.ApproveRequest) (*pb.ApproveResponse, error) {
-	err := s.sessionCache.ApproveConnection(req.RequestId)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "request not found: %v", err)
-	}
-
-	// Get the connection request details
-	connReq, err := s.sessionCache.GetConnectionRequest(req.RequestId)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get request: %v", err)
-	}
-
-	// Generate token for consumer
-	token := uuid.New().String()
-
-	// Notify consumer if they're watching
-	if stream, ok := s.approvalStreams[req.RequestId]; ok {
-		update := &pb.ApprovalStatusUpdate{
-			Status:    pb.ApprovalStatusUpdate_APPROVED,
-			SessionId: connReq.ProviderSessionID,
-			Token:     token,
-			Message:   "Connection approved",
-		}
-		select {
-		case stream <- update:
-		default:
-		}
-	}
-
-	return &pb.ApproveResponse{
-		Success:   true,
-		SessionId: connReq.ProviderSessionID,
-		Token:     token,
-	}, nil
-}
-
-// DenyConnection denies a consumer's connection request
-func (s *InventoryServer) DenyConnection(ctx context.Context, req *pb.DenyRequest) (*pb.DenyResponse, error) {
-	err := s.sessionCache.DenyConnection(req.RequestId)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "request not found: %v", err)
-	}
-
-	// Notify consumer if they're watching
-	if stream, ok := s.approvalStreams[req.RequestId]; ok {
-		update := &pb.ApprovalStatusUpdate{
-			Status:  pb.ApprovalStatusUpdate_DENIED,
-			Message: req.Reason,
-		}
-		select {
-		case stream <- update:
-		default:
-		}
-	}
-
-	return &pb.DenyResponse{
-		Success: true,
-	}, nil
-}
-
 // WatchApprovalStatus streams approval status to consumer
 func (s *InventoryServer) WatchApprovalStatus(req *pb.WatchApprovalRequest, stream pb.InventoryService_WatchApprovalStatusServer) error {
 	// Create channel for this request
