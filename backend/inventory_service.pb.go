@@ -4,7 +4,7 @@
 // 	protoc        v5.29.3
 // source: inventory_service.proto
 
-package remote_inventory
+package proto
 
 import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -2892,7 +2892,7 @@ const file_inventory_service_proto_rawDesc = "" +
 	"\x11ApproveConnection\x12#.inventory.ApproveConnectionRequest\x1a$.inventory.ApproveConnectionResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/requests/{request_id}/approve\x12\x80\x01\n" +
 	"\x0eDenyConnection\x12 .inventory.DenyConnectionRequest\x1a!.inventory.DenyConnectionResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/v1/requests/{request_id}/deny\x12\xa2\x01\n" +
 	"\x17WatchConnectionRequests\x12).inventory.WatchConnectionRequestsRequest\x1a(.inventory.ConnectionRequestNotification\"0\x82\xd3\xe4\x93\x02*\x12(/v1/sessions/{session_id}/requests/watch0\x01\x12\x89\x01\n" +
-	"\x13WatchApprovalStatus\x12%.inventory.WatchApprovalStatusRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/requests/{request_id}/status0\x01B$Z\"github.com/djgupt/remote-inventoryb\x06proto3"
+	"\x13WatchApprovalStatus\x12%.inventory.WatchApprovalStatusRequest\x1a\x1f.inventory.ApprovalStatusUpdate\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/requests/{request_id}/status0\x01B*Z(github.com/djgupt/remote-inventory/protob\x06proto3"
 
 var (
 	file_inventory_service_proto_rawDescOnce sync.Once

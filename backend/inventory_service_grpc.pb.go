@@ -4,7 +4,7 @@
 // - protoc             v5.29.3
 // source: inventory_service.proto
 
-package remote_inventory
+package proto
 
 import (
 	context "context"

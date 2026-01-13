@@ -4,7 +4,7 @@ package inventory;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/djgupt/remote-inventory";
+option go_package = "github.com/djgupt/remote-inventory/proto";
 
 
 // Session management and video streaming service

@@ -2,11 +2,11 @@
 // source: inventory_service.proto
 
 /*
-Package remote_inventory is a reverse proxy.
+Package proto is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package remote_inventory
+package proto
 
 import (
 	"context"
