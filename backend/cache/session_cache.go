@@ -20,6 +20,16 @@ type SessionInfo struct {
 	ConnectedConsumerID  string // ID of connected consumer
 }
 
+// ConnectionRequest represents a consumer's connection request
+type ConnectionRequest struct {
+	RequestID    string
+	SessionID    string
+	ConsumerID   string
+	ConsumerName string
+	Status       string // "pending", "approved", "denied"
+	Timestamp    int64
+}
+
 // SessionCache manages active sessions and connection requests in memory
 type SessionCache struct {
 	sessions sync.Map // sessionID -> SessionInfo
