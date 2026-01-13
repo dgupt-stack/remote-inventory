@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/djgupt/remote-inventory/cache"
-	pb "github.com/djgupt/remote-inventory/proto"
+	pb "github.com/djgupt/remote-inventory/backend/proto"
 	"github.com/google/uuid"
 )
 
