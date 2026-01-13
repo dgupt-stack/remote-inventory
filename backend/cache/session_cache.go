@@ -83,7 +83,7 @@ func (c *SessionCache) RequestConnection(req ConnectionRequest) error {
 		return err
 	}
 
-	req.Timestamp = time.Now()
+	req.Timestamp = time.Now().Unix()
 	req.Status = "pending"
 	c.requests.Store(req.RequestID, req)
 	return nil
