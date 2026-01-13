@@ -20,16 +20,6 @@ type SessionInfo struct {
 	ConnectedConsumerID  string // ID of connected consumer
 }
 
-// ConnectionRequest represents a consumer's request to join a session
-type ConnectionRequest struct {
-	RequestID         string
-	ConsumerID        string
-	ConsumerName      string
-	ProviderSessionID string
-	RequestedAt       time.Time
-	Status            string // "pending", "approved", "denied"
-}
-
 // SessionCache manages active sessions and connection requests in memory
 type SessionCache struct {
 	sessions sync.Map // sessionID -> SessionInfo
@@ -78,12 +68,12 @@ func (c *SessionCache) GetSession(sessionID string) (*SessionInfo, error) {
 // RequestConnection creates a new connection request
 func (c *SessionCache) RequestConnection(req ConnectionRequest) error {
 	// Verify session exists
-	_, err := c.GetSession(req.ProviderSessionID)
+	_, err := c.GetSession(req.SessionID)
 	if err != nil {
 		return err
 	}
 
-	req.RequestedAt = time.Now()
+	req.Timestamp = time.Now()
 	req.Status = "pending"
 	c.requests.Store(req.RequestID, req)
 	return nil
@@ -94,7 +84,7 @@ func (c *SessionCache) GetPendingRequests(sessionID string) []ConnectionRequest 
 	var requests []ConnectionRequest
 	c.requests.Range(func(key, value interface{}) bool {
 		if req, ok := value.(ConnectionRequest); ok {
-			if req.ProviderSessionID == sessionID && req.Status == "pending" {
+			if req.SessionID == sessionID && req.Status == "pending" {
 				requests = append(requests, req)
 			}
 		}
@@ -115,12 +105,12 @@ func (c *SessionCache) ApproveConnection(requestID string) error {
 	c.requests.Store(requestID, req)
 
 	// Mark provider as in active call
-	sessionValue, ok := c.sessions.Load(req.ProviderSessionID)
+	sessionValue, ok := c.sessions.Load(req.SessionID)
 	if ok {
 		session := sessionValue.(SessionInfo)
 		session.InActiveCall = true
 		session.ConnectedConsumerID = req.ConsumerID
-		c.sessions.Store(req.ProviderSessionID, session)
+		c.sessions.Store(req.SessionID, session)
 	}
 
 	return nil
@@ -156,7 +146,7 @@ func (c *SessionCache) DeleteSession(sessionID string) {
 	// Clean up associated requests
 	c.requests.Range(func(key, value interface{}) bool {
 		if req, ok := value.(ConnectionRequest); ok {
-			if req.ProviderSessionID == sessionID {
+			if req.SessionID == sessionID {
 				c.requests.Delete(key)
 			}
 		}

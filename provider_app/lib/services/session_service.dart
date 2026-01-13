@@ -202,15 +202,15 @@ class SessionService {
   }
 
   /// Consumer watches for approval status (streaming)
-  Stream<ApprovalStatus> watchApprovalStatus(String requestId) {
+  Stream<ApprovalStatusModel> watchApprovalStatus(String requestId) {
     try {
       final request = WatchApprovalStatusRequest()..requestId = requestId;
       final stream = _client.watchApprovalStatus(request);
 
       return stream.map((update) {
-        return ApprovalStatus(
-          approved: update.status == ApprovalStatusUpdate_Status.APPROVED,
-          denied: update.status == ApprovalStatusUpdate_Status.DENIED,
+        return ApprovalStatusModel(
+          approved: update.status == ApprovalStatus.APPROVED,
+          denied: update.status == ApprovalStatus.DENIED,
           message: update.message,
         );
       });
@@ -241,12 +241,12 @@ class ConnectionRequestInfo {
   });
 }
 
-class ApprovalStatus {
+class ApprovalStatusModel {
   final bool approved;
   final bool denied;
   final String message;
 
-  ApprovalStatus({
+  ApprovalStatusModel({
     required this.approved,
     required this.denied,
     required this.message,
